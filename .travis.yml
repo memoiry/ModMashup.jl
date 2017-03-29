@@ -1,0 +1,3 @@
+after_success:
+  - julia -e 'Pkg.add("GeneMANIA.jl")'
+  - julia -e 'cd(Pkg.dir("GeneMANIA.jl")); include(joinpath("docs", "make.jl"))'

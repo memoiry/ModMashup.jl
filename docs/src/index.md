@@ -20,6 +20,7 @@ func(x)
 - link to [GeneMANIA.jl Documentation](@ref)
 - link to [`func(x)`](@ref)
 
+test purpose
 
 ```@index
 ```

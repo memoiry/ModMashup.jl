@@ -2,7 +2,6 @@
 
 
 [![Build Status](https://travis-ci.org/memoiry/GeneMANIA.jl.svg?branch=master)](https://travis-ci.org/memoiry/GeneMANIA.jl)
-
 [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://memoiry.github.io/GeneMANIA.jl)
 
 GeneMANIA is a real-time multiple association network integration algorithm for predicting gene function.
@@ -15,5 +14,6 @@ Most successful computational approaches for protein function prediction integra
 
 
 [1] Pai et al. (2016). preprint http://biorxiv.org/content/early/2016/10/31/084418
+
 [2] Mostafavi et al. (2010). Bioinformatics. 26:1759. https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2894508/
 

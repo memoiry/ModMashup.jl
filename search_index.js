@@ -33,6 +33,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "index.html#GeneMANIA.func-Tuple{Any}",
+    "page": "Home",
+    "title": "GeneMANIA.func",
+    "category": "Method",
+    "text": "func(x)\n\nReturns double the number x plus 1.\n\n\n\n"
+},
+
+{
     "location": "index.html#Project-Goal-and-Motivations-1",
     "page": "Home",
     "title": "Project Goal and Motivations",

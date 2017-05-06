@@ -18,9 +18,13 @@ markdown_extensions:
   - extra
   - tables
   - fenced_code
-  - mdx_math
 
 docs_dir: 'build'
 
 pages:
   - Home: index.md
+  - Getting Start: dev/initial.md
+  - Algorithms: 
+    - Network Integration: algo/network_integration.md 
+    - Label Propagation: algo/label_propagation.md
+  - Contributions: user/contributions.md

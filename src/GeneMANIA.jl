@@ -1,12 +1,17 @@
 module GeneMANIA
 
-export func
+#export func
 
-"""
-    func(x)
+#"""
+#    func(x)
 
-Returns double the number `x` plus `1`.
-"""
-func(x) = 2x + 1
+#Returns double the number `x` plus `1`.
+#"""
+#func(x) = 2x + 1
+    using LowRankModels
+    using NearestNeighbors
+    using Distributions
+    using Plots
+    include("utils.jl")
 
 end

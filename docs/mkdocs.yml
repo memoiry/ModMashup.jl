@@ -2,6 +2,7 @@ site_name:        GeneMANIA.jl
 repo_url:         https://github.com/memoiry/GeneMANIA.jl/
 site_description: Repo for GeneMANIA.jl.
 site_author:      memoiry
+theme:               readthedocs
 
 docs_dir: 'build'
 

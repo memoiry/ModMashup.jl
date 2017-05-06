@@ -1,5 +1,7 @@
 using GeneMANIA
 using Base.Test
 
-# write your own tests here
-@test 1 == 2
+# Run tests
+ 
+@time @testset "Network Integration Algorithm" begin include("integration_alg_test.jl") end
+@time @testset "Label Propagation Algorithm" begin include("label_propagation_alg_test.jl") end

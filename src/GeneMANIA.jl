@@ -11,7 +11,7 @@ module GeneMANIA
     using LowRankModels
     using NearestNeighbors
     using Distributions
-    using Plots
+    using PyPlot
     include("utils.jl")
 
 end

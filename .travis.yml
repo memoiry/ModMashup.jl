@@ -6,14 +6,15 @@ os:
 julia:
   - release
   - nightly
+  - 0.5
 notifications:
   email: false
-# uncomment the following lines to override the default test script
-#script:
+script:
 #  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-#  - julia -e 'Pkg.clone(pwd()); Pkg.build("GeneMANIA"); Pkg.test("GeneMANIA"; coverage=true)'
+  - julia -e 'Pkg.clone(pwd())'
+  - julia -e 'ENV["PYTHON"]=""; Pkg.build("PyCall"); using PyPlot; Pkg.test("GeneMANIA",coverage=true)'
 after_success:
-  # push coverage results to Coveralls
-  - julia -e 'cd(Pkg.dir("GeneMANIA")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
-  # push coverage results to Codecov
+  - julia -e julia -e 'Pkg.add("Documenter")'
+  - julia -e 'cd(Pkg.dir("GeneMANIA")); include(joinpath("docs", "make.jl"))'
   - julia -e 'cd(Pkg.dir("GeneMANIA")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+  - julia -e 'cd(Pkg.dir("GeneMANIA")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(process_folder())'

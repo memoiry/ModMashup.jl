@@ -1,9 +1,4 @@
-# <center> GeneMANIA.jl  </center>
-
-<center> Google Summer of Code 2017 </center>
-
----
-
+# GeneMANIA.jl
 
 ## What is GeneMANIA?
 

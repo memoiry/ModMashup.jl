@@ -9,11 +9,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#center-GeneMANIA.jl-/center-1",
+    "location": "index.html#GeneMANIA.jl-1",
     "page": "Home",
-    "title": "<center> GeneMANIA.jl  </center>",
+    "title": "GeneMANIA.jl",
     "category": "section",
-    "text": "<center> Google Summer of Code 2017 </center>"
+    "text": ""
 },
 
 {

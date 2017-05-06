@@ -1,12 +1,11 @@
 using Documenter, GeneMANIA
 
 
-makedocs()
+makedocs(modules=[GeneMANIA],
+        doctest=true)
 
 
 deploydocs(
     repo = "github.com/memoiry/GeneMANIA.jl.git",
     julia = "0.5",
-    deps = nothing,
-    deps = nothing,
 )

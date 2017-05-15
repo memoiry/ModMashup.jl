@@ -1,13 +1,27 @@
 module GeneMANIA
 
-    export func
+    #export func
 
 
-
-    using LowRankModels
+    #using Compat
+    #using LowRankModels
     using NearestNeighbors
     using Distributions
-    using PyPlot
+    using Optim
+    using NMF
+    using Roots
+    using IterativeSolvers
+    #import StatsBase: fit!, mode
+
+    # define basic data type
+    include("fit.jl")
+    include("model.jl")
+
+    # define kernel function
+    include("network_integration.jl")
+    include("label_propagation.jl")
+
+    # utils function
     include("utils.jl")
 
 end

@@ -1,13 +1,11 @@
 
 
-
-type LabelPropagation
+type LabelPropagation <: LbpAbstractParams
 
 end
 
 
-function fit(model::LabelPropagation, X::Matrix, y::Vector)
-
+function label_propagation(model::LabelPropagation, X::Matrix, y::Vector)
 
 
 end

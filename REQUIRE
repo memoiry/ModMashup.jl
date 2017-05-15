@@ -8,3 +8,4 @@ NMF
 IterativeSolvers
 PyCall
 PyPlot
+ParSpMatVec

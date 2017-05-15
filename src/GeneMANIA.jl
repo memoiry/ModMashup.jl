@@ -12,6 +12,7 @@ module GeneMANIA
     using NMF
     using Roots
     using IterativeSolvers
+    using ParSpMatVec
     #import StatsBase: fit!, mode
 
     # define kernel function

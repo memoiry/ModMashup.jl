@@ -5,6 +5,7 @@ module GeneMANIA
 
     #using Compat
     #using LowRankModels
+    using PyPlot
     using NearestNeighbors
     using Distributions
     using Optim

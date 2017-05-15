@@ -13,6 +13,8 @@ Serial genemania model
 """
 type GeneMANIA <: AbstractGeneMANIA
     networks::SimilarityNetworks
+    annotation::Matirx
+    
 
 
 end

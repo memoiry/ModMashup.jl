@@ -6,3 +6,5 @@ Optim
 Roots 
 NMF 
 IterativeSolvers
+PyCall
+PyPlot

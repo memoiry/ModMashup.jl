@@ -14,13 +14,13 @@ module GeneMANIA
     using IterativeSolvers
     #import StatsBase: fit!, mode
 
-    # define basic data type
-    include("fit.jl")
-    include("model.jl")
-
     # define kernel function
     include("network_integration.jl")
     include("label_propagation.jl")
+
+    # define basic data type
+    include("model.jl")
+    include("fit.jl")
 
     # utils function
     include("utils.jl")

@@ -1,25 +1,25 @@
 
-export AbstractGeneMANIA, GeneMANIA, SharedGeneMANIA, 
+export AbstractGMANIA, GeneMANIA, SharedGMANIA
 
 typealias SimilarityNetworks Union{Array{Float64,3},Vector{SparseMatrixCSC{Float64,Int64}}}
 typealias SimilarityNetwork Union{Array{Float64,2},SparseMatrixCSC{Float64,Int64}}
-
-abstract AbstractGeneMANIA
+typealias OneHotAnnotation Union{Array{Float64, 2}, SparseMatrixCSC{Int64,Int64}}
+abstract AbstractGMANIA
 
 """
     GeneMANIA
 
 Serial genemania model
 """
-type GeneMANIA <: AbstractGeneMANIA
+type GMANIA <: AbstractGMANIA
     networks::SimilarityNetworks
-    annotation::Matirx
+    annotation::OneHotAnnotation
     
 
 
 end
 
-function GeneMANIA()
+function GMANIA()
 
 
 end
@@ -29,13 +29,14 @@ end
 
 Shared genemania model for parallel computing
 """
-type SharedGeneMANIA <: AbstractGeneMANIA
-
+type SharedGMANIA <: AbstractGMANIA
+    networks::SimilarityNetworks
+    annotation::OneHotAnnotation
 
 end
 
 
-function SharedGeneMANIA()
+function SharedGMANIA()
 
 
 end
@@ -47,7 +48,7 @@ end
 
 Convert the normal model to shared model
 """
-function share(genemania::GeneMANIA)
+function share(genemania::GMANIA)
 
 
 

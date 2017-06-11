@@ -1,3 +1,5 @@
+__precompile__()
+
 module GeneMANIA
 
     #export func
@@ -15,15 +17,25 @@ module GeneMANIA
     using ParSpMatVec
     #import StatsBase: fit!, mode
 
+
+    # define basic data type
+    include("model.jl")
+
     # define kernel function
     include("network_integration.jl")
     include("label_propagation.jl")
 
-    # define basic data type
-    include("model.jl")
-    include("fit.jl")
-
     # utils function
+    include("fit.jl")
     include("utils.jl")
+
+    function _mashup()
+
+
+    end
+
+    function _label_propagation()
+
+    end
 
 end

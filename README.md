@@ -6,6 +6,35 @@
 
 GeneMANIA is a real-time multiple association network integration algorithm for predicting gene function.
 
+## Usage
+
+```julia
+Pkg.add("https://github.com/memoiry/GeneMANIA.jl")
+```
+
+Make the test
+
+```julia
+Pkg.test("GeneMANIA")
+```
+
+Simple example
+
+```julia
+using GeneMANIA
+
+function test_mashup()
+    dir = "KIRC/data/networks"
+    disease_file = "KIRC/data/annotations/disease.csv"
+    index_file = "KIRC/disease_index.txt"
+    net_sel = ["age","grade","stage"]
+
+    database = GMANIA(dir,disease_file,index_file = index_file,net_sel = net_sel)
+    model = MashupIntegration()
+    network_integration!(model, database)
+end
+test_mashup()
+```
 ## Background
 
 Most successful computational approaches for protein function prediction integrate multiple genomics and proteomics data sources to make inferences about the function of unknown proteins. The most accurate of these algorithms have long running times, making them unsuitable for real-time protein function prediction in large genomes. As a result, the predictions of these algorithms are stored in static databases that can easily become outdated. Thus, GeneMANIA is proposed, that is as accurate as the leading methods, while capable of predicting protein function in real-time.

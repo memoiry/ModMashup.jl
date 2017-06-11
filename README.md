@@ -8,17 +8,16 @@ GeneMANIA is a real-time multiple association network integration algorithm for 
 
 ## Usage
 
+##### Installation
+
 ```julia
 Pkg.add("https://github.com/memoiry/GeneMANIA.jl")
-```
-
-Make the test
-
-```julia
 Pkg.test("GeneMANIA")
 ```
 
-Simple example
+##### Simple example. 
+
+Make sure KIRC dataset is in your current path.
 
 ```julia
 using GeneMANIA
@@ -31,9 +30,11 @@ function test_mashup()
 
     database = GMANIA(dir,disease_file,index_file = index_file,net_sel = net_sel)
     model = MashupIntegration()
-    network_integration!(model, database)
+    network_integration!(model, database, verbal = true)
+    return model
 end
-test_mashup()
+
+@time model = test_mashup();
 ```
 ## Background
 

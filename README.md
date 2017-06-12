@@ -8,21 +8,21 @@ GeneMANIA is a real-time multiple association network integration algorithm for 
 
 ## Usage
 
-##### Installation
+#### Installation
 
 ```julia
 Pkg.add("https://github.com/memoiry/GeneMANIA.jl")
 Pkg.test("GeneMANIA")
 ```
 
-##### Simple example. 
+#### Simple example. 
 
 Make sure KIRC dataset is in your current path.
 
 ```julia
 using GeneMANIA
 
-function test_mashup()
+function test_mashup(verbal)
     dir = "KIRC/data/networks"
     disease_file = "KIRC/data/annotations/disease.csv"
     index_file = "KIRC/disease_index.txt"
@@ -30,12 +30,34 @@ function test_mashup()
 
     database = GMANIA(dir,disease_file,index_file = index_file,net_sel = net_sel)
     model = MashupIntegration()
-    network_integration!(model, database, verbal = true)
+    network_integration!(model, database, verbal = verbal)
+    verbal ? (@printf "\nStatistics: ") : nothing
     return model
 end
 
-@time model = test_mashup();
+@time model = test_mashup(true);
 ```
+
+The result is contained in model. you can access the β vector.
+
+```julia
+model.β
+```
+
+Accessing the eigenvalue (150-by-3 matrix).
+
+```julia
+model.eigenvalue_list
+```
+
+Make a benchmark for the mashup.
+
+```julia
+Pkg.add("BenchmarkTools")
+using BenchmarkTools
+@benchmark test_mashup(false)
+```
+
 ## Background
 
 Most successful computational approaches for protein function prediction integrate multiple genomics and proteomics data sources to make inferences about the function of unknown proteins. The most accurate of these algorithms have long running times, making them unsuitable for real-time protein function prediction in large genomes. As a result, the predictions of these algorithms are stored in static databases that can easily become outdated. Thus, GeneMANIA is proposed, that is as accurate as the leading methods, while capable of predicting protein function in real-time.

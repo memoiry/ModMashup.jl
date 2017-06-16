@@ -23,7 +23,7 @@ function network_integration!(model::MashupIntegration, database::GMANIA; verbal
     net = zeros(n_patients * n_net, n_patients);
     eigen_value_list_ = zeros(n_patients,length(net_files))
     #@show eigen_value_list_
-    for i = 1:length(net_files)
+    @showprogress 1 "Running diffusion...." for i = 1:length(net_files)
         verbal ? (@printf "Loading %s\n" net_files[i]) : nothing
         A = load_net(net_files[i], database);#load the similarirty net.
         verbal ? (@printf "Running diffusion\n") : nothing
@@ -48,7 +48,6 @@ function network_integration!(model::MashupIntegration, database::GMANIA; verbal
 
     nothing
 end
-
 
 function get_params(params::MashupIntegration)
     

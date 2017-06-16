@@ -4,7 +4,9 @@
 export 
       rwr,
       load_network,
-      searchdir
+      searchdir,
+      build_index,
+      pca
        
 
 """
@@ -25,19 +27,21 @@ end
 
 function pca(A::Matrix, num::Int64=size(A,2))
     Σ = cov(A, 1, false)
-    eigenvalue, eigenvector =  eig(Σ)
+    eigenvalue,eigenvector =  eig(Σ)
     return eigenvalue[1:num], eigenvector[:,1:num]
 end
 
 function build_index(index_file::String)
     index_ = readdlm(index_file)
     patients_index = Dict{String,Int}()
+    inverse_index = Dict{Int, String}()
     index_ = size(index_,1) == 1 ? reshape(index_,2,Int(length(index_)/2)) :index_'
     n_patients = size(index_, 2)
     for i = 1:n_patients
         patients_index[index_[2,i]] = index_[1,i]
+        inverse_index[index_[1,i]] = index_[2,i]
     end
-    return patients_index
+    return patients_index, inverse_index
 end
 
 function load_net(filename::String,

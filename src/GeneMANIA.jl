@@ -1,4 +1,3 @@
-__precompile__()
 
 module GeneMANIA
 
@@ -15,6 +14,8 @@ module GeneMANIA
     using Roots
     using IterativeSolvers
     using ParSpMatVec
+    using ParallelAccelerator
+    using ProgressMeter
     #import StatsBase: fit!, mode
 
 

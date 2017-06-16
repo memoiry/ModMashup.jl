@@ -9,5 +9,4 @@ IterativeSolvers
 PyCall
 PyPlot
 ParSpMatVec
-ParallelAccelerator
 ProgressMeter

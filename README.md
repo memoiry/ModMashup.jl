@@ -31,7 +31,6 @@ function test_mashup()
     database = GMANIA(dir,disease_file,index_file = index_file,net_sel = net_sel)
     model = MashupIntegration()
     network_integration!(model, database)
-    verbal ? (@printf "\nStatistics: ") : nothing
     return model
 end
 

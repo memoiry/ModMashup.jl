@@ -15,7 +15,7 @@ Pkg.add("https://github.com/memoiry/GeneMANIA.jl")
 Pkg.test("GeneMANIA")
 ```
 
-#### Simple example. 
+#### Simple example - 3 netowrks. 
 
 Make sure KIRC dataset is in your current path.
 

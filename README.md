@@ -22,7 +22,7 @@ Make sure KIRC dataset is in your current path.
 ```julia
 using GeneMANIA
 
-function test_mashup(verbal)
+function test_mashup()
     dir = "KIRC/data/networks"
     disease_file = "KIRC/data/annotations/disease.csv"
     index_file = "KIRC/disease_index.txt"
@@ -30,12 +30,12 @@ function test_mashup(verbal)
 
     database = GMANIA(dir,disease_file,index_file = index_file,net_sel = net_sel)
     model = MashupIntegration()
-    network_integration!(model, database, verbal = verbal)
+    network_integration!(model, database)
     verbal ? (@printf "\nStatistics: ") : nothing
     return model
 end
 
-@time model = test_mashup(true);
+@time model = test_mashup();
 ```
 
 The result is contained in model. you can access the β vector.

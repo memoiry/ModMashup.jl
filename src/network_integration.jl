@@ -40,7 +40,10 @@ function network_integration!(model::MashupIntegration, database::GMANIA)
     #verbal ? (@printf "PCA finished, computing beta vector") : nothing
     #eigenvalue, eigenvector = pca(net)
     U,S,V = svd(net)
-    H = U * diagm(S)
+    #find reducde dimension.
+    reduced_dim = find(cumsum(S)/sum(S).>0.9)[1]
+    H = U[:,1:reduced_dim] * diagm(S[1:reduced_dim])
+    V = V[:,1:reduced_dim]
     query = find(database.disease.==1)
     n_query = size(query,1)
     @show n_query

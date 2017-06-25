@@ -22,6 +22,7 @@ immutable GMANIA <: AbstractGMANIA
     inverse_index::Dict{Int,String}
     use_index::Bool
     num_cv::Int
+    query_attr::Int
 end
 
 
@@ -29,7 +30,8 @@ function GMANIA(dir::String,
                 disease_file::String;
                 index_file = nothing,
                 net_sel = nothing,
-                num_cv = 5)
+                num_cv = 10,
+                query_attr = 1)
     patients_index::Dict{String, Int} = Dict{String, Int}()
     inverse_index::Dict{Int, String} = Dict{Int, String}()
     string_nets = Vector{String}() 
@@ -54,7 +56,7 @@ function GMANIA(dir::String,
         patients_index, inverse_index = build_index(index_file)
     end
     return GMANIA(string_nets, disease, n_patients,
-                  patients_index, inverse_index, use_index, num_cv)
+                  patients_index, inverse_index, use_index, num_cv, query_attr)
 end
 
 

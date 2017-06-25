@@ -11,50 +11,22 @@ GeneMANIA is a real-time multiple association network integration algorithm for 
 #### Installation
 
 ```julia
-Pkg.add("https://github.com/memoiry/GeneMANIA.jl")
+Pkg.rm("GeneMANIA")
+Pkg.clone("https://github.com/memoiry/GeneMANIA.jl")
+```
+
+#### Testing the code
+
+```julia
 Pkg.test("GeneMANIA")
 ```
 
-#### Simple example - 3 netowrks. 
-
-Make sure KIRC dataset is in your current path.
-
-```julia
-using GeneMANIA
-
-function test_mashup()
-    dir = "KIRC/data/networks"
-    disease_file = "KIRC/data/annotations/disease.csv"
-    index_file = "KIRC/disease_index.txt"
-    net_sel = ["age","grade","stage"]
-
-    database = GMANIA(dir,disease_file,index_file = index_file,net_sel = net_sel)
-    model = MashupIntegration()
-    network_integration!(model, database)
-    return model
-end
-
-@time model = test_mashup();
-```
-
-The result is contained in model. you can access the β vector.
-
-```julia
-model.β
-```
-
-Accessing the eigenvalue (150-by-3 matrix).
-
-```julia
-model.eigenvalue_list
-```
-
-Make a benchmark for the mashup.
+#### Benchmark tools
 
 ```julia
 Pkg.add("BenchmarkTools")
 using BenchmarkTools
-@benchmark test_mashup(false)
+@benchmark test_mashup()
 ```
 
 ## Background

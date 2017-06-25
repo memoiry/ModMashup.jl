@@ -1,0 +1,5 @@
+Network Group	Network	Weight	Title	Authors	Year	Publication	PMID	URL	Processing Method	Interactions	Source	Source URL	Tags
+dummy_group		100.00
+	stage_cont	43.98								5785			
+	grade_cont	37.63								5888			
+	age_cont	18.40								6196			

@@ -53,14 +53,15 @@ function network_integration!(model::MashupIntegration, database::GMANIA)
     reduced_dim = find(tmp)[1]
     @show reduced_dim/n_patients
     H = U[:,1:reduced_dim] * diagm(S[1:reduced_dim])
-    V = V[:,1:reduced_dim]
+    #V = V[:,1:reduced_dim]
+    V = V[1:reduced_dim, :]
     query = find(database.disease.==database.query_attr)
     n_query = size(query,1)
     @show n_query
     num_cv_query = Int(floor((1-1/database.num_cv)*n_query))
     weights_mat = zeros(n_net, database.num_cv )
     println("SVD finished, linear regression for β")
-    β = V \ database.disease
+    β = V' \ database.disease
     cv_query = zeros(num_cv_query, database.num_cv)
     @showprogress 1 "Runing networks weights cv..." for i = 1:database.num_cv
         rand_index = randperm(n_query)

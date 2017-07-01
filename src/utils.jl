@@ -1,4 +1,4 @@
-
+#SP document
 
 
 export 
@@ -31,6 +31,7 @@ function pca(A::Matrix, num::Int64=size(A,2))
     return eigenvalue[1:num], eigenvector[:,1:num]
 end
 
+## SP: Purpose? Document.
 function build_index(index_file::String)
     index_ = readdlm(index_file)
     patients_index = Dict{String,Int}()
@@ -67,4 +68,5 @@ function load_net(filename::String,
     A = A + diagm(sum(A, 2) .== 0)
 end
 
+## SP what is this doing?
 searchdir(path,key) = filter(x->contains(x,key), readdir(path))

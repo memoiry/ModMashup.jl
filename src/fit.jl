@@ -1,3 +1,4 @@
+##SP: is this file needed? Document/remove
 export fit,fit!, LbpParams, IgParams
 
 

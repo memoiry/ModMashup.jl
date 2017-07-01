@@ -21,6 +21,9 @@ module GeneMANIA
     # define basic data type
     include("model.jl")
 
+    # define algorithm type
+    include("integration_types.jl")
+
     # define kernel function
     include("network_integration.jl")
     include("label_propagation.jl")

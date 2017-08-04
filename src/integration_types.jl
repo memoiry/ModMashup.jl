@@ -10,6 +10,7 @@ type MashupIntegration <: IgAbstractParams
     weights_mat::Matrix
     cv_query::Matrix
     singular_value_squared::Vector
+    tally::Vector{Int}
 end
 
 type RawMashupIntegration <: IgAbstractParams
@@ -21,8 +22,8 @@ type RawMashupIntegration <: IgAbstractParams
     singular_value_squared::Vector
 end
 
-MashupIntegration() = MashupIntegration(Vector(), Matrix(), Vector(), Matrix(), Matrix(), Vector())
-RawMashupIntegration() = MashupIntegration(Vector(), Matrix(), Vector(), Matrix(), Matrix(), Vector())
+MashupIntegration() = MashupIntegration(Vector(), Matrix(), Vector(), Matrix(), Matrix(), Vector(), Vector{Int}())
+RawMashupIntegration() = MashupIntegration(Vector(), Matrix(), Vector(), Matrix(), Matrix(), Vector(), Vector{Int}())
 
 
 """

@@ -21,7 +21,9 @@ Implement modified mashup network integration.
 Input: Database
 Output: network weights.
 """
-function network_integration!(model::MashupIntegration, database::GMANIA)
+function network_integration!(model::MashupIntegration,
+                              database::GMANIA;
+                              random_seed = 23334)
     net_files = database.string_nets
     n_net = length(net_files)
     n_patients = database.n_patients
@@ -32,17 +34,23 @@ function network_integration!(model::MashupIntegration, database::GMANIA)
 ### makes it easier to read, understand, debug
 
     #@show eigen_value_list_
-    #@show n_net
-    @showprogress 1 "Running diffusion...." for i = 1:n_net
+    println("$n_net networks loaded.")
+    println("$n_patients patients loaded.")
+   @showprogress 1 "Running diffusion...." for i = 1:n_net
         #verbal ? (@printf "Loading %s\n" net_files[i]) : nothing
-        A = load_net(net_files[i], database);#load the similarirty net.
+        A = load_net(net_files[i], database)#load the similarirty net.
 
         #verbal ? (@printf "Running diffusion\n") : nothing
-        Q = rwr(A, 0.5);#running random walk.
-        #R = log(Q + 1/n_patients); #smoothing
-
+        Q = rwr(A, 0.5) #running random walk.
+        # smooth or not?
         start = n_patients * (i-1)+1 
-        net[start:(start+n_patients-1),:] = Q #concat each net together.
+        if database.smooth == 1
+            R = log(abs(Q) + 1/n_patients) #smoothing
+            net[start:(start+n_patients-1),:] = R #concat each net together.
+        else
+            net[start:(start+n_patients-1),:] = Q
+        end
+
         #eigenvalue, eigenvector = pca(A, n_patients)
         #eigen_value_list_[start:(start+n_patients-1),:] = eigenvector;
     end
@@ -66,8 +74,8 @@ function network_integration!(model::MashupIntegration, database::GMANIA)
 
 
     reduced_dim = find(tmp)[1]
-    if reduced_dim == 1
-        reduced_dim = find(tmp)[2]
+    if reduced_dim < n_patients/10.0
+        reduced_dim = trunc(Int, n_patients/10.0)
     end
     @show reduced_dim/n_patients
 
@@ -83,34 +91,62 @@ function network_integration!(model::MashupIntegration, database::GMANIA)
     @show n_query
 
 
-    num_cv_query = Int(floor((1-1/database.num_cv)*n_query))
+    num_cv_query = Int(ceil((1-1/database.num_cv)*n_query))
     weights_mat = zeros(n_net, database.num_cv )
     println("SVD finished, linear regression for β")
 
 
     β = V' \ database.disease
-    #@show β
+    @show β
     @show size(H)
     cv_query = zeros(num_cv_query, database.num_cv)
+    temp = zeros(n_net, database.num_cv, num_cv_query)
+    tally = zeros(Int, n_net)
 
 ### SP: move "for" to next line? Yes
 ### Set a RNG seed here to get results that you and I can reproduce.
-    srand(23443)# add random seed so the result can be reproduced.
+    srand(random_seed)# add random seed so the result can be reproduced.
+    if database.string_querys == nothing
+        @showprogress 1 "Runing networks weights cv..." for i = 1:database.num_cv
+            rand_index = randperm(n_query)
+            rand_query = query[rand_index][1:num_cv_query]
+            cv_query[:, i] = rand_query
+            for j = 1:n_net
+                base_query = (j-1) * n_query
 
-    @showprogress 1 "Runing networks weights cv..." for i = 1:database.num_cv
-        rand_index = randperm(n_query)
-        rand_query = query[rand_index][1:num_cv_query]
-        cv_query[:, i] = rand_query
-        for j = 1:n_net
-            base_query = (j-1) * n_query
+    ### SP: Use correlation  (which is bounded by -1,1)
+    ### instead of covariance?
 
-### SP: Use correlation  (which is bounded by -1,1)
-### instead of covariance?
+                cov_list = cor(H[base_query+rand_query,:]',β)
+                #temp[j, i, :] = cov_list
+                weights_mat[j,i] = mean(cov_list)
+            end
+        end
+    else
+        println("Running cross validation for feature selection ")
+        @showprogress 1 "Runing networks weights cv..." for i = 1:10
+            rand_query = parse_query(database.string_querys[i], database.patients_index)
+            cv_query[1:length(rand_query), i] = rand_query
+            for j = 1:n_net
+                base_query = (j-1) * n_query
 
-            cov_list = cor(H[base_query+rand_query,:]',β)
-            weights_mat[j,i] = mean(cov_list)
+    ### SP: Use correlation  (which is bounded by -1,1)
+    ### instead of covariance?
+
+                cov_list = cor(H[base_query+rand_query,:]',β)
+                #temp[j, i, :] = cov_list
+                weights_mat[j,i] = mean(cov_list)
+                if weights_mat[j,i] > 0
+                    tally[j] += 1
+                end
+            end
         end
     end
+
+    #for i = 1:num_cv_query
+    #    tem_str = @sprintf "result/ex3/networks_weights_each_cv_query_%sth.txt" i
+    #    writedlm(tem_str, temp[:,:,i])
+    #end
 
 
     model.cv_query = cv_query
@@ -124,7 +160,8 @@ function network_integration!(model::MashupIntegration, database::GMANIA)
 
     #@show model.net_weights
     model.H = H
-    model.β = β
+    model.β = β 
+    model.tally = tally
     #model.H = eigen_value_list_
     nothing
 end

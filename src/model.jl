@@ -23,6 +23,8 @@ immutable GMANIA <: AbstractGMANIA
     use_index::Bool
     num_cv::Int
     query_attr::Int
+    string_querys::Vector{String}
+    smooth::Int
 end
 
 
@@ -31,7 +33,10 @@ function GMANIA(dir::String,
                 index_file = nothing,
                 net_sel = nothing,
                 num_cv = 10,
-                query_attr = 1)
+                query_attr = 1,
+                querys = nothing,
+                smooth = 1,
+                tally = zeros(Int, 10))
     patients_index::Dict{String, Int} = Dict{String, Int}()
     inverse_index::Dict{Int, String} = Dict{Int, String}()
     string_nets = Vector{String}() 
@@ -43,20 +48,25 @@ function GMANIA(dir::String,
         end
         string_nets = net_sel
     else
-        string_nets = searchdir(dir, "txt")
+        string_nets = searchdir(dir, "cont.txt")
         map!(x -> joinpath(dir, x), string_nets)
     end
-    disease = contains(disease_file, "txt") ? readdlm(disease_file) : readcsv(disease_file)
-    disease = Int.(disease[:,2])
-    n_patients = size(disease,1)
+
     use_index = false
     if index_file != nothing
         @assert isa(index_file, String)
         use_index = true
         patients_index, inverse_index = build_index(index_file)
     end
+    if querys != nothing
+        @assert isa(querys, String)
+        string_querys = filter(x -> length(x) < 12 ,searchdir(querys, "query"))
+        map!(x -> joinpath(querys, x), string_querys)
+    end
+    disease = contains(disease_file, "txt") ? parse_target(readdlm(disease_file), patients_index) : readcsv(disease_file)
+    n_patients = size(disease,1)
     return GMANIA(string_nets, disease, n_patients,
-                  patients_index, inverse_index, use_index, num_cv, query_attr)
+                  patients_index, inverse_index, use_index, num_cv, query_attr, string_querys, smooth)
 end
 
 

@@ -36,13 +36,31 @@ function build_index(index_file::String)
     index_ = readdlm(index_file)
     patients_index = Dict{String,Int}()
     inverse_index = Dict{Int, String}()
-    index_ = size(index_,1) == 1 ? reshape(index_,2,Int(length(index_)/2)) :index_'
-    n_patients = size(index_, 2)
+    #index_ = size(index_,1) == 1 ? reshape(index_,2,Int(length(index_)/2)) :index_'
+    @assert size(index_, 2) == 1
+    n_patients = size(index_, 1)
     for i = 1:n_patients
-        patients_index[index_[2,i]] = index_[1,i]
-        inverse_index[index_[1,i]] = index_[2,i]
+        patients_index[index_[i,1]] = i
+        inverse_index[i] = index_[i,1]
     end
     return patients_index, inverse_index
+end
+
+function parse_target(target, patients_index)
+    temp = zeros(Int, size(target, 1))
+    for i = 1:size(target, 1)
+        temp[patients_index[target[i,1]]] = Int(target[i,2])
+    end
+    return temp
+end
+
+function parse_query(query_file, patients_index)
+    query = readdlm(query_file)[2,:]
+    temp = zeros(Int, length(query))
+    for i = 1:length(query)
+        temp[i] = patients_index[query[i]]
+    end
+    return temp
 end
 
 function load_net(filename::String,

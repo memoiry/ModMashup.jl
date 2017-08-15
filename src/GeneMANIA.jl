@@ -15,6 +15,8 @@ module GeneMANIA
     using IterativeSolvers
     using ParSpMatVec
     using ProgressMeter
+    using GLM
+    using DataFrames
     #import StatsBase: fit!, mode
 
 

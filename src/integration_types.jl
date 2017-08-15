@@ -14,16 +14,13 @@ type MashupIntegration <: IgAbstractParams
 end
 
 type RawMashupIntegration <: IgAbstractParams
-    β::Vector
-    H::Matrix
-    net_weights::Vector
-    weights_mat::Matrix
-    cv_query::Matrix
-    singular_value_squared::Vector
+    net_weights::Dict{String, Float64}
+    normalized::Bool
+    reg::Bool
 end
 
 MashupIntegration() = MashupIntegration(Vector(), Matrix(), Vector(), Matrix(), Matrix(), Vector(), Vector{Int}())
-RawMashupIntegration() = MashupIntegration(Vector(), Matrix(), Vector(), Matrix(), Matrix(), Vector(), Vector{Int}())
+RawMashupIntegration() = MashupIntegration(Dict{String, Float64}(), true, true)
 
 
 """

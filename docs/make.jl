@@ -7,6 +7,7 @@ makedocs(clean = false,
         pages = Any[
         "Home" => "index.md",
         "Quick Start" => "dev/get_start.md",
+        "Working in R" => 
         "Algorithms" => Any[
         "Label Propagation" => "algo/label_propagation.md",
         "Network Integration" => "algo/network_integration.md"

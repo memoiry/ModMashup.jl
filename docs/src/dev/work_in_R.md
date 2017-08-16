@@ -1,18 +1,28 @@
 ## Working with R
 
-For those who want to integrate this package into R `netDx` packages, just follow steps below.
+For those who want to integrate this package into R `netDx` packages, just run the command steps below.
 
-#### Installation
+### Required Dependencies
 
-```julia
-Pkg.add("GeneMANIA.jl")
+- R
+- julia 0.5 +
+
+Make sure you have R and julia installed in your computer, cd into where netDX latest packages located.
+
+```bash
+cd netDx/inst/julia
+rm -rf ModMashup
 ```
 
-#### Usage 
+Then just download the ModMashup.jl from the github
 
-```julia
-using GeneMANIA
+```bash
+git clone --recursive https://github.com/memoiry/GeneMANIA.jl
 ```
+
+
+
+
 
 
 

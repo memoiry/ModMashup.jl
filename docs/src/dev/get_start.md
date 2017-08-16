@@ -1,4 +1,4 @@
-## GeneMANIA.jl
+## ModMashup.jl
 
 
 ### Quick Start
@@ -7,13 +7,13 @@
 #### Installation
 
 ```julia
-Pkg.add("GeneMANIA.jl")
+Pkg.add("ModMashup.jl")
 ```
 
 #### Usage 
 
 ```julia
-using GeneMANIA
+using ModMashup
 ```
 
 

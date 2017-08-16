@@ -8,6 +8,8 @@
 export 
 
     network_integration!, 
+    solve!,
+    check,
     MashupIntegration
 
 ### This file will contain many network integration algorithm
@@ -319,11 +321,11 @@ function network_integration!(model::RawMashupIntegration, database::GMANIA)
     end
 
     solve!(KtK, KtT, database, model)
-    nothing
 end
 
 
-function solve!(KtK::Matrix, KtT::Vector, database::GMANIA, model::RawMashupIntegration)
+function solve!(KtK::Matrix, KtT::Vector, 
+    database::GMANIA, model::RawMashupIntegration)
     check(KtK, KtT, database)
 
     ss = abs(sum(KtK, 2))
@@ -339,7 +341,7 @@ function solve!(KtK::Matrix, KtT::Vector, database::GMANIA, model::RawMashupInte
 
     reg_const = 1.0
     if model.reg
-        for 1 = 1 : size(KtK_clean,1)
+        for i = 1 : size(KtK_clean,1)
             KtK_clean[i,i] = KtK_clean[i,i] + reg_const
         end
     end
@@ -365,7 +367,7 @@ function solve!(KtK::Matrix, KtT::Vector, database::GMANIA, model::RawMashupInte
         pos_weights = filter(x -> x!= 1, pos_weights)
 
         @assert length(pos_weights) != 0
-        if length(pos_weights) = total_weights -1
+        if length(pos_weights) == total_weights -1
             break
         end
 
@@ -392,11 +394,12 @@ function solve!(KtK::Matrix, KtT::Vector, database::GMANIA, model::RawMashupInte
             model.net_weights[i] = model.net_weights[i] / temp_sum
         end
     end
-
 end
 
 
-function check(KtT::Matrix, KtT::Vector, database::GMANIA)
+
+
+function check(KtK::Matrix, KtT::Vector, database::GMANIA)
     n = size(KtK,1)
     @assert n == size(KtK, 2)
     @assert n == length(KtT)

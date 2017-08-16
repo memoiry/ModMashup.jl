@@ -6,17 +6,17 @@ module GeneMANIA
 
     #using Compat
     #using LowRankModels
-    using PyPlot
-    using NearestNeighbors
-    using Distributions
-    using Optim
-    using NMF
-    using Roots
-    using IterativeSolvers
-    using ParSpMatVec
+    #using PyPlot
+    #using NearestNeighbors
+    #using Distributions
+    #using Optim
+    #using NMF
+    #using Roots
+    #using IterativeSolvers
+    #using ParSpMatVec
     using ProgressMeter
-    using GLM
-    using DataFrames
+    #using GLM
+    #using DataFrames
     #import StatsBase: fit!, mode
 
 

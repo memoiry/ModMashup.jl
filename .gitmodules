@@ -1,0 +1,3 @@
+[submodule "ProgressMeter"]
+	path = ProgressMeter
+	url = https://github.com/timholy/ProgressMeter.jl

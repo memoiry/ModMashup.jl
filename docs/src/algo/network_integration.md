@@ -15,7 +15,9 @@ GeneMANIAIntegration
 
 ### Description
 
-The package provide same interface for both mashup and genemania integration.
+We have one generic function `network_integration!` to provide same interface for both mashup and genemania integration. 
+
+The database contains the input. After the computation, the result will be saved on the model.
 
 ```@docs
 network_integration!(model::MashupIntegration, database::Database)
@@ -24,6 +26,7 @@ network_integration!(model::MashupIntegration, database::Database)
 ```@docs
 network_integration!(model::GeneMANIAIntegration, database::Database)
 ```
+
 ### Example
 
 ### References

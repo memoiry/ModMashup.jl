@@ -11,8 +11,10 @@ makedocs(clean = false,
         "Algorithms" => Any[
         "Database" => "algo/database.md",
         "Label Propagation" => "algo/label_propagation.md",
-        "Network Integration" => "algo/network_integration.md"
-        ]
+        "Network Integration" => "algo/network_integration.md",
+        "Pipeline" => "algo/pipeline.md"
+        ],
+        "Util function" => "algo/util_function.md"
     ]
 )
 

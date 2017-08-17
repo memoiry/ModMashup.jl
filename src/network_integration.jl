@@ -15,22 +15,16 @@ export network_integration!,
 """
     network_integration!(model::MashupIntegration, database::GMANIA)
 
-Implement modified mashup network integration.
-
-- Input: Database contained all the information needed to continue computation.
-- Output: Network weights stored in model.
+Implement modified mashup network integration. Result will be save in the model.
+See [`MashupIntegration`](@ref) for more information about the result.
 """
 function network_integration!(model::MashupIntegration,
-                              database::Database;
-                              random_seed::Int = 23334)
+                              database::Database)
     net_files = database.string_nets
     n_net = length(net_files)
     n_patients = database.n_patients
     net = zeros(n_patients * n_net, n_patients);
     eigen_value_list_ = zeros(n_patients*n_net,n_patients)
-
-### SP: Add a newline break between each logical step of the code.
-### makes it easier to read, understand, debug
 
     #@show eigen_value_list_
     println("$n_net networks loaded.")
@@ -54,13 +48,6 @@ function network_integration!(model::MashupIntegration,
         #eigen_value_list_[start:(start+n_patients-1),:] = eigenvector;
     end
 
-
-    #@show net
-    #@show eigen_value_list_
-    #@show typeof(eigen_value_list_)
-    #verbal ? (@printf "PCA finished, computing beta vector") : nothing
-    #eigenvalue, eigenvector = pca(net)
-
     # Perform SVD here
     println("Computing SVD")
     U,S,V = svd(net)
@@ -69,7 +56,7 @@ function network_integration!(model::MashupIntegration,
     # Find reducde dimension.
     #S_squared = S.^2
     S_sqrt = sqrt(S)
-    model.singular_value_squared = S_sqrt
+    model.singular_value_sqrt = S_sqrt
 
     println("Get 0.9 ratio")
     tmp = cumsum(S_sqrt)/sum(S_sqrt).>0.9
@@ -111,7 +98,6 @@ function network_integration!(model::MashupIntegration,
     tally = zeros(Int, n_net)
 
     # add random seed so the result can be reproduced.
-    #srand(random_seed)
     #protection
     #test_string = ["SIGNALING_EVENTS_MEDIATED_BY_HDAC_CLASS_II_cont.txt",
     #"BIOCARTA_PDGF_PATHWAY_cont.txt",
@@ -158,8 +144,8 @@ function network_integration!(model::MashupIntegration,
 
                 # Here we compute the correlation of H and beta
 
-                #cov_list = cor(H[base_query+rand_query,:]',β)
-                vec_list = H[base_query+rand_query,:] * β
+                cov_list = cor(H[base_query+rand_query,:]',β)
+                #vec_list = H[base_query+rand_query,:] * β
                 #protection
                 # Aux func for statistics, just ignore here
                 #split_str = split(net_files[j], "/")[end]
@@ -172,8 +158,8 @@ function network_integration!(model::MashupIntegration,
                 #protection
 
                 # Get the mean to represent the weight
-                #weights_mat[j,i] = mean(cov_list)
-                weights_mat[j,i] = mean(vec_list)
+                weights_mat[j,i] = mean(cov_list)
+                #weights_mat[j,i] = mean(vec_list)
 
                 # If weight > 0, get the tally plus 1.
                 if weights_mat[j,i] > 0
@@ -226,20 +212,30 @@ function network_integration!(model::MashupIntegration,
     #    writedlm(tem_str, temp[:,:,i])
     #end
 
-    #Get weights for each network
+    #1Get mean weights for each network
+    # +1 to avoid negative weight
     net_weights = vec(mean(weights_mat, 2)) + 1
-    model.net_weights = net_weights/sum(net_weights)*100
+    # Normalize the weight
+    net_weights = net_weights/sum(net_weights)*100
 
-    combined_network = zeros(n_patients, n_patients)
+    # Generate a dictionary to map network name to its normalized weight
+    net_index = Dict()
+    for i = 1:length(database.string_nets)
+
+        net_name = database.string_nets[i]
+        net_true_name = split(net_name,".")[1]
+        net_index[net_true_name] = net_weights[i]
+    end
+    model.net_weights = net_index
 
     # Combine the netowkr using network weights
+    combined_network = zeros(n_patients, n_patients)
     @showprogress 1 "Integrate networks...." for i = 1:n_net
-
         A = load_net(net_files[i], database)#load the similarirty net.
         combined_networks = combined_networks + model.net_weights[i] * A
     end
 
-    # save the result into integration model
+    # save the result into the mashup integration model
     model.combined_network = combined_network
     model.cv_query = cv_query
     model.weights_mat = weights_mat
@@ -253,10 +249,8 @@ end
 """
     network_integration!(model::GeneMANIAIntegration, database::GMANIA)
 
-Implement Raw mashup network integration.
-
-Input: Database
-Output: Embedding for each node in the network.
+Implement Raw mashup network integration. Result will be saved in the model.
+See [`GeneMANIAIntegration`](@ref) for more information about the result.
 """
 function network_integration!(model::GeneMANIAIntegration, database::Database)
     net_files = database.string_nets
@@ -321,7 +315,17 @@ function network_integration!(model::GeneMANIAIntegration, database::Database)
     solve!(KtK, KtT, database, model)
 end
 
+"""
+    solve!(KtK::Matrix, KtT::Vector, 
+    database::Database, model::GeneMANIAIntegration)
 
+Generic Solver for all weighting methods computes inverse using QR
+factorization (apparently KtK is ill conditioned for original method)
+removes row and column of corresponding negative weights and recomputes
+until all weight are positive. 
+
+The first column of (the implicit feature matrix) K is assumed to be the bias
+"""
 function solve!(KtK::Matrix, KtT::Vector, 
     database::Database, model::GeneMANIAIntegration)
     check(KtK, KtT, database)
@@ -394,7 +398,11 @@ function solve!(KtK::Matrix, KtT::Vector,
     end
 end
 
+"""
+    check(KtK::Matrix, KtT::Vector, database::Database)
 
+Check the validation of KtK and KtT.
+"""
 function check(KtK::Matrix, KtT::Vector, database::Database)
     n = size(KtK,1)
     @assert n == size(KtK, 2)

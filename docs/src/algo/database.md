@@ -1,6 +1,5 @@
 ## DataBase
 
-### Example
 
 ```@docs
 Database

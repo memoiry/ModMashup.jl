@@ -153,25 +153,17 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "algo/label_propagation.html#Constructor-1",
+    "location": "algo/label_propagation.html#Label-propagation-model-1",
     "page": "Label Propagation",
-    "title": "Constructor",
+    "title": "Label propagation model",
     "category": "section",
     "text": ""
 },
 
 {
-    "location": "algo/label_propagation.html#Description-1",
+    "location": "algo/label_propagation.html#Generic-propagation-method-1",
     "page": "Label Propagation",
-    "title": "Description",
-    "category": "section",
-    "text": ""
-},
-
-{
-    "location": "algo/label_propagation.html#Example-1",
-    "page": "Label Propagation",
-    "title": "Example",
+    "title": "Generic propagation method",
     "category": "section",
     "text": ""
 },
@@ -217,9 +209,9 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "algo/network_integration.html#Constructor-1",
+    "location": "algo/network_integration.html#Integration-model-1",
     "page": "Network Integration",
-    "title": "Constructor",
+    "title": "Integration model",
     "category": "section",
     "text": "The package provided two algorithm for network integration, one is MashupIntegration and another is GeneMANIAIntegration.MashupIntegrationGeneMANIAIntegration"
 },
@@ -241,27 +233,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "algo/network_integration.html#Description-1",
+    "location": "algo/network_integration.html#Generic-integration-method-1",
     "page": "Network Integration",
-    "title": "Description",
+    "title": "Generic integration method",
     "category": "section",
     "text": "We have one generic function network_integration! to provide same interface for both mashup and genemania integration. The database contains the input. After the computation, the result will be saved on the model.network_integration!(model::MashupIntegration, database::Database)network_integration!(model::GeneMANIAIntegration, database::Database)"
-},
-
-{
-    "location": "algo/network_integration.html#Example-1",
-    "page": "Network Integration",
-    "title": "Example",
-    "category": "section",
-    "text": ""
-},
-
-{
-    "location": "algo/network_integration.html#References-1",
-    "page": "Network Integration",
-    "title": "References",
-    "category": "section",
-    "text": ""
 },
 
 {
@@ -317,7 +293,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Util function",
     "title": "ModMashup.pca",
     "category": "Function",
-    "text": "pca(A::Matrix, num::Int64=size(A,2))\n\nPerform PCA for a matrix.\n\nInput: a matrix and needed \nOutput: pca vector and pca value\n\nExample\n\n```juli-repl julia> a = rand(5,5) 5×5 Array{Float64,2}:  0.149599  0.318179  0.235567  0.779247  0.276985  0.175398  0.109825  0.532561  0.723127  0.621328  0.68087   0.639779  0.754652  0.781525  0.264776  0.77962   0.446314  0.805693  0.88001   0.655808  0.19243   0.43587   0.945708  0.109192  0.196602\n\njulia> pca_value, pca_vector = pca(a) ([2.77556e-17,0.000524192,0.0396649,0.113626,0.128647], [0.483429 0.397074 … -0.376334 -0.679859; -0.738733 0.15917 … -0.379275 -0.170866; … ;  -0.0942359 -0.593824 … 0.444543 -0.643074; -0.457645 0.345674 … 0.1949 -0.306201])  ```\n\n\n\n"
+    "text": "pca(A::Matrix, num::Int64=size(A,2))\n\nPerform PCA for a matrix.\n\nInput: a matrix and needed \nOutput: pca vector and pca value\n\nExample\n\njulia> a = rand(5,5)\n5×5 Array{Float64,2}:\n 0.149599  0.318179  0.235567  0.779247  0.276985\n 0.175398  0.109825  0.532561  0.723127  0.621328\n 0.68087   0.639779  0.754652  0.781525  0.264776\n 0.77962   0.446314  0.805693  0.88001   0.655808\n 0.19243   0.43587   0.945708  0.109192  0.196602\n\njulia> pca_value, pca_vector = pca(a)\n([2.77556e-17,0.000524192,0.0396649,0.113626,0.128647],\n[0.483429 0.397074 … -0.376334 -0.679859; -0.738733 0.15917 … -0.379275 -0.170866; … ;\n -0.0942359 -0.593824 … 0.444543 -0.643074; -0.457645 0.345674 … 0.1949 -0.306201])\n\n\n\n"
 },
 
 {

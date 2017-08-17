@@ -1,3 +1,6 @@
-[submodule "ProgressMeter"]
-	path = ProgressMeter
+[submodule "third_party/ArgParse"]
+	path = third_party/ArgParse
+	url = https://github.com/carlobaldassi/ArgParse.jl
+[submodule "third_party/ProgressMeter"]
+	path = third_party/ProgressMeter
 	url = https://github.com/timholy/ProgressMeter.jl

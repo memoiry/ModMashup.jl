@@ -1,1 +1,0 @@
-writedlm("pkg.txt", [Pkg.dir()])

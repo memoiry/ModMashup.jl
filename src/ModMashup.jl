@@ -1,4 +1,4 @@
-#__precompile__()
+__precompile__()
 module ModMashup
 
     #export func
@@ -14,6 +14,7 @@ module ModMashup
     #using Roots
     #using IterativeSolvers
     #using ParSpMatVec
+    using ArgParse
     using ProgressMeter
     #using GLM
     #using DataFrames

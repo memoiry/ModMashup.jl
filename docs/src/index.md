@@ -6,8 +6,7 @@ The aim of the project is to Reimplement GeneMANIA in Julia to optimize netDx fo
 
 ## Why called ModMashup?
 
-Because the implementation of GeneMANIA in this package is different. We get intuitive from [mashup]() to replace linear regression part of GeneMANIA for high-performance computing. In short, mashup learns patient embedding and we use this information to derivate network weights.
-
+Because the implementation of GeneMANIA in this package is different. We get intuitive from [mashup](http://www.cell.com/cell-systems/fulltext/S2405-4712(16)30360-X?_returnURL=http%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS240547121630360X%3Fshowall%3Dtrue) to replace linear regression part of GeneMANIA for high-performance computing. In short, mashup learns patient embedding and we use this information to derivate network weights.
 
 ## ModMashup API
 

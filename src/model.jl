@@ -52,8 +52,8 @@ thread = 2
 
 # We are ready now, then just construct the database
 database = ModMashup.Database(network_dir, target_file, 
-                index_file = id, querys = query_dir,
-                smooth = smooth, thread = thread)
+                id, query_dir, smooth = smooth, 
+                thread = thread)
 ```
 """
 immutable Database <: AbstractDatabase
@@ -101,7 +101,7 @@ function Database(dir::String,
     n_patients = size(disease,1)
 
     # return the constructed database
-    return GMANIA(string_nets, disease, n_patients,
+    return Database(string_nets, disease, n_patients,
                   patients_index, inverse_index, num_cv, query_attr, string_querys, smooth, thread)
 end
 

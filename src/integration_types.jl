@@ -28,7 +28,7 @@ type MashupIntegration <: IgAbstractParams
     weights_mat::Matrix
     cv_query::Matrix
     singular_value_sqrt::Vector
-    tally::Vector{Int}
+    tally::Dict{String, Int}
     combined_network::Matrix
 end
 
@@ -53,7 +53,7 @@ type GeneMANIAIntegration <: IgAbstractParams
 end
 
 
-MashupIntegration() = MashupIntegration(Vector(), Matrix(), Dict{String, Float64}(), Matrix(), Matrix(), Vector(), Vector{Int}(), Matrix())
+MashupIntegration() = MashupIntegration(Vector(), Matrix(), Dict{String, Float64}(), Matrix(), Matrix(), Vector(), Dict{String, Int}(), Matrix())
 GeneMANIAIntegration() = GeneMANIAIntegration(Dict{String, Float64}(), Matrix(), true, true)
 
 

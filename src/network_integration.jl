@@ -21,6 +21,7 @@ See [`MashupIntegration`](@ref) for more information about the result.
 function network_integration!(model::MashupIntegration,
                               database::Database)
     net_files = database.string_nets
+    #@show net_files
     n_net = length(net_files)
     n_patients = database.n_patients
     net = zeros(n_patients * n_net, n_patients);
@@ -90,9 +91,9 @@ function network_integration!(model::MashupIntegration,
     β = V \ database.disease
     writedlm("V.txt",V)
     writedlm("disease.txt",database.disease)
-    @show β
-    @show size(H)
-    @show V * β - database.disease
+    #@show β
+    #@show size(H)
+    #@show V * β - database.disease
     cv_query = zeros(num_cv_query, database.num_cv)
     temp = zeros(n_net, database.num_cv, num_cv_query)
     tally = zeros(Int, n_net)
@@ -126,10 +127,12 @@ function network_integration!(model::MashupIntegration,
     ## Protection
 
     # If running for feature selection
+    n_cv = length(database.string_querys)
     if database.string_querys != nothing
         println("Running cross validation for feature selection ")
         # Here we have 10 cross validation round
-        @showprogress 1 "Runing networks weights cv..." for i = 1:10
+        println("Got $(n_cv) round query files")
+        @showprogress 1 "Runing networks weights cv..." for i = 1:n_cv
             # Read query from genemnia's query file
             rand_query = parse_query(database.string_querys[i], database.patients_index)
 
@@ -219,20 +222,22 @@ function network_integration!(model::MashupIntegration,
     net_weights = net_weights/sum(net_weights)*100
 
     # Generate a dictionary to map network name to its normalized weight
-    net_index = Dict()
+    # and also map network tally.
     for i = 1:length(database.string_nets)
-
         net_name = database.string_nets[i]
         net_true_name = split(net_name,".")[1]
-        net_index[net_true_name] = net_weights[i]
+        model.net_weights[net_true_name] = net_weights[i]
+        model.tally[net_true_name] = tally[i]
     end
-    model.net_weights = net_index
 
     # Combine the netowkr using network weights
     combined_network = zeros(n_patients, n_patients)
     @showprogress 1 "Integrate networks...." for i = 1:n_net
-        A = load_net(net_files[i], database)#load the similarirty net.
-        combined_networks = combined_networks + model.net_weights[i] * A
+        #load the similarirty net.
+        net_name = database.string_nets[i]
+        net_true_name = split(net_name,".")[1]
+        A = load_net(net_name, database)
+        combined_network = combined_network + model.net_weights[net_true_name] / 100 * A
     end
 
     # save the result into the mashup integration model
@@ -241,7 +246,6 @@ function network_integration!(model::MashupIntegration,
     model.weights_mat = weights_mat
     model.H = H
     model.β = β 
-    model.tally = tally
     nothing
 end
 

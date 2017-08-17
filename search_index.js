@@ -65,19 +65,59 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "dev/get_start.html#Required-Dependencies-1",
+    "page": "Quick Start",
+    "title": "Required Dependencies",
+    "category": "section",
+    "text": "julia v0.5 +You can download latest Julia from the official website. Version 0.5 or higher is highly recommended."
+},
+
+{
     "location": "dev/get_start.html#Installation-1",
     "page": "Quick Start",
     "title": "Installation",
     "category": "section",
-    "text": "Pkg.add(\"ModMashup.jl\")"
+    "text": "Enter Julia REPL.$ juliaThen run the command below in REPL.Pkg.rm(\"ModMashup\")\nPkg.clone(\"https://github.com/memoiry/ModMashup.jl\")"
 },
 
 {
-    "location": "dev/get_start.html#Usage-1",
+    "location": "dev/get_start.html#Usage-in-Julia-1",
     "page": "Quick Start",
-    "title": "Usage",
+    "title": "Usage in Julia",
     "category": "section",
-    "text": "using ModMashup"
+    "text": "import ModMashup\ncd(joinpath(Pkg.dir(\"ModMashup\"), \"test/data\"))\ndir = \"networks\"\ntarget_file = \"target.txt\"\nquerys = \".\"\nid = \"ids.txt\"\nsmooth = true\n\n# Construct the dabase, which contains the preliminary file.\ndatabase = ModMashup.Database(dir, target_file, id, \n querys, smooth = smooth)\n    \n# Define the algorithm you want to use to integrate the networks\nmodel = ModMashup.MashupIntegration()\n    \n# Running network integration\nModMashup.network_integration!(model, database)\n\n# Acquire network weights dictionary\nnet_weight_dict = ModMashup.get_weights(model)\n\n# Acquire Combined network\ncombined_network = ModMashup.get_comined_network(model)\n\n# Acquire network tally\ntally = ModMashup.get_tally(model)\n"
+},
+
+{
+    "location": "dev/get_start.html#Mashup-command-tool-1",
+    "page": "Quick Start",
+    "title": "Mashup command tool",
+    "category": "section",
+    "text": "This project provide a Command Line Tool located in mashup.jl, which has two usage.Modified Mashup feature selection.\nGeneMANIA query runner same with GeneMANIA.jar."
+},
+
+{
+    "location": "dev/get_start.html#Example-1",
+    "page": "Quick Start",
+    "title": "Example",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "dev/get_start.html#Usage-1:-Mashup-Feature-Selection-1",
+    "page": "Quick Start",
+    "title": "Usage 1: Mashup Feature Selection",
+    "category": "section",
+    "text": "First ensure that you have ModMashup.jl correctly installed in your computer.var=$(julia -e \"println(Pkg.dir())\")\nvar=\"$var/ModMashup/test/data\"\ncd $var\nmkdir temp_res\njulia ../../tools/mashup.jl feature_selection --net networks --id ids.txt --target target.txt --CV_query . --smooth true --res_dir temp_resThe result will be saved at temp_res folder."
+},
+
+{
+    "location": "dev/get_start.html#Usage-2:-GeneMANIA-query-runner-1",
+    "page": "Quick Start",
+    "title": "Usage 2: GeneMANIA query runner",
+    "category": "section",
+    "text": "julia ../../tools/mashup.jl query_runner --net networks --id ids.txt --target target.txt --CV_query . --smooth true --res_dir temp_res"
 },
 
 {
@@ -101,7 +141,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Working in R",
     "title": "Required Dependencies",
     "category": "section",
-    "text": "R\njulia 0.5 +Make sure you have R and julia installed in your computer, cd into where netDX latest packages located.cd netDx/inst/julia\nrm -rf ModMashupThen just download the ModMashup.jl from the githubgit clone --recursive https://github.com/memoiry/ModMashup.jl\nmv ModMashup.jl ModMashup\ncp ModMashup/src/install.sh .\nbash install.sh"
+    "text": "R\njulia 0.5 +Make sure you have julia which is above the version 0.5+ and also R. You can download latest julia from the official website.Cd into where netDX latest packages located.cd netDx/inst/julia\nrm -rf ModMashupDownload the ModMashup.jl from the github, and run the intsall.sh file to get the package working.git clone --recursive https://github.com/memoiry/ModMashup.jl\nmv ModMashup.jl ModMashup\nbash ModMashup/src/install.sh "
 },
 
 {
@@ -117,7 +157,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Database",
     "title": "ModMashup.Database",
     "category": "Type",
-    "text": "Database\n\nDatabase contains needed information for network integration and label propagation.\n\nArguments\n\nstring_nets::Vector{String}: Similarity networks name.\ndisease::OneHotAnnotation: Disease annotation for patients.\nn_patients::Int: The number of patients in the databse.\npatients_index::Dict{String,Int}: Map patient name to their id.\ninverse_index::Dict{Int,String}: Map patient id to their name.\nnum_cv::Int: The number of cross validation round. Default is 10.\nquery_attr::Int: Set the annotaion for query . Default is 1.\nstring_querys::Vector{String}: A list of query filename.\nsmooth::Int: Perform smooth in the simialarty or not. Default is true.\nthread::Int: Number of thread for parallel computing. Default it 1.\n\nExample\n\n# get example data directory\nexample_data_dir = joinpath(Pkg.dir(\"ModMashup\"), \"test/data\")\n\n# dir should be a directory containing similairty networks flat file.\nnetwork_dir = joinpaht(example_data_dir,\"networks\")\n\n# target_file should be a flat file contains disaese for patient\ntarget_file = joinpaht(example_data_dir,\"target.txt\")\n\n# Directory where a list of query flat files are located using the \n# same format and naming manner with genemania query.\nquery_dir = example_data_dir\n\n# Id file contains all the name of patients.\nid = joinpaht(example_data_dir,\"ids.txt\")\n\n# Other setting\n## Do smooth in the network or not for mashup integration.\nsmooth = true\n## The number of thread choosen to perform computation.\nthread = 2\n\n# We are ready now, then just construct the database\ndatabase = ModMashup.Database(network_dir, target_file, \n                index_file = id, querys = query_dir,\n                smooth = smooth, thread = thread)\n\n\n\n"
+    "text": "Database\n\nDatabase contains needed information for network integration and label propagation.\n\nArguments\n\nstring_nets::Vector{String}: Similarity networks name.\ndisease::OneHotAnnotation: Disease annotation for patients.\nn_patients::Int: The number of patients in the databse.\npatients_index::Dict{String,Int}: Map patient name to their id.\ninverse_index::Dict{Int,String}: Map patient id to their name.\nnum_cv::Int: The number of cross validation round. Default is 10.\nquery_attr::Int: Set the annotaion for query . Default is 1.\nstring_querys::Vector{String}: A list of query filename.\nsmooth::Int: Perform smooth in the simialarty or not. Default is true.\nthread::Int: Number of thread for parallel computing. Default it 1.\n\nExample\n\n# get example data directory\nexample_data_dir = joinpath(Pkg.dir(\"ModMashup\"), \"test/data\")\n\n# dir should be a directory containing similairty networks flat file.\nnetwork_dir = joinpaht(example_data_dir,\"networks\")\n\n# target_file should be a flat file contains disaese for patient\ntarget_file = joinpaht(example_data_dir,\"target.txt\")\n\n# Directory where a list of query flat files are located using the \n# same format and naming manner with genemania query.\nquery_dir = example_data_dir\n\n# Id file contains all the name of patients.\nid = joinpaht(example_data_dir,\"ids.txt\")\n\n# Other setting\n## Do smooth in the network or not for mashup integration.\nsmooth = true\n## The number of thread choosen to perform computation.\nthread = 2\n\n# We are ready now, then just construct the database\ndatabase = ModMashup.Database(network_dir, target_file, \n                id, query_dir, smooth = smooth, \n                thread = thread)\n\n\n\n"
 },
 
 {

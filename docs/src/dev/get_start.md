@@ -25,7 +25,6 @@ Pkg.clone("https://github.com/memoiry/ModMashup.jl")
 
 #### Usage in Julia
 
-
 ```julia
 import ModMashup
 cd(joinpath(Pkg.dir("ModMashup"), "test/data"))

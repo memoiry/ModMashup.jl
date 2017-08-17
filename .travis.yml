@@ -11,7 +11,7 @@ notifications:
 script:
 #  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
   - julia -e 'Pkg.clone(pwd())'
-  - julia -e 'ENV["PYTHON"]=""; Pkg.build("PyCall"); using PyPlot; Pkg.test("ModMashup",coverage=true)'
+  - Pkg.test("ModMashup",coverage=true)'
 after_success:
   - julia -e julia -e 'Pkg.add("Documenter")'
   - julia -e 'cd(Pkg.dir("ModMashup")); include(joinpath("docs", "make.jl"))'

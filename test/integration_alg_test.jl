@@ -1,4 +1,4 @@
-using GeneMANIA
+using ModMashup
 
 
 #function test()

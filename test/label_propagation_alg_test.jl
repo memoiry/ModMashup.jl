@@ -1,3 +1,3 @@
-using GeneMANIA
+using ModMashup
 
 true

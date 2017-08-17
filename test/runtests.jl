@@ -1,4 +1,4 @@
-using GeneMANIA
+using ModMashup
 using Base.Test
 
 # Run tests

@@ -5,12 +5,9 @@
 ###   b) add a detailed description
 ###   c) what the input parameters are
 ###   d) what the function returns. The object type and a text description.
-export 
-
-    network_integration!, 
+export network_integration!, 
     solve!,
-    check,
-    MashupIntegration
+    check
 
 ### This file will contain many network integration algorithm
 ### I use dispatch to load them in same API.
@@ -20,11 +17,11 @@ export
 
 Implement modified mashup network integration.
 
-Input: Database
-Output: network weights.
+- Input: Database contained all the information needed to continue computation.
+- Output: Network weights stored in model.
 """
 function network_integration!(model::MashupIntegration,
-                              database::GMANIA;
+                              database::Database;
                               random_seed::Int = 23334)
     net_files = database.string_nets
     n_net = length(net_files)
@@ -46,7 +43,7 @@ function network_integration!(model::MashupIntegration,
         Q = rwr(A, 0.5) #running random walk.
         # smooth or not?
         start = n_patients * (i-1)+1 
-        if database.smooth == 1
+        if database.smooth
             R = log(Q + 1/n_patients) #smoothing
             net[start:(start+n_patients-1),:] = R #concat each net together.
         else
@@ -252,15 +249,16 @@ function network_integration!(model::MashupIntegration,
     nothing
 end
 
+
 """
-    network_integration!(model::RawMashupIntegration, database::GMANIA)
+    network_integration!(model::GeneMANIAIntegration, database::GMANIA)
 
 Implement Raw mashup network integration.
 
 Input: Database
 Output: Embedding for each node in the network.
 """
-function network_integration!(model::GeneMANIAIntegration, database::GMANIA)
+function network_integration!(model::GeneMANIAIntegration, database::Database)
     net_files = database.string_nets
     n_net = length(net_files)
     n_patients = database.n_patients
@@ -325,7 +323,7 @@ end
 
 
 function solve!(KtK::Matrix, KtT::Vector, 
-    database::GMANIA, model::GeneMANIAIntegration)
+    database::Database, model::GeneMANIAIntegration)
     check(KtK, KtT, database)
 
     ss = abs(sum(KtK, 2))
@@ -397,15 +395,10 @@ function solve!(KtK::Matrix, KtT::Vector,
 end
 
 
-
-
-function check(KtK::Matrix, KtT::Vector, database::GMANIA)
+function check(KtK::Matrix, KtT::Vector, database::Database)
     n = size(KtK,1)
     @assert n == size(KtK, 2)
     @assert n == length(KtT)
     @assert length(database.string_nets)
 
 end
-
-
-

@@ -7,7 +7,7 @@ export fit,fit!, LbpParams, IgParams
 
 
 
-function fit!(genemania::GMANIA,
+function fit!(genemania::Database,
              lb_params::LabelPropagation)
 
 
@@ -16,7 +16,7 @@ end
 
 
 
-function fit(genemania::GMANIA,
+function fit(genemania::Database,
              lb_params::LabelPropagation)
 
 

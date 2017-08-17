@@ -9,6 +9,7 @@ makedocs(clean = false,
         "Quick Start" => "dev/get_start.md",
         "Working in R" => "dev/work_in_R.md",
         "Algorithms" => Any[
+        "Database" => "algo/database.md",
         "Label Propagation" => "algo/label_propagation.md",
         "Network Integration" => "algo/network_integration.md"
         ]

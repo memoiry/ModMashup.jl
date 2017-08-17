@@ -105,6 +105,46 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "algo/database.html#",
+    "page": "Database",
+    "title": "Database",
+    "category": "page",
+    "text": ""
+},
+
+{
+    "location": "algo/database.html#DataBase-1",
+    "page": "Database",
+    "title": "DataBase",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "algo/database.html#ModMashup.Database",
+    "page": "Database",
+    "title": "ModMashup.Database",
+    "category": "Type",
+    "text": "Database\n\nDatabase contains needed information for network integration and label propagation.\n\nArguments\n\nstring_nets::Vector{String}: Similarity networks name.\ndisease::OneHotAnnotation: Disease annotation for patients.\nn_patients::Int: The number of patients in the databse.\npatients_index::Dict{String,Int}: Map patient name to their id.\ninverse_index::Dict{Int,String}: Map patient id to their name.\nnum_cv::Int: The number of cross validation round. Default is 10.\nquery_attr::Int: Set the annotaion for query . Default is 1.\nstring_querys::Vector{String}: The name of Query patients.\nsmooth::Int: Perform smooth in the simialarty or not. Default is true.\nthread::Int: Number of thread for parallel computing.\n\nExample\n\n# get example data directory\nexample_data_dir = joinpath(Pkg.dir(\"ModMashup\"), \"test/data\")\n\n# dir should be a directory containing similairty networks flat file.\nnetwork_dir = joinpaht(example_data_dir,\"networks\")\n\n# target_file should be a flat file contains disaese for patient\ntarget_file = joinpaht(example_data_dir,\"target.txt\")\n\n# Query file using the same format with genemania query\nquerys = joinpaht(example_data_dir,\"query.txt\")\n\n# Id file contains all the name of patients.\nid = joinpaht(example_data_dir,\"ids.txt\")\n\n# Other setting\n## Do smooth in the network or not for mashup integration.\nsmooth = true\n## The number of thread choosen to perform computation.\nthread = 2\n\n# We are ready now, then just construct the database\ndatabase = ModMashup.Database(network_dir, target_file, \n                index_file = id, querys = querys,\n                smooth = smooth, thread = thread)\n\n\n\n"
+},
+
+{
+    "location": "algo/database.html#ModMashup.SharedDatabase",
+    "page": "Database",
+    "title": "ModMashup.SharedDatabase",
+    "category": "Type",
+    "text": "SharedGeneMANIA\n\nShared genemania model for shared memory parallel computing (Still unfinished, left to do..)\n\n\n\n"
+},
+
+{
+    "location": "algo/database.html#Example-1",
+    "page": "Database",
+    "title": "Example",
+    "category": "section",
+    "text": "DatabaseSharedDatabase"
+},
+
+{
     "location": "algo/label_propagation.html#",
     "page": "Label Propagation",
     "title": "Label Propagation",
@@ -177,19 +217,35 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "algo/network_integration.html#ModMashup.GeneMANIAIntegration",
+    "page": "Network Integration",
+    "title": "ModMashup.GeneMANIAIntegration",
+    "category": "Type",
+    "text": "GeneMANIAIntegration(net_weights, normalized, reg)\n\nGeneMANIA lienar regression algorithm for network integration.\n\nnet_weights::Dict{String, Float64}: A dictionalry map network name to its final network weights result, which is same with GeneMANIA.jar.\nnormalized::Bool: Wether normlize the network weights\nreg::Bool: Wether add regularization term to \n\n\n\n"
+},
+
+{
     "location": "algo/network_integration.html#Constructor-1",
     "page": "Network Integration",
     "title": "Constructor",
     "category": "section",
-    "text": "The package provided two algorithm for network integration, one is MashupIntegration and another is RawMashupIntegration.MashupIntegrationGeneMANIAIntegration"
+    "text": "The package provided two algorithm for network integration, one is MashupIntegration and another is GeneMANIAIntegration.MashupIntegrationGeneMANIAIntegration"
 },
 
 {
-    "location": "algo/network_integration.html#ModMashup.network_integration!-Tuple{ModMashup.MashupIntegration,ModMashup.GMANIA}",
+    "location": "algo/network_integration.html#ModMashup.network_integration!-Tuple{ModMashup.MashupIntegration,ModMashup.Database}",
     "page": "Network Integration",
     "title": "ModMashup.network_integration!",
     "category": "Method",
-    "text": "network_integration!(model::MashupIntegration, database::GMANIA)\n\nImplement modified mashup network integration.\n\nInput: Database Output: network weights.\n\n\n\n"
+    "text": "network_integration!(model::MashupIntegration, database::GMANIA)\n\nImplement modified mashup network integration.\n\nInput: Database contained all the information needed to continue computation.\nOutput: Network weights stored in model.\n\n\n\n"
+},
+
+{
+    "location": "algo/network_integration.html#ModMashup.network_integration!-Tuple{ModMashup.GeneMANIAIntegration,ModMashup.Database}",
+    "page": "Network Integration",
+    "title": "ModMashup.network_integration!",
+    "category": "Method",
+    "text": "network_integration!(model::GeneMANIAIntegration, database::GMANIA)\n\nImplement Raw mashup network integration.\n\nInput: Database Output: Embedding for each node in the network.\n\n\n\n"
 },
 
 {
@@ -197,7 +253,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Network Integration",
     "title": "Description",
     "category": "section",
-    "text": "The package provide same interface for both mashup and genemania integration.network_integration!(model::MashupIntegration,database::GMANIA;random_seed::Int)"
+    "text": "The package provide same interface for both mashup and genemania integration.network_integration!(model::MashupIntegration, database::Database)network_integration!(model::GeneMANIAIntegration, database::Database)"
 },
 
 {

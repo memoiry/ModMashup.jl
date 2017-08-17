@@ -64,7 +64,7 @@ function parse_query(query_file, patients_index)
 end
 
 function load_net(filename::String,
-                  database::GMANIA)
+                  database::Database)
     network = readdlm(filename);
     n_relation = size(network, 1)
     if database.use_index

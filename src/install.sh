@@ -1,6 +1,6 @@
-mv ModMashup/src/pkg_info.jl .
-julia pkg_info.jl pkg.txt
+julia ModMashup/src/pkg_info.jl
 var = 'cat pkg.txt'
 rm -rf "$var/ProgressMeter"
 rm -rf "$var/ModMashup"
-\cp -rf ModMashup/ProgressMeter ~/.julia/v0.5
+\cp -rf ModMashup/ProgressMeter $var
+\cp -rf ModMashup $var

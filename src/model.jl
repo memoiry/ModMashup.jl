@@ -21,7 +21,7 @@ Database contains needed information for network integration and label propagati
 - `inverse_index::Dict{Int,String}`: Map patient id to their name.
 - `num_cv::Int`: The number of cross validation round. Default is 10.
 - `query_attr::Int`: Set the annotaion for query . Default is 1.
-- `string_querys::Vector{String}`: A list of Query file name.
+- `string_querys::Vector{String}`: A list of query filename.
 - `smooth::Int`: Perform smooth in the simialarty or not. Default is true.
 - `thread::Int`: Number of thread for parallel computing. Default it 1.
 

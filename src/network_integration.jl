@@ -319,7 +319,7 @@ end
     solve!(KtK::Matrix, KtT::Vector, 
     database::Database, model::GeneMANIAIntegration)
 
-Generic Solver for all weighting methods computes inverse using QR
+Generic Solver for weighting methods computes inverse using QR
 factorization (apparently KtK is ill conditioned for original method)
 removes row and column of corresponding negative weights and recomputes
 until all weight are positive. 

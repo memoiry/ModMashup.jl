@@ -18,6 +18,7 @@ Then just download the ModMashup.jl from the github
 
 ```bash
 git clone --recursive https://github.com/memoiry/GeneMANIA.jl
+mv GeneMANIA
 ```
 
 

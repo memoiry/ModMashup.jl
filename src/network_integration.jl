@@ -25,7 +25,7 @@ Output: network weights.
 """
 function network_integration!(model::MashupIntegration,
                               database::GMANIA;
-                              random_seed = 23334)
+                              random_seed::Int = 23334)
     net_files = database.string_nets
     n_net = length(net_files)
     n_patients = database.n_patients
@@ -260,7 +260,7 @@ Implement Raw mashup network integration.
 Input: Database
 Output: Embedding for each node in the network.
 """
-function network_integration!(model::RawMashupIntegration, database::GMANIA)
+function network_integration!(model::GeneMANIAIntegration, database::GMANIA)
     net_files = database.string_nets
     n_net = length(net_files)
     n_patients = database.n_patients
@@ -325,7 +325,7 @@ end
 
 
 function solve!(KtK::Matrix, KtT::Vector, 
-    database::GMANIA, model::RawMashupIntegration)
+    database::GMANIA, model::GeneMANIAIntegration)
     check(KtK, KtT, database)
 
     ss = abs(sum(KtK, 2))

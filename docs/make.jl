@@ -1,4 +1,4 @@
-using Documenter, GeneMANIA
+using Documenter, ModMashup
 
 
 makedocs(clean = false,

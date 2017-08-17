@@ -29,7 +29,15 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "Why called ModMashup?",
     "category": "section",
-    "text": "Because the implementation of GeneMANIA in this package is different. We get intuitive from mashup to replace linear regression part of GeneMANIA for high-performance computing. In short, mashup learns patient embedding and we use this information to derivate network weights.ModMashup API"
+    "text": "Because the implementation of GeneMANIA in this package is different. We get intuitive from mashup to replace linear regression part of GeneMANIA for high-performance computing. In short, mashup learns patient embedding and we use this information to derivate network weights."
+},
+
+{
+    "location": "index.html#ModMashup-API-1",
+    "page": "Home",
+    "title": "ModMashup API",
+    "category": "section",
+    "text": ""
 },
 
 {
@@ -93,7 +101,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Working in R",
     "title": "Required Dependencies",
     "category": "section",
-    "text": "R\njulia 0.5 +Make sure you have R and julia installed in your computer, cd into where netDX latest packages located.cd netDx/inst/julia\nrm -rf ModMashupThen just download the ModMashup.jl from the githubgit clone --recursive https://github.com/memoiry/GeneMANIA.jl"
+    "text": "R\njulia 0.5 +Make sure you have R and julia installed in your computer, cd into where netDX latest packages located.cd netDx/inst/julia\nrm -rf ModMashupThen just download the ModMashup.jl from the githubgit clone --recursive https://github.com/memoiry/GeneMANIA.jl\nmv GeneMANIA"
 },
 
 {
@@ -161,11 +169,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "algo/network_integration.html#GeneMANIA.MashupIntegration",
+    "location": "algo/network_integration.html#ModMashup.MashupIntegration",
     "page": "Network Integration",
-    "title": "GeneMANIA.MashupIntegration",
+    "title": "ModMashup.MashupIntegration",
     "category": "Type",
-    "text": "MashupIntegration(β, H, net_weights, weights_mat, cv_query, singular_value_squared, tally)\n\nInside MashupIntegration model, it contains all the result after mashup integration.\n\nβ::Vector: Beta vector as a result of linear regression.\nH::Matrix: rows of H represent patients embendding in networks.\nnet_weights::Vector: \nweights_mat::Matrix: \ncv_query::Matrix: columns of cv_query is query id for each round of cross validation.\nsingular_value_squared::Vector: \ntally::Vector{Int}: Network tally result\n\n\n\n"
+    "text": "MashupIntegration(β, H, net_weights, weights_mat, cv_query, singular_value_squared, tally)\n\nModified Mashup algorithm for network integration. Inside MashupIntegration model, it contains all the result after mashup integration.\n\nβ::Vector: Beta vector as a result of linear regression.\nH::Matrix: Rows of H represent patients embendding in networks.\nnet_weights::Vector: Normalized mean network weights \nweights_mat::Matrix: Columns of weights_mat is computed network weights for each round of cross validation.\ncv_query::Matrix: Columns of cv_query is query id for each round of cross validation.\nsingular_value_squared::Vector: singular value from mashup for dimensianal reduction.\ntally::Vector{Int}: Network tally result\n\n\n\n"
 },
 
 {
@@ -173,7 +181,15 @@ var documenterSearchIndex = {"docs": [
     "page": "Network Integration",
     "title": "Constructor",
     "category": "section",
-    "text": "The package provided two algorithm for network integration, one is MashupIntegration and another is RawMashupIntegration.MashupIntegration"
+    "text": "The package provided two algorithm for network integration, one is MashupIntegration and another is RawMashupIntegration.MashupIntegrationGeneMANIAIntegration"
+},
+
+{
+    "location": "algo/network_integration.html#ModMashup.network_integration!-Tuple{ModMashup.MashupIntegration,ModMashup.GMANIA}",
+    "page": "Network Integration",
+    "title": "ModMashup.network_integration!",
+    "category": "Method",
+    "text": "network_integration!(model::MashupIntegration, database::GMANIA)\n\nImplement modified mashup network integration.\n\nInput: Database Output: network weights.\n\n\n\n"
 },
 
 {
@@ -181,7 +197,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Network Integration",
     "title": "Description",
     "category": "section",
-    "text": ""
+    "text": "The package provide same interface for both mashup and genemania integration.network_integration!(model::MashupIntegration,database::GMANIA;random_seed::Int)"
 },
 
 {

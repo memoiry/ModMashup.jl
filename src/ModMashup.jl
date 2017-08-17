@@ -1,5 +1,5 @@
 #__precompile__()
-module GeneMANIA
+module ModMashup
 
     #export func
 

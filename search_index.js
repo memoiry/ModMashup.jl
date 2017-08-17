@@ -81,9 +81,9 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "dev/get_start.html#Usage-in-Julia-1",
+    "location": "dev/get_start.html#Example-usage-in-Julia-1",
     "page": "Quick Start",
-    "title": "Usage in Julia",
+    "title": "Example usage in Julia",
     "category": "section",
     "text": "import ModMashup\ncd(joinpath(Pkg.dir(\"ModMashup\"), \"test/data\"))\ndir = \"networks\"\ntarget_file = \"target.txt\"\nquerys = \".\"\nid = \"ids.txt\"\nsmooth = true\n\n# Construct the dabase, which contains the preliminary file.\ndatabase = ModMashup.Database(dir, target_file, id, \n querys, smooth = smooth)\n    \n# Define the algorithm you want to use to integrate the networks\nmodel = ModMashup.MashupIntegration()\n    \n# Running network integration\nModMashup.network_integration!(model, database)\n\n# Acquire network weights dictionary\nnet_weight_dict = ModMashup.get_weights(model)\n\n# Acquire Combined network\ncombined_network = ModMashup.get_comined_network(model)\n\n# Acquire network tally\ntally = ModMashup.get_tally(model)\n"
 },
@@ -109,7 +109,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quick Start",
     "title": "Usage 1: Mashup Feature Selection",
     "category": "section",
-    "text": "First ensure that you have ModMashup.jl correctly installed in your computer.var=$(julia -e \"println(Pkg.dir())\")\nvar=\"$var/ModMashup/test/data\"\ncd $var\nmkdir temp_res\njulia ../../tools/mashup.jl feature_selection --net networks --id ids.txt --target target.txt --CV_query . --smooth true --res_dir temp_resThe result will be saved at temp_res folder."
+    "text": "First ensure that you have ModMashup.jl correctly installed in your computer.$ var=$(julia -e \"println(Pkg.dir())\")\n$ var=\"$var/ModMashup/test/data\"\n$ cd $var\n$ mkdir temp_res\n$ julia ../../tools/mashup.jl feature_selection --net networks --id ids.txt --target target.txt --CV_query . --smooth true --res_dir temp_resThe result will be saved at temp_res folder."
 },
 
 {
@@ -117,7 +117,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quick Start",
     "title": "Usage 2: GeneMANIA query runner",
     "category": "section",
-    "text": "julia ../../tools/mashup.jl query_runner --net networks --id ids.txt --target target.txt --CV_query . --smooth true --res_dir temp_res"
+    "text": "$ julia ../../tools/mashup.jl query_runner --net networks --id ids.txt --target target.txt --CV_query . --smooth true --res_dir temp_res"
 },
 
 {

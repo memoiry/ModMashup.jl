@@ -17,8 +17,10 @@ rm -rf ModMashup
 Then just download the ModMashup.jl from the github
 
 ```bash
-git clone --recursive https://github.com/memoiry/GeneMANIA.jl
-mv GeneMANIA
+git clone --recursive https://github.com/memoiry/ModMashup.jl
+mv ModMashup.jl ModMashup
+cp ModMashup/src/install.sh .
+bash install.sh
 ```
 
 

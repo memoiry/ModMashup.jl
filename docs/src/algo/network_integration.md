@@ -1,6 +1,6 @@
 ## Network integration
 
-### Constructor 
+### Integration model 
 
 
 The package provided two algorithm for network integration, one is `MashupIntegration` and another is `GeneMANIAIntegration`.
@@ -13,7 +13,7 @@ MashupIntegration
 GeneMANIAIntegration
 ```
 
-### Description
+### Generic integration method
 
 We have one generic function `network_integration!` to provide same interface for both mashup and genemania integration. 
 
@@ -26,10 +26,6 @@ network_integration!(model::MashupIntegration, database::Database)
 ```@docs
 network_integration!(model::GeneMANIAIntegration, database::Database)
 ```
-
-### Example
-
-### References
 
 
 

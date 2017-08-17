@@ -1,10 +1,8 @@
 ## Label Propagation
 
-### Constructor 
+### Label propagation model 
 
-### Description
-
-### Example
+### Generic propagation method
 
 ### References
 

@@ -1,0 +1,42 @@
+        - import ModMashup
+        - 
+        - 
+        - #function test()
+        - #    dir = "ex/KIRC/data/networks"
+        - #    disease_file = "ex/KIRC/data/annotations/disease.csv"
+        - #    database = GMANIA(dir,disease_file, query_attr = 1)
+        - #    model = MashupIntegration()
+        - #    network_integration!(model, database)
+        - #    true
+        - #end
+        - 
+        - function mashup_test()
+        1     cd(joinpath(Pkg.dir("ModMashup"), "test/data"))
+        2     dir = "networks"
+        2     target_file = "target.txt"
+        2     querys = "."
+        2     id = "ids.txt"
+        2     smooth = true
+        - 
+        -     # Construct the dabase, which contains the preliminary file.
+        2     database = ModMashup.Database(dir, target_file, id, 
+        -      querys, smooth = smooth)
+        -         
+        -     # Define the algorithm you want to use to integrate the networks
+        2     model = ModMashup.MashupIntegration()
+        -         
+        -     # Running network integration
+        2     ModMashup.network_integration!(model, database)
+        - 
+        -     # Acquire network weights dictionary
+        2     net_weight_dict = ModMashup.get_weights(model)
+        - 
+        -     # Acquire Combined network
+        2     combined_network = ModMashup.get_comined_network(model)
+        - 
+        -     # Acquire network tally
+        4     tally = ModMashup.get_tally(model)
+        - end
+        - 
+        - mashup_test()
+        - true

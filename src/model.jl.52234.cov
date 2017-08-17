@@ -1,0 +1,143 @@
+        - 
+        - export 
+        -         Database, 
+        -         SharedDatabase
+        - 
+        - #typealias SimilarityNetworks Union{Array{Float64,3},Vector{SparseMatrixCSC{Float64,Int64}}}
+        - #typealias SimilarityNetwork Union{Array{Float64,2},SparseMatrixCSC{Float64,Int64}}
+        - typealias OneHotAnnotation Union{Vector{Int},Array{Int, 2}, SparseMatrixCSC{Int64,Int64}}
+        - abstract AbstractDatabase
+        - 
+        - """
+        -     Database
+        - 
+        - Database contains needed information for network integration and label propagation.
+        - 
+        - # Arguments
+        - - `string_nets::Vector{String}`: Similarity networks name.
+        - - `disease::OneHotAnnotation`: Disease annotation for patients.
+        - - `n_patients::Int`: The number of patients in the databse.
+        - - `patients_index::Dict{String,Int}`: Map patient name to their id.
+        - - `inverse_index::Dict{Int,String}`: Map patient id to their name.
+        - - `num_cv::Int`: The number of cross validation round. Default is 10.
+        - - `query_attr::Int`: Set the annotaion for query . Default is 1.
+        - - `string_querys::Vector{String}`: A list of query filename.
+        - - `smooth::Int`: Perform smooth in the simialarty or not. Default is true.
+        - - `thread::Int`: Number of thread for parallel computing. Default it 1.
+        - 
+        - # Example
+        - 
+        - ```julia
+        - # get example data directory
+        - example_data_dir = joinpath(Pkg.dir("ModMashup"), "test/data")
+        - 
+        - # dir should be a directory containing similairty networks flat file.
+        - network_dir = joinpaht(example_data_dir,"networks")
+        - 
+        - # target_file should be a flat file contains disaese for patient
+        - target_file = joinpaht(example_data_dir,"target.txt")
+        - 
+        - # Directory where a list of query flat files are located using the 
+        - # same format and naming manner with genemania query.
+        - query_dir = example_data_dir
+        - 
+        - # Id file contains all the name of patients.
+        - id = joinpaht(example_data_dir,"ids.txt")
+        - 
+        - # Other setting
+        - ## Do smooth in the network or not for mashup integration.
+        - smooth = true
+        - ## The number of thread choosen to perform computation.
+        - thread = 2
+        - 
+        - # We are ready now, then just construct the database
+        - database = ModMashup.Database(network_dir, target_file, 
+        -                 id, query_dir, smooth = smooth, 
+        -                 thread = thread)
+        - ```
+        - """
+        - immutable Database <: AbstractDatabase
+        1     string_nets::Vector{String}
+        -     disease::OneHotAnnotation
+        -     n_patients::Int
+        -     patients_index::Dict{String,Int}
+        -     inverse_index::Dict{Int,String}
+        -     num_cv::Int
+        -     query_attr::Int
+        -     string_querys::Vector{String}
+        -     smooth::Bool
+        -     thread::Int
+        - end
+        - 
+        - 
+        - function Database(dir::String,
+        -                 disease_file::String,
+        -                 index_file::String,
+        -                 querys::String;
+        -                 num_cv = 10,
+        -                 query_attr = 1,
+        -                 smooth = true,
+        -                 tally = zeros(Int, 10),
+        -                 thread = 1)
+        -     # Initialization
+        1     patients_index::Dict{String, Int} = Dict{String, Int}()
+        3     inverse_index::Dict{Int, String} = Dict{Int, String}()
+        2     string_nets = Vector{String}() 
+        - 
+        -     # Get all similairty file in the network directory 
+        -     # using the "cont.txt" keyword.
+        2     string_nets = searchdir(dir, "cont.txt")
+       12     map!(x -> joinpath(dir, x), string_nets)
+        - 
+        -     # Build the index to map patients name to id and also id to name.
+       11     patients_index, inverse_index = build_index(index_file)
+        - 
+        -     # Get all query file
+        7     string_querys = filter(x -> length(x) < 12 ,searchdir(querys, "query"))
+        6     map!(x -> joinpath(querys, x), string_querys)
+        - 
+        -     # Get patients disease annotation in one vector. (+1 for interested, -1 for other)
+        5     disease = contains(disease_file, "txt") ? parse_target(readdlm(disease_file), patients_index) : readcsv(disease_file)
+        2     n_patients = size(disease,1)
+        - 
+        -     # return the constructed database
+        2     return Database(string_nets, disease, n_patients,
+        -                   patients_index, inverse_index, num_cv, query_attr, string_querys, smooth, thread)
+        - end
+        - 
+        - 
+        - 
+        - """
+        -     SharedGeneMANIA
+        - 
+        - Shared genemania model for shared memory parallel computing (Still unfinished, left to do..)
+        - """
+        - type SharedDatabase <: AbstractDatabase
+        -     string_nets::Vector{String}
+        -     disease::OneHotAnnotation
+        -     n_patients::Int64
+        -     patients_index::Dict{String,Int64}
+        - end
+        - 
+        - 
+        - function SharedDatabase()
+        - 
+        - 
+        - end
+        - 
+        - 
+        - 
+        - """
+        -     share
+        - 
+        - Convert the normal model to shared model(left to do...)
+        - """
+        - function share(genemania::Database)
+        - 
+        - 
+        - 
+        - end
+        - 
+        - 
+        - 
+        - 

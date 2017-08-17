@@ -23,7 +23,8 @@ Pkg.rm("ModMashup")
 Pkg.clone("https://github.com/memoiry/ModMashup.jl")
 ```
 
-#### Usage in Julia
+
+#### Example usage in Julia
 
 ```julia
 import ModMashup
@@ -69,11 +70,11 @@ This project provide a `Command Line Tool` located in [mashup.jl](https://github
 First ensure that you have ModMashup.jl correctly installed in your computer.
 
 ```bash
-var=$(julia -e "println(Pkg.dir())")
-var="$var/ModMashup/test/data"
-cd $var
-mkdir temp_res
-julia ../../tools/mashup.jl feature_selection --net networks --id ids.txt --target target.txt --CV_query . --smooth true --res_dir temp_res
+$ var=$(julia -e "println(Pkg.dir())")
+$ var="$var/ModMashup/test/data"
+$ cd $var
+$ mkdir temp_res
+$ julia ../../tools/mashup.jl feature_selection --net networks --id ids.txt --target target.txt --CV_query . --smooth true --res_dir temp_res
 ```
 
 The result will be saved at `temp_res` folder.
@@ -81,7 +82,7 @@ The result will be saved at `temp_res` folder.
 ##### Usage 2: GeneMANIA query runner
 
 ```bash
-julia ../../tools/mashup.jl query_runner --net networks --id ids.txt --target target.txt --CV_query . --smooth true --res_dir temp_res
+$ julia ../../tools/mashup.jl query_runner --net networks --id ids.txt --target target.txt --CV_query . --smooth true --res_dir temp_res
 ```
 
 

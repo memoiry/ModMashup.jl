@@ -101,7 +101,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Quick Start",
     "title": "Example usage in Julia",
     "category": "section",
-    "text": "import ModMashup\ncd(joinpath(Pkg.dir(\"ModMashup\"), \"test/data\"))\ndir = \"networks\"\ntarget_file = \"target.txt\"\nquerys = \".\"\nid = \"ids.txt\"\nsmooth = true\n\n# Construct the dabase, which contains the preliminary file.\ndatabase = ModMashup.Database(dir, target_file, id, \n querys, smooth = smooth)\n    \n# Define the algorithm you want to use to integrate the networks\n#model = ModMashup.MashupIntegration()\nmodel = ModMashup.GeneMANIAIntegration()    \n# Running network integration\nModMashup.network_integration!(model, database)\n\n# Acquire network weights dictionary\nnet_weight_dict = ModMashup.get_weights(model)\n\n# Acquire Combined network\ncombined_network = ModMashup.get_comined_network(model)\n\n# Acquire network tally\ntally = ModMashup.get_tally(model)\n"
+    "text": "import ModMashup\ncd(joinpath(Pkg.dir(\"ModMashup\"), \"test/data\"))\ndir = \"networks\"\ntarget_file = \"target.txt\"\nquerys = \".\"\nid = \"ids.txt\"\nsmooth = true\n\n# Construct the dabase, which contains the preliminary file.\ndatabase = ModMashup.Database(dir, target_file, id, querys, smooth = smooth)\n\n# Define the algorithm you want to use to integrate the networks\nint_model = is(model, :mashup) ? ModMashup.MashupIntegration(): ModMashup.GeneMANIAIntegration()   \nlp_model = ModMashup.LabelPropagation(verbose = true)\n\n# Do both network integration and label propagation\nModMashup.fit!(int_model, lp_model, database)\n\n# Pick up the result\ncombined_network = ModMashup.get_combined_network(int_model)\nnet_weights::Dict{String, Float64} = ModMashup.get_weights(int_model)\nscore = ModMashup.get_score(lp_model)"
 },
 
 {
@@ -209,11 +209,27 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "algo/label_propagation.html#ModMashup.LabelPropagation",
+    "page": "Label Propagation",
+    "title": "ModMashup.LabelPropagation",
+    "category": "Type",
+    "text": "Collection of information on the label propagation model. \n\nFields\n\ncombined_network::Matrix: combined network after network integration. labels::Vector: labels for all patients maxiter::Integer: maximum iterations taken by the method. tol::Real: stopping tolerance. verbose::Bool: print cg iteration information. plot::Bool: plot data. score::Vector: Store patient score after label propagation.\n\nConstructor\n\nLabelPropagation()\nLabelPropagation(combined_network, labels)\n\n\n\n"
+},
+
+{
     "location": "algo/label_propagation.html#Label-propagation-model-1",
     "page": "Label Propagation",
     "title": "Label propagation model",
     "category": "section",
-    "text": ""
+    "text": "LabelPropagation"
+},
+
+{
+    "location": "algo/label_propagation.html#ModMashup.label_propagation!-Tuple{ModMashup.LabelPropagation,ModMashup.Database}",
+    "page": "Label Propagation",
+    "title": "ModMashup.label_propagation!",
+    "category": "Method",
+    "text": "label_propagation!(model::LabelPropagation, database::Database)\n\nRunning label propagation for patient ranking.\n\nArguments\n\nmodel::LabelPropagation: Label Propagation model.\n\ndatabase::Database: store general information about the patients.\n\nOutput\n\nmodel::LabelPropagation: Result will be saved in the model fileds.\n\nReference\n\nAdapted from: GeneMANIA source code\n\n\n\n"
 },
 
 {
@@ -221,15 +237,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Label Propagation",
     "title": "Generic propagation method",
     "category": "section",
-    "text": ""
-},
-
-{
-    "location": "algo/label_propagation.html#References-1",
-    "page": "Label Propagation",
-    "title": "References",
-    "category": "section",
-    "text": ""
+    "text": "label_propagation!(model::LabelPropagation, database::Database)"
 },
 
 {
@@ -305,6 +313,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "algo/pipeline.html#ModMashup.fit!-Tuple{ModMashup.MashupIntegration,ModMashup.LabelPropagation,ModMashup.Database}",
+    "page": "Pipeline",
+    "title": "ModMashup.fit!",
+    "category": "Method",
+    "text": "fit!(int_model::MashupIntegration,\n         lp_model::LabelPropagation,\n         database::Database)\n\nPipeline the mashup integration and label propagation in one function.\n\nArguments\n\ndatabase::Database: Database for computation\nit_model::MashupIntegration: GeneMANIAIntegration model contains result from integration\nlp_model::LabelPropagation: LabelPropagation model contains result from label propgation\n\nOutputs\n\nit_model::MashupIntegration: outpus stored in model fileds.\nlp_model::LabelPropagation: outpus stored in model fileds.\n\n\n\n"
+},
+
+{
     "location": "algo/pipeline.html#ModMashup.fit!-Tuple{ModMashup.Database,ModMashup.GeneMANIAIntegration,ModMashup.LabelPropagation}",
     "page": "Pipeline",
     "title": "ModMashup.fit!",
@@ -317,7 +333,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Pipeline",
     "title": "PipeLine",
     "category": "section",
-    "text": "fit!(database::Database,\n             it_model::MashupIntegration,\n             lp_model::LabelPropagation)fit!(database::Database,\n             it_model::GeneMANIAIntegration,\n             lp_model::LabelPropagation)"
+    "text": "fit!(int_model::MashupIntegration,\n             lp_model::LabelPropagation,\n             database::Database)fit!(database::Database,\n             it_model::GeneMANIAIntegration,\n             lp_model::LabelPropagation)"
 },
 
 {
@@ -353,6 +369,22 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "algo/util_function.html#ModMashup.parse_target-Tuple{Array{T,2},Dict{String,Int64}}",
+    "page": "Util function",
+    "title": "ModMashup.parse_target",
+    "category": "Method",
+    "text": "parse_target(target, patients_index)\n\nGet a vector of annotation for patients. (+1 for interested, -1 for others)\n\nInputs\n\ntarget::Matrix: colume one is patient name, colume two is patient label.\n\npatients_index::Dict{String, Int}: map patientd name to its internal id.\n\nOutputs\n\nid_label::Matrix: colume one is patient id, colume two is patient label.\n\nExample\n\n\n# get example data directory\nexample_data_dir = joinpath(Pkg.dir(\"ModMashup\"), \"test/data\")\n\n# Id file contains all the name of patients.\nid = joinpaht(example_data_dir,\"ids.txt\")\n\n# Build the patient index\npatients_index, inverse_index = build_index(id)\n\n# target_file should be a flat file contains disaese for patient\ntarget_file = joinpaht(example_data_dir,\"target.txt\")\n\n# Build the annotation for each patients\nannotation = parse_target(readdlm(target_file), patients_index)\n\n\n\n"
+},
+
+{
+    "location": "algo/util_function.html#ModMashup.parse_query-Tuple{String,Dict{String,Int64}}",
+    "page": "Util function",
+    "title": "ModMashup.parse_query",
+    "category": "Method",
+    "text": "parse_query(query_file, patients_index)\n\nGet query patient id from the query file.\n\nInputs\n\nquery_file::String: query filename whose format same with GeneMANIA query.\n\npatients_index::Dict{String, Int}: map patientd name to its internal id.\n\nOutputs\n\nquery_id::Vector: query patient id.\n\nExample\n\n\n# get example data directory\nexample_data_dir = joinpath(Pkg.dir(\"ModMashup\"), \"test/data\")\n\n# Id file contains all the name of patients.\nid = joinpaht(example_data_dir,\"ids.txt\")\n\n# Build the patient index\npatients_index, inverse_index = build_index(id)\n\n# Query file using the same format with genemania query\nquery = joinpaht(example_data_dir,\"query.txt\")\n\n# Build the annotation for each patients\nquery = parse_query(query, patients_index)\n\n\n\n"
+},
+
+{
     "location": "algo/util_function.html#ModMashup.load_net-Tuple{String,ModMashup.Database}",
     "page": "Util function",
     "title": "ModMashup.load_net",
@@ -361,11 +393,43 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "algo/util_function.html#ModMashup.searchdir-Tuple{String,String}",
+    "page": "Util function",
+    "title": "ModMashup.searchdir",
+    "category": "Method",
+    "text": "searchdir(path,key)\n\nInputs\n\npath::String: directory we want to search\n\nkey::String: keyword that the file we seached contains.\n\nOutputs\n\na list of files whose name contains the keyword provided.\nInput: directory we want to search and the keyword.\nOutput: a list of files whose name contains the keyword provided.\n\n\n\n"
+},
+
+{
+    "location": "algo/util_function.html#ModMashup.get_combined_network",
+    "page": "Util function",
+    "title": "ModMashup.get_combined_network",
+    "category": "Function",
+    "text": "get_combined_network(model::IgAbstractParams)\n\nGet combined network from network integration model.\n\nInput: Network integration model after perfrom network_integration!.\nOutput: Combined network.\n\n\n\n"
+},
+
+{
+    "location": "algo/util_function.html#ModMashup.get_weights",
+    "page": "Util function",
+    "title": "ModMashup.get_weights",
+    "category": "Function",
+    "text": "get_weights(model::IgAbstractParams)\n\nGet a dictionalry to map network name to its network weights from network integration model.\n\nInput: Network integration model after perfrom network_integration!.\nOutput: a dictionalry to map network name to its network weights.\n\n\n\n"
+},
+
+{
+    "location": "algo/util_function.html#ModMashup.get_score",
+    "page": "Util function",
+    "title": "ModMashup.get_score",
+    "category": "Function",
+    "text": "Pick up score from model after label propagation.\n\n\n\n"
+},
+
+{
     "location": "algo/util_function.html#Util-function-1",
     "page": "Util function",
     "title": "Util function",
     "category": "section",
-    "text": "rwr(A::Matrix, restart_prob = 0.5)pca(A::Matrix, num::Int64=size(A,2))build_index(index_file::String)parse_target(target, patients_index)parse_query(query_file, patients_index)load_net(filename::String,\n                  database::Database)searchdir(path,key)"
+    "text": "rwr(A::Matrix, restart_prob = 0.5)pca(A::Matrix, num::Int64=size(A,2))build_index(index_file::String)parse_target(target::Matrix, patients_index::Dict{String, Int})parse_query(query_file::String, patients_index::Dict{String, Int})load_net(filename::String,\n                  database::Database)searchdir(path::String,key::String)get_combined_networkget_weightsget_score"
 },
 
 ]}

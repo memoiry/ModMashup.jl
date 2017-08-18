@@ -36,24 +36,19 @@ id = "ids.txt"
 smooth = true
 
 # Construct the dabase, which contains the preliminary file.
-database = ModMashup.Database(dir, target_file, id, 
- querys, smooth = smooth)
-    
+database = ModMashup.Database(dir, target_file, id, querys, smooth = smooth)
+
 # Define the algorithm you want to use to integrate the networks
-#model = ModMashup.MashupIntegration()
-model = ModMashup.GeneMANIAIntegration()    
-# Running network integration
-ModMashup.network_integration!(model, database)
+int_model = is(model, :mashup) ? ModMashup.MashupIntegration(): ModMashup.GeneMANIAIntegration()   
+lp_model = ModMashup.LabelPropagation(verbose = true)
 
-# Acquire network weights dictionary
-net_weight_dict = ModMashup.get_weights(model)
+# Do both network integration and label propagation
+ModMashup.fit!(int_model, lp_model, database)
 
-# Acquire Combined network
-combined_network = ModMashup.get_comined_network(model)
-
-# Acquire network tally
-tally = ModMashup.get_tally(model)
-
+# Pick up the result
+combined_network = ModMashup.get_combined_network(int_model)
+net_weights::Dict{String, Float64} = ModMashup.get_weights(int_model)
+score = ModMashup.get_score(lp_model)
 ```
 
 ### Mashup command tool

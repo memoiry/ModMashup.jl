@@ -2,9 +2,14 @@
 
 ### Label propagation model 
 
+```@docs
+LabelPropagation
+```
 ### Generic propagation method
 
-### References
+```@docs
+label_propagation!(model::LabelPropagation, database::Database)
+```
 
 
 

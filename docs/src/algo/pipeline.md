@@ -2,9 +2,9 @@
 
 
 ```@docs
-fit!(database::Database,
-             it_model::MashupIntegration,
-             lp_model::LabelPropagation)
+fit!(int_model::MashupIntegration,
+             lp_model::LabelPropagation,
+             database::Database)
 ```
 
 

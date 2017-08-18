@@ -1,8 +1,5 @@
-using ModMashup
+reload("ModMashup")
 
-using Base.Test
-
-# Run tests
 
 function separate_test(model::Symbol)
     #enter the path where the example data located 
@@ -41,16 +38,6 @@ function separate_test(model::Symbol)
 end
 
 function pipeline_test(model::Symbol)
-    #enter the path where the example data located 
-    cd(joinpath(Pkg.dir("ModMashup"), "test/data"))
-
-    #Set up database information
-    dir = "networks"
-    target_file = "target.txt"
-    querys = "."
-    id = "ids.txt"
-    smooth = true
-
     # Generate databse
     database = ModMashup.Database(dir, target_file, id, querys, smooth = smooth)
 
@@ -68,14 +55,19 @@ function pipeline_test(model::Symbol)
 
 end
 
-function main_test(integration_model)
+function main()
+    # GeneMANIA linear regression curretly not fully tested
+    mashup_integration = :mashup 
+    genemania_integration = :genemania
+    integration_model = [mashup_integration]
+
     #Test each method's separate method and pipeline.
-    separate_test(integration_model)
-    pipeline_test(integration_model)
-    true
+    for i in integration_model
+        separate_test(i)
+        pipeline_test(i)
+    end
 end
 
-@time @testset "Mashup Integration and Label Propagation" begin main_test(:mashup) end
+main()
 
-# GeneMANIA linear regression curretly not fully tested
-#@time @testset "Label Propagation Algorithm" begin main_test(:genemania) end
+

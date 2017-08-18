@@ -1,47 +1,32 @@
-__precompile__()
+__precompile__(true)
+"""
+Main module for `ModMashup.jl` -- a Julia package for network selection and 
+patient prediction.
+"""
 module ModMashup
 
-    #export func
 
-
-    #using Compat
-    #using LowRankModels
-    #using PyPlot
-    #using NearestNeighbors
-    #using Distributions
-    #using Optim
-    #using NMF
-    #using Roots
-    #using IterativeSolvers
-    #using ParSpMatVec
+    using IterativeSolvers
     using ArgParse
     using ProgressMeter
-    #using GLM
-    #using DataFrames
-    #import StatsBase: fit!, mode
 
 
-    # define basic data type
+    # Define basic data type
     include("model.jl")
 
-    # define algorithm type
+    # Define algorithm type
     include("integration_types.jl")
 
-    # define kernel function
+    # Network integration solvers
     include("network_integration.jl")
+
+    # Label propagation solvers
     include("label_propagation.jl")
 
-    # utils function
+    # Pipeline to combine integration and propagation
     include("fit.jl")
-    include("utils.jl")
 
-    function _mashup()
-
-
-    end
-
-    function _label_propagation()
-
-    end
+    # Utils function
+    include("common.jl")
 
 end

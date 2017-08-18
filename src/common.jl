@@ -17,8 +17,14 @@ Random walk with restart.
 
 # Arguments
 
-- `A::Matrix`: Initial matrix for random walk.
-- `restart_prob`: Restart probability. Default 0.5.
+`A::Matrix`: Initial matrix for random walk.
+
+`restart_prob`: Restart probability. Default 0.5.
+
+# Outputs
+
+`Q::Matrix`: matrix after random walk.
+
 """
 function rwr(A::Matrix, restart_prob = 0.5)
     n = size(A, 1);
@@ -26,6 +32,7 @@ function rwr(A::Matrix, restart_prob = 0.5)
     A = A + diagm(sum(A,1) .== 0);
     P = broadcast(/, A, sum(A,1))
     Q = (eye(n) - (1 - restart_prob) * P) \ (restart_prob * eye(n));
+    return Q
 end
 
 """
@@ -33,8 +40,20 @@ end
 
 Perform PCA for a matrix.
 
-- `Input`: a matrix and needed 
-- `Output`: pca vector and pca value
+# Arguments
+
+`A::Matrix`: matrix for PCA
+
+# keywords
+
+`num::Int64=size(A,2)`: Number of diensions selected.
+
+# Output
+
+pca vector and pca value
+
+`eigenvalue::Vector`: as name suggested.
+`eigenvector::Matrix`: columns represent eigen vector.
 
 # Example 
 
@@ -63,6 +82,16 @@ end
     build_index(index_file::String)
 
 Get two dictionary, one map patients name to its id, another map patient id to its name.
+
+# Arguments
+
+`index_file::String`: 
+
+# Outputs 
+
+`patients_index::Dict{String, Int}`: map patientd name to its internal id.
+
+`inverse_index::Dict{Int, String}`: map patientd internal id to its name.
 
 # Example
 
@@ -96,6 +125,16 @@ end
 
 Get a vector of annotation for patients. (+1 for interested, -1 for others)
 
+# Inputs
+
+`target::Matrix`: colume one is patient name, colume two is patient label.
+
+`patients_index::Dict{String, Int}`: map patientd name to its internal id.
+
+# Outputs
+
+`id_label::Matrix`: colume one is patient id, colume two is patient label.
+
 # Example
 
 ```julia
@@ -116,18 +155,29 @@ target_file = joinpaht(example_data_dir,"target.txt")
 annotation = parse_target(readdlm(target_file), patients_index)
 ```
 """
-function parse_target(target, patients_index)
-    temp = zeros(Int, size(target, 1))
+function parse_target(target::Matrix,
+                     patients_index::Dict{String, Int})
+    id_label = zeros(Int, size(target, 1))
     for i = 1:size(target, 1)
-        temp[patients_index[target[i,1]]] = Int(target[i,2])
+        id_label[patients_index[target[i,1]]] = Int(target[i,2])
     end
-    return temp
+    return id_label
 end
 
 """
     parse_query(query_file, patients_index)
 
 Get query patient id from the query file.
+
+# Inputs
+
+`query_file::String`: query filename whose format same with GeneMANIA query.
+
+`patients_index::Dict{String, Int}`: map patientd name to its internal id.
+
+# Outputs
+
+`query_id::Vector`: query patient id.
 
 # Example 
 
@@ -149,13 +199,14 @@ query = joinpaht(example_data_dir,"query.txt")
 query = parse_query(query, patients_index)
 ```
 """
-function parse_query(query_file, patients_index)
+function parse_query(query_file::String,
+                    patients_index::Dict{String, Int})
     query = readdlm(query_file)[2,:]
-    temp = zeros(Int, length(query))
+    query_id = zeros(Int, length(query))
     for i = 1:length(query)
-        temp[i] = patients_index[query[i]]
+        query_id[i] = patients_index[query[i]]
     end
-    return temp
+    return query_id
 end
 
 """
@@ -165,6 +216,16 @@ end
 Load similairity network from a flat file. 
 Format `patient_name patient_name simialirty_score`.
 Use databse to map patient_name to internal id.
+
+# Inputs
+
+`filename::String`: similairty network filename.
+
+`database::Database`: store general information.
+
+# Outputs
+
+`A::Matrix`: similairty network as a matrix.
 
 """
 function load_net(filename::String,
@@ -192,7 +253,17 @@ end
 """
     searchdir(path,key)
 
+# Inputs
+
+`path::String`: directory we want to search
+
+`key::String`: keyword that the file we seached contains.
+
+# Outputs
+
+* a list of files whose name contains the keyword provided.
+
 - `Input`: directory we want to search and the keyword.
 - `Output`: a list of files whose name contains the keyword provided.
 """
-searchdir(path,key) = filter(x->contains(x,key), readdir(path))
+searchdir(path::String,key::String) = filter(x->contains(x,key), readdir(path))

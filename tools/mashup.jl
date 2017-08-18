@@ -4,9 +4,6 @@
     tool used by R's netDX 
             package 
 =#            
-
-
-
 using ArgParse
 using ModMashup
 
@@ -111,38 +108,41 @@ function main()
             querys, smooth = smooth)
 
         # Define the algorithm you want to use to integrate the networks
-        model = ModMashup.MashupIntegration()
+        int_model = ModMashup.MashupIntegration()
+        lp_model = ModMashup.LabelPropagation(verbose = true)
 
         # Running network integration
-        ModMashup.network_integration!(model, database)
+        ModMashup.fit!(int_model, lp_model, database)
+
+        # Pick up the result
+        combined_network = ModMashup.get_combined_network(int_model)
+        net_weights = ModMashup.get_weights(int_model)
+        score = ModMashup.get_score(lp_model)
+        result_tally = int_model.tally
+
 
         # Start Processing the result
-        result = model.net_weights
-        result_tally = model.tally
         net_index = Dict()
 
         # Match each networks with its id
         for i = 1:length(database.string_nets)
-
             net_name = database.string_nets[i]
             net_true_name = split(net_name,".")[1]
             net_index[net_true_name] = i
         end
 
         # Sort the networks weights 
-        result = sort(collect(result),by = x->x[2], rev=true)
+        net_weights = sort(collect(net_weights),by = x->x[2], rev=true)
         result_tally = sort(collect(result_tally),by = x->x[2], rev=true)
+        score = sort(collect(score),by = x->x[2], rev=true)
 
         # Print the result here
         println("============================Start printing result.........================")
-        println("Top 100 networks weights from netdx-1800")
-        test = print_pair(result)
-        tmp = Vector()
-        for i in 1:length(test)
-            push!(tmp, test[i][2])
-        end
-        test_tally = print_pair(result_tally)
-        test_net_index = print_dict(net_index)
+        #Format the result for printing
+        view_weights = print_pair(net_weights)
+        view_score = print_pair(score)
+        view_tally = print_pair(result_tally)
+        view_net_index = print_dict(net_index)
 
         
         println("======================================End================================")
@@ -155,10 +155,10 @@ function main()
         println("Saving the result...Please wait")
 
         # Save the result and write them into text files
-        writedlm("$(result_dir)/networks_weights_with_name.txt", test)
-        writedlm("$(result_dir)/networks_weights.txt", tmp)
-        writedlm("$(result_dir)/mashup_tally.txt", test_tally)
-        writedlm("$(result_dir)/networks_index.txt", test_net_index)
+        writedlm("$(result_dir)/patient_score_with_name.txt", view_score)
+        writedlm("$(result_dir)/networks_weights_with_name.txt", view_weights)
+        writedlm("$(result_dir)/mashup_tally.txt", view_tally)
+        writedlm("$(result_dir)/networks_index.txt", view_net_index)
         writedlm("$(result_dir)/cv_query.txt",model.cv_query)
         writedlm("$(result_dir)/beta.txt",model.β)
         writedlm("$(result_dir)/H.txt",model.H)

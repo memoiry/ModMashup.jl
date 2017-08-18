@@ -4,3 +4,6 @@
 [submodule "third_party/ProgressMeter"]
 	path = third_party/ProgressMeter
 	url = https://github.com/timholy/ProgressMeter.jl
+[submodule "third_party/IterativeSolvers"]
+	path = third_party/IterativeSolvers
+	url = https://github.com/JuliaMath/IterativeSolvers.jl

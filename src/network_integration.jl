@@ -1,10 +1,5 @@
 
 
-### SP: All of the .jl files need documentation.
-###   a) add 1 line brief description of what the .jl file does
-###   b) add a detailed description
-###   c) what the input parameters are
-###   d) what the function returns. The object type and a text description.
 export network_integration!, 
     solve!,
     check
@@ -12,11 +7,25 @@ export network_integration!,
 ### This file will contain many network integration algorithm
 ### I use dispatch to load them in same API.
 
+####################################################
+# Mashup network integration Method Implementation #
+####################################################
+
 """
     network_integration!(model::MashupIntegration, database::GMANIA)
 
 Implement modified mashup network integration. Result will be save in the model.
 See [`MashupIntegration`](@ref) for more information about the result.
+
+# Arguments
+
+`model::MashupIntegration`: Label Propagation model.
+
+`database::Database`: store general information about the patients.
+
+# Output
+
+`model::LabelPropagation`: Result will be saved in the model fileds.
 """
 function network_integration!(model::MashupIntegration,
                               database::Database)
@@ -78,7 +87,7 @@ function network_integration!(model::MashupIntegration,
     V = [V ones(size(V, 1))]
 
     # Use 0 or 1 as query
-    query = find(database.disease.==database.query_attr)
+    query = find(database.labels.==database.query_attr)
     n_query = size(query,1)
     @show n_query
 
@@ -88,9 +97,9 @@ function network_integration!(model::MashupIntegration,
     println("SVD finished, linear regression for β")
 
     # Linear regression for beta
-    β = V \ database.disease
-    writedlm("V.txt",V)
-    writedlm("disease.txt",database.disease)
+    β = V \ database.labels
+    #writedlm("V.txt",V)
+    #writedlm("labels.txt",database.labels)
     #@show β
     #@show size(H)
     #@show V * β - database.disease
@@ -259,14 +268,19 @@ See [`GeneMANIAIntegration`](@ref) for more information about the result.
 function network_integration!(model::GeneMANIAIntegration, database::Database)
     net_files = database.string_nets
     n_net = length(net_files)
+    n_feature = n_net + 1
     n_patients = database.n_patients
-    eigen_value_list_ = zeros(n_patients*n_net,n_patients)
+    #eigen_value_list_ = zeros(n_patients*n_net,n_patients)
     #@show eigen_value_list_
-    #@show n_net
+    label_vec = ones(Int, n_patients) * -1
+    rand_query = parse_query(database.string_querys[1], database.patients_index)
+    label_vec[rand_query] = 1
+    @show n_net
+    @show label_vec
     RR_sum = zeros(n_patients, n_patients);
 
-    index_pos = find(database.disease .== 1)
-    index_neg = find(database.disease .== -1)
+    index_pos = find(label_vec .== 1)
+    index_neg = find(label_vec .== -1)
     num_pos = length(index_pos)
     num_neg = length(index_neg)
     num_pos_pos = num_pos * (num_pos - 1)
@@ -277,38 +291,38 @@ function network_integration!(model::GeneMANIAIntegration, database::Database)
     pos_pos_target = pos_const * pos_const
     pos_neg_target = pos_const * neg_const
 
-    KtK = zeros(n_net, n_net)
-    KtT = zeros(n_net)
+    KtK = zeros(n_feature, n_feature)
+    KtT = zeros(n_feature)
 
     KtK[1,1] = bias_val
     sum_of_targets = pos_pos_target * num_pos_pos + pos_neg_target * num_pos_neg
     KtT[1] = bias_val * sum_of_targets
 
-    Wpp = zeros(n_net, num_pos, num_pos)
-    Wpn = zeors(n_net, num_pos, num_neg)
+    Wpp = zeros(n_feature, num_pos, num_pos)
+    Wpn = zeros(n_feature, num_pos, num_neg)
 
     old_mode = false
     scaled = true
 
-    @showprogress 1 "Computing network weights...." for i = 1:n_net
+    @showprogress 1 "Computing network weights...." for i = 2:n_feature
         #Load the sim matrix
-        A = load_net(net_files[i], database);
+        A = load_net(net_files[i-1], database);
 
-        Wpp[i] = A[index_pos, index_pos]
-        Wpn[i] = A[index_pos, index_neg]
+        Wpp[i, :, :] = A[index_pos, index_pos]
+        Wpn[i, :, :] = A[index_pos, index_neg]
 
-        ss_Wpp = sum(Wpp[i])
-        ss_Wpn = sum(Wpp[i])
+        ss_Wpp = sum(Wpp[i, :, :])
+        ss_Wpn = sum(Wpn[i, :, :])
 
         KtT[i] = pos_pos_target * ss_Wpp + 2 * pos_neg_target * ss_Wpn
         KtK[i, 1] = bias_val * (ss_Wpp + 2 * ss_Wpn)
-        KtK[1, i] = KtK[i, 0]
+        KtK[1, i] = KtK[i, 1]
 
-        for j = 1 : i
+        for j = 2 : i
 
             sum_of_prods = 0
-            sum_of_prods += sum(Wpp[i] .* Wpp[j])
-            sum_of_prods += 2 *  sum(Wpn[i] .* Wpn[j])
+            sum_of_prods += sum(Wpp[i, :, :] .* Wpp[j, :, :])
+            sum_of_prods += 2 *  sum(Wpn[i, :, :] .* Wpn[j, :, :])
 
             KtK[i,j] = sum_of_prods
             KtK[j,i] = sum_of_prods
@@ -335,15 +349,20 @@ function solve!(KtK::Matrix, KtT::Vector,
     check(KtK, KtT, database)
 
     ss = abs(sum(KtK, 2))
+    @show ss
     max_ss = norm(ss, Inf)
+    @show max_ss
 
     epsilon = eps()
     delta = 1e-16
 
     gt_ind = find(ss .> max_ss * epsilon)
+    @show gt_ind
 
     KtK_clean = KtK[gt_ind,gt_ind]
     KtT_clean = KtT[gt_ind]
+    @show size(KtT_clean)
+    @show size(KtK_clean)
 
     reg_const = 1.0
     if model.reg
@@ -369,7 +388,10 @@ function solve!(KtK::Matrix, KtT::Vector,
         end
 
         total_weights = length(alpha)
+        @show alpha
+        @show total_weights
         pos_weights = find(alpha .>= delta)
+        @show pos_weights
         pos_weights = filter(x -> x!= 1, pos_weights)
 
         @assert length(pos_weights) != 0
@@ -411,6 +433,6 @@ function check(KtK::Matrix, KtT::Vector, database::Database)
     n = size(KtK,1)
     @assert n == size(KtK, 2)
     @assert n == length(KtT)
-    @assert length(database.string_nets)
+    @assert n == length(database.string_nets)+1
 
 end

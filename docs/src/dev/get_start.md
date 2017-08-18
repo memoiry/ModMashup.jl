@@ -40,8 +40,8 @@ database = ModMashup.Database(dir, target_file, id,
  querys, smooth = smooth)
     
 # Define the algorithm you want to use to integrate the networks
-model = ModMashup.MashupIntegration()
-    
+#model = ModMashup.MashupIntegration()
+model = ModMashup.GeneMANIAIntegration()    
 # Running network integration
 ModMashup.network_integration!(model, database)
 

@@ -1,8 +1,8 @@
 # ModMashup.jl
 
-|Documentation|Build Status|
-| :---: | :---: |
-|[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://memoiry.github.io/ModMashup.jl)|[![Build Status](https://travis-ci.org/memoiry/ModMashup.jl.svg?branch=master)](https://travis-ci.org/memoiry/ModMashup.jl)|
+|Documentation|Build Status|Coverage Status|
+| :---: | :---: | :---:|
+|[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://memoiry.github.io/ModMashup.jl)|[![Build Status](https://travis-ci.org/memoiry/ModMashup.jl.svg?branch=master)](https://travis-ci.org/memoiry/ModMashup.jl)|[![Coverage Status](https://coveralls.io/repos/github/memoiry/ModMashup.jl/badge.svg?branch=master)](https://coveralls.io/github/memoiry/ModMashup.jl?branch=master)|
 
 This package provides real-time multiple association network integration algorithm for predicting gene function using both mashup and GeneMANIA.
 
@@ -19,11 +19,11 @@ Pkg.clone("https://github.com/memoiry/ModMashup.jl")
 
 #### Integrate with R `netDX` package
 
-See [Working with R](http://memoiry.me/ModMashup.jl/dev/work_in_R.html) for the information to update R `netDX` package with updated ModMashup.jl.
+See [`Working with R`](http://memoiry.me/ModMashup.jl/dev/work_in_R.html) for the information to update R `netDX` package with updated ModMashup.jl.
 
 #### API
 
-See [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://memoiry.github.io/ModMashup.jl) for more information about API usage 
+See [`Documentation`](https://memoiry.github.io/ModMashup.jl) for more information about API usage.
 
 ## Background
 

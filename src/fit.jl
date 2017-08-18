@@ -7,9 +7,9 @@ export fit!
 
 
 """
-    fit!(database::Database,
-             it_model::MashupIntegration,
-             lp_model::LabelPropagation)
+    fit!(int_model::MashupIntegration,
+             lp_model::LabelPropagation,
+             database::Database)
 
 Pipeline the mashup integration and label propagation in one function.
 
@@ -19,12 +19,27 @@ Pipeline the mashup integration and label propagation in one function.
 - `database::Database`: Database for computation
 - `it_model::MashupIntegration`: GeneMANIAIntegration model contains result from integration
 - `lp_model::LabelPropagation`: LabelPropagation model contains result from label propgation
+
+# Outputs
+
+- `it_model::MashupIntegration`: outpus stored in model fileds.
+- `lp_model::LabelPropagation`: outpus stored in model fileds.
+
 """
-function fit!(database::Database,
-             it_model::MashupIntegration,
-             lp_model::LabelPropagation)
+function fit!(int_model::MashupIntegration,
+             lp_model::LabelPropagation,
+             database::Database)
+    # Running network integration
+    network_integration!(int_model, database)
+    #@show lp_model = 
 
+    # Construct Label Propagation model
+    update_lp_model_info!(lp_model,
+                         int_model.combined_network,
+                         database.labels)
 
+    # Running label propagation to get patient score
+    label_propagation!(lp_model, database)
 
 end
 

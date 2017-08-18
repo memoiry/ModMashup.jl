@@ -9,21 +9,35 @@ typealias OneHotAnnotation Union{Vector{Int},Array{Int, 2}, SparseMatrixCSC{Int6
 abstract AbstractDatabase
 
 """
-    Database
+Store general and in-depth information for network integration and label propagation.
 
-Database contains needed information for network integration and label propagation.
+# Fields
 
-# Arguments
-- `string_nets::Vector{String}`: Similarity networks name.
-- `disease::OneHotAnnotation`: Disease annotation for patients.
-- `n_patients::Int`: The number of patients in the databse.
-- `patients_index::Dict{String,Int}`: Map patient name to their id.
-- `inverse_index::Dict{Int,String}`: Map patient id to their name.
-- `num_cv::Int`: The number of cross validation round. Default is 10.
-- `query_attr::Int`: Set the annotaion for query . Default is 1.
-- `string_querys::Vector{String}`: A list of query filename.
-- `smooth::Int`: Perform smooth in the simialarty or not. Default is true.
-- `thread::Int`: Number of thread for parallel computing. Default it 1.
+`string_nets::Vector{String}`: Similarity networks name.
+
+`disease::OneHotAnnotation`: Disease annotation for patients.
+
+`n_patients::Int`: The number of patients in the databse.
+
+`patients_index::Dict{String,Int}`: Map patient name to their id.
+
+`inverse_index::Dict{Int,String}`: Map patient id to their name.
+
+`num_cv::Int`: The number of cross validation round. Default is 10.
+
+`query_attr::Int`: Set the annotaion for query . Default is 1.
+
+`string_querys::Vector{String}`: A list of query filename.
+
+`smooth::Int`: Perform smooth in the simialarty or not. Default is true.
+
+`thread::Int`: Number of thread for parallel computing. Default it 1.
+
+# Constructor
+
+    Database(network_dir, target_file, id, query_dir)
+
+Create new `Database`.
 
 # Example
 
@@ -58,7 +72,7 @@ database = ModMashup.Database(network_dir, target_file,
 """
 immutable Database <: AbstractDatabase
     string_nets::Vector{String}
-    disease::OneHotAnnotation
+    labels::OneHotAnnotation
     n_patients::Int
     patients_index::Dict{String,Int}
     inverse_index::Dict{Int,String}
@@ -68,8 +82,6 @@ immutable Database <: AbstractDatabase
     smooth::Bool
     thread::Int
 end
-
-
 function Database(dir::String,
                 disease_file::String,
                 index_file::String,
@@ -97,11 +109,11 @@ function Database(dir::String,
     map!(x -> joinpath(querys, x), string_querys)
 
     # Get patients disease annotation in one vector. (+1 for interested, -1 for other)
-    disease = contains(disease_file, "txt") ? parse_target(readdlm(disease_file), patients_index) : readcsv(disease_file)
-    n_patients = size(disease,1)
+    labels = contains(disease_file, "txt") ? parse_target(readdlm(disease_file), patients_index) : readcsv(disease_file)
+    n_patients = size(labels,1)
 
     # return the constructed database
-    return Database(string_nets, disease, n_patients,
+    return Database(string_nets, labels, n_patients,
                   patients_index, inverse_index, num_cv, query_attr, string_querys, smooth, thread)
 end
 
@@ -114,12 +126,10 @@ Shared genemania model for shared memory parallel computing (Still unfinished, l
 """
 type SharedDatabase <: AbstractDatabase
     string_nets::Vector{String}
-    disease::OneHotAnnotation
+    labels::OneHotAnnotation
     n_patients::Int64
     patients_index::Dict{String,Int64}
 end
-
-
 function SharedDatabase()
 
 
@@ -137,6 +147,3 @@ function share(genemania::Database)
 
 
 end
-
-
-

@@ -157,7 +157,15 @@ var documenterSearchIndex = {"docs": [
     "page": "Working in R",
     "title": "Required Dependencies",
     "category": "section",
-    "text": "R\njulia 0.5 +Make sure you have julia which is above the version 0.5+ and also R. You can download latest julia from the official website.Cd into where netDX latest packages located.cd netDx/inst/julia\nrm -rf ModMashupDownload the ModMashup.jl from the github, and run the intsall.sh file to get the package working.git clone --recursive https://github.com/memoiry/ModMashup.jl\nmv ModMashup.jl ModMashup\nbash ModMashup/src/install.sh "
+    "text": "R\njulia 0.5 +Make sure you have julia which is above the version 0.5+ and also R. You can download latest julia from the official website.Enter where netDX latest packages located.cd netDx/inst/bash\nbash install.sh Download the ModMashup.jl from the github, and run the intsall.sh file to get the package working.git clone --recursive https://github.com/memoiry/ModMashup.jl\nmv ModMashup.jl ModMashup"
+},
+
+{
+    "location": "dev/work_in_R.html#Experimental-results-1",
+    "page": "Working in R",
+    "title": "Experimental results",
+    "category": "section",
+    "text": "I have made two experiments to acquire network weight.correlation between H_cur and beta.\ndot product between H_cur and beta.see GSoC report for more details about the experimental result."
 },
 
 {
@@ -177,19 +185,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "algo/database.html#ModMashup.SharedDatabase",
-    "page": "Database",
-    "title": "ModMashup.SharedDatabase",
-    "category": "Type",
-    "text": "SharedGeneMANIA\n\nShared genemania model for shared memory parallel computing (Still unfinished, left to do..)\n\n\n\n"
-},
-
-{
     "location": "algo/database.html#DataBase-1",
     "page": "Database",
     "title": "DataBase",
     "category": "section",
-    "text": "DatabaseSharedDatabase"
+    "text": "Database"
 },
 
 {
@@ -337,99 +337,147 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "algo/util_function.html#",
-    "page": "Util function",
-    "title": "Util function",
+    "location": "algo/common.html#",
+    "page": "Common function",
+    "title": "Common function",
     "category": "page",
     "text": ""
 },
 
 {
-    "location": "algo/util_function.html#ModMashup.rwr",
-    "page": "Util function",
+    "location": "algo/common.html#ModMashup.rwr",
+    "page": "Common function",
     "title": "ModMashup.rwr",
     "category": "Function",
     "text": "rwr(A::Matrix, restart_prob = 0.5)\n\nRandom walk with restart.\n\nArguments\n\nA::Matrix: Initial matrix for random walk.\n\nrestart_prob: Restart probability. Default 0.5.\n\nOutputs\n\nQ::Matrix: matrix after random walk.\n\n\n\n"
 },
 
 {
-    "location": "algo/util_function.html#ModMashup.pca",
-    "page": "Util function",
+    "location": "algo/common.html#ModMashup.pca",
+    "page": "Common function",
     "title": "ModMashup.pca",
     "category": "Function",
     "text": "pca(A::Matrix, num::Int64=size(A,2))\n\nPerform PCA for a matrix.\n\nArguments\n\nA::Matrix: matrix for PCA\n\nkeywords\n\nnum::Int64=size(A,2): Number of diensions selected.\n\nOutput\n\npca vector and pca value\n\neigenvalue::Vector: as name suggested. eigenvector::Matrix: columns represent eigen vector.\n\nExample\n\njulia> a = rand(5,5)\n5×5 Array{Float64,2}:\n 0.149599  0.318179  0.235567  0.779247  0.276985\n 0.175398  0.109825  0.532561  0.723127  0.621328\n 0.68087   0.639779  0.754652  0.781525  0.264776\n 0.77962   0.446314  0.805693  0.88001   0.655808\n 0.19243   0.43587   0.945708  0.109192  0.196602\n\njulia> pca_value, pca_vector = pca(a)\n([2.77556e-17,0.000524192,0.0396649,0.113626,0.128647],\n[0.483429 0.397074 … -0.376334 -0.679859; -0.738733 0.15917 … -0.379275 -0.170866; … ;\n -0.0942359 -0.593824 … 0.444543 -0.643074; -0.457645 0.345674 … 0.1949 -0.306201])\n\n\n\n"
 },
 
 {
-    "location": "algo/util_function.html#ModMashup.build_index-Tuple{String}",
-    "page": "Util function",
+    "location": "algo/common.html#ModMashup.build_index-Tuple{String}",
+    "page": "Common function",
     "title": "ModMashup.build_index",
     "category": "Method",
     "text": "build_index(index_file::String)\n\nGet two dictionary, one map patients name to its id, another map patient id to its name.\n\nArguments\n\nindex_file::String: \n\nOutputs\n\npatients_index::Dict{String, Int}: map patientd name to its internal id.\n\ninverse_index::Dict{Int, String}: map patientd internal id to its name.\n\nExample\n\n# get example data directory\nexample_data_dir = joinpath(Pkg.dir(\"ModMashup\"), \"test/data\")\n\n# Id file contains all the name of patients.\nid = joinpaht(example_data_dir,\"ids.txt\")\n\n# Build the index\npatients_index, inverse_index = build_index(id)\n\n\n\n"
 },
 
 {
-    "location": "algo/util_function.html#ModMashup.parse_target-Tuple{Array{T,2},Dict{String,Int64}}",
-    "page": "Util function",
+    "location": "algo/common.html#ModMashup.parse_target-Tuple{Array{T,2},Dict{String,Int64}}",
+    "page": "Common function",
     "title": "ModMashup.parse_target",
     "category": "Method",
     "text": "parse_target(target, patients_index)\n\nGet a vector of annotation for patients. (+1 for interested, -1 for others)\n\nInputs\n\ntarget::Matrix: colume one is patient name, colume two is patient label.\n\npatients_index::Dict{String, Int}: map patientd name to its internal id.\n\nOutputs\n\nid_label::Matrix: colume one is patient id, colume two is patient label.\n\nExample\n\n\n# get example data directory\nexample_data_dir = joinpath(Pkg.dir(\"ModMashup\"), \"test/data\")\n\n# Id file contains all the name of patients.\nid = joinpaht(example_data_dir,\"ids.txt\")\n\n# Build the patient index\npatients_index, inverse_index = build_index(id)\n\n# target_file should be a flat file contains disaese for patient\ntarget_file = joinpaht(example_data_dir,\"target.txt\")\n\n# Build the annotation for each patients\nannotation = parse_target(readdlm(target_file), patients_index)\n\n\n\n"
 },
 
 {
-    "location": "algo/util_function.html#ModMashup.parse_query-Tuple{String,Dict{String,Int64}}",
-    "page": "Util function",
+    "location": "algo/common.html#ModMashup.parse_query-Tuple{String,Dict{String,Int64}}",
+    "page": "Common function",
     "title": "ModMashup.parse_query",
     "category": "Method",
     "text": "parse_query(query_file, patients_index)\n\nGet query patient id from the query file.\n\nInputs\n\nquery_file::String: query filename whose format same with GeneMANIA query.\n\npatients_index::Dict{String, Int}: map patientd name to its internal id.\n\nOutputs\n\nquery_id::Vector: query patient id.\n\nExample\n\n\n# get example data directory\nexample_data_dir = joinpath(Pkg.dir(\"ModMashup\"), \"test/data\")\n\n# Id file contains all the name of patients.\nid = joinpaht(example_data_dir,\"ids.txt\")\n\n# Build the patient index\npatients_index, inverse_index = build_index(id)\n\n# Query file using the same format with genemania query\nquery = joinpaht(example_data_dir,\"query.txt\")\n\n# Build the annotation for each patients\nquery = parse_query(query, patients_index)\n\n\n\n"
 },
 
 {
-    "location": "algo/util_function.html#ModMashup.load_net-Tuple{String,ModMashup.Database}",
-    "page": "Util function",
+    "location": "algo/common.html#ModMashup.load_net-Tuple{String,ModMashup.Database}",
+    "page": "Common function",
     "title": "ModMashup.load_net",
     "category": "Method",
     "text": "load_net(filename::String,\n              database::Database)\n\nLoad similairity network from a flat file.  Format patient_name patient_name simialirty_score. Use databse to map patient_name to internal id.\n\nInputs\n\nfilename::String: similairty network filename.\n\ndatabase::Database: store general information.\n\nOutputs\n\nA::Matrix: similairty network as a matrix.\n\n\n\n"
 },
 
 {
-    "location": "algo/util_function.html#ModMashup.searchdir-Tuple{String,String}",
-    "page": "Util function",
+    "location": "algo/common.html#ModMashup.searchdir-Tuple{String,String}",
+    "page": "Common function",
     "title": "ModMashup.searchdir",
     "category": "Method",
     "text": "searchdir(path,key)\n\nInputs\n\npath::String: directory we want to search\n\nkey::String: keyword that the file we seached contains.\n\nOutputs\n\na list of files whose name contains the keyword provided.\nInput: directory we want to search and the keyword.\nOutput: a list of files whose name contains the keyword provided.\n\n\n\n"
 },
 
 {
-    "location": "algo/util_function.html#ModMashup.get_combined_network",
-    "page": "Util function",
+    "location": "algo/common.html#ModMashup.get_combined_network",
+    "page": "Common function",
     "title": "ModMashup.get_combined_network",
     "category": "Function",
     "text": "get_combined_network(model::IgAbstractParams)\n\nGet combined network from network integration model.\n\nInput: Network integration model after perfrom network_integration!.\nOutput: Combined network.\n\n\n\n"
 },
 
 {
-    "location": "algo/util_function.html#ModMashup.get_weights",
-    "page": "Util function",
+    "location": "algo/common.html#ModMashup.get_weights",
+    "page": "Common function",
     "title": "ModMashup.get_weights",
     "category": "Function",
     "text": "get_weights(model::IgAbstractParams)\n\nGet a dictionalry to map network name to its network weights from network integration model.\n\nInput: Network integration model after perfrom network_integration!.\nOutput: a dictionalry to map network name to its network weights.\n\n\n\n"
 },
 
 {
-    "location": "algo/util_function.html#ModMashup.get_score",
-    "page": "Util function",
+    "location": "algo/common.html#ModMashup.get_score",
+    "page": "Common function",
     "title": "ModMashup.get_score",
     "category": "Function",
     "text": "Pick up score from model after label propagation.\n\n\n\n"
 },
 
 {
-    "location": "algo/util_function.html#Util-function-1",
-    "page": "Util function",
+    "location": "algo/common.html#Util-function-1",
+    "page": "Common function",
     "title": "Util function",
     "category": "section",
     "text": "rwr(A::Matrix, restart_prob = 0.5)pca(A::Matrix, num::Int64=size(A,2))build_index(index_file::String)parse_target(target::Matrix, patients_index::Dict{String, Int})parse_query(query_file::String, patients_index::Dict{String, Int})load_net(filename::String,\n                  database::Database)searchdir(path::String,key::String)get_combined_networkget_weightsget_score"
+},
+
+{
+    "location": "user/contributions.html#",
+    "page": "Contribution",
+    "title": "Contribution",
+    "category": "page",
+    "text": ""
+},
+
+{
+    "location": "user/contributions.html#Notes-for-contributing-1",
+    "page": "Contribution",
+    "title": "Notes for contributing",
+    "category": "section",
+    "text": "Contributions are always welcome, as are feature requests and suggestions. Feel free to open issues and pull requests at any time. If you aren't familiar with git or Github please start now."
+},
+
+{
+    "location": "user/contributions.html#Setting-workspace-up-1",
+    "page": "Contribution",
+    "title": "Setting workspace up",
+    "category": "section",
+    "text": "Fork ModMashup.jl repository first.Julia's internal package manager makes it easy to install and modify packages from Github. Any package hosted on Github can be installed via Pkg.clone by providing the repository's URL, so installing a fork on your system is a simple task.Remember to replace https://github.com/memoiry/ModMashup.jl with your fork of ModMashup.jl$ julia\nPkg.clone(\"https://github.com/memoiry/ModMashup.jl\")Make a test.Pkg.test(\"ModMashup\")Everything should be working now, you can find package location in your computer by.$ julia -e \"println(Pkg.dir(\"ModMashup\"))\"Simply make a change in that folder."
+},
+
+{
+    "location": "user/contributions.html#Network-integration-1",
+    "page": "Contribution",
+    "title": "Network integration",
+    "category": "section",
+    "text": "For those who want to continue develop mashup network integration algorithm, the only function you need to modify is network_integration!.  "
+},
+
+{
+    "location": "user/contributions.html#Modified-mashup-algorithm-for-network-integration-1",
+    "page": "Contribution",
+    "title": "Modified mashup algorithm for network integration",
+    "category": "section",
+    "text": "The implementation of modified mashup algorithm for network integration is still under developing and is not fully verified its effectiveness. The current mashup integration algorithm works as below.Random walk with restarts: For each similarity network Ai, we run random walk to obtain Qi.\nSmoothing: For each Qi, we select smooth or not to smooth. Smooth means Ri = log(abs(Q) + 1/n_patients).\nConcat each Qi (not smooth) or Ri (smooth) along row axis to get a big matrix N.\nRun SVD. U,S,V = svd(N) to get U, S, V \nLet H = U * S^(1/2).\nV = S^(1/2) * V. \nLinear regression to get Beta = V’ \\ annotation ( left divide, annotation is a binary vector, 1 indicates query type, -1 indicates not-query type).\nGetting network weights through cross-validationFor each class cl in classes\n   Net_weights = matrix[N networks, 10 CV]\n   For k in 1:10 # 10-fold CV\n             Qry_k = 90% training samples of class cl \n		  For network j\n			# indices corresponding to network j and \n			# within that, samples in Qry_k\n             	H_cur = H[(j,Qry_k),] \n              All_weights = corr(H_cur,beta)\n        # Or we can get network weight by dot product \n        #     All_weights = H_cur * beta\n              Net_weights[j,k] = mean(All_weights)\n		  End \n  End\nEndReference:Compact Integration of Multi-Network Topology for Functional Analysis of Genes, pages 13."
+},
+
+{
+    "location": "user/contributions.html#Label-propagation-1",
+    "page": "Contribution",
+    "title": "Label propagation",
+    "category": "section",
+    "text": "For those who want to continue develop label propagation algorithm, the only function you need to modify is label_propagation!"
 },
 
 ]}

@@ -14,13 +14,14 @@ makedocs(clean = false,
         "Network Integration" => "algo/network_integration.md",
         "Pipeline" => "algo/pipeline.md"
         ],
-        "Util function" => "algo/util_function.md"
+        "Common function" => "algo/common.md",
+        "Contribution" => "user/contributions.md"
     ]
 )
 
 
 deploydocs(
-    repo = "github.com/memoiry/GeneMANIA.jl.git",
+    repo = "github.com/memoiry/ModMashup.jl.git",
     julia = "0.5",
     target = "build",
     deps = nothing,

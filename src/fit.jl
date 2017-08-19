@@ -31,7 +31,6 @@ function fit!(int_model::MashupIntegration,
              database::Database)
     # Running network integration
     network_integration!(int_model, database)
-    #@show lp_model = 
 
     # Construct Label Propagation model
     update_lp_model_info!(lp_model,

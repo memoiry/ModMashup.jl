@@ -5,9 +5,6 @@
 Database
 ```
 
-```@docs
-SharedDatabase
-```
 
 
 

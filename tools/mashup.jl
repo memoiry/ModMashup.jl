@@ -40,12 +40,17 @@ function parse_commandline()
             help = "Patients name in the database"
             arg_type = String
             required = true
-        "--target"
+        "--labels"
             help = "Query file name"
             arg_type = String
+            default = "nothing"
         "--CV_query"
             help = "Folder name where Query files stored"
             arg_type = String
+        "--top_net"
+            help = "Folder name where Query files stored"
+            arg_type = String
+            default = "nothing"
         "--smooth"
             help = "smooth the net or not"
             arg_type = Bool
@@ -77,10 +82,10 @@ function print_pair(pair_)
     count = 0
     for i in 1:length(pair_)
         net_string = split(pair_[i][1], "/")[end]
-        count +=1 
-        if count < 100
-            println(net_string," => ",pair_[i][2], " %")
-        end
+        #count +=1 
+        #if count < 100
+        #    println(net_string," => ",pair_[i][2], " %")
+        #end
         push!(tmp, (net_string, pair_[i][2]))
     end
     return tmp
@@ -94,32 +99,31 @@ function main()
         println("  $arg  =>  $val")
     end
     #Running feature selection for mashup
-    if parsed_args["command"] == "feature_selection"
+    if parsed_args["command"] == "selection"
         # parse arguments
         dir = parsed_args["net"]
-        target_file = parsed_args["target"]
+        labels = parsed_args["labels"]
         querys = parsed_args["CV_query"]
         id = parsed_args["id"]
         smooth = parsed_args["smooth"]
+        top_net = parsed_args["top_net"]
         res_dir = parsed_args["res_dir"]
 
         # Construct the dabase, which contains the preliminary file.
-        database = ModMashup.Database(dir, target_file, id, 
-            querys, smooth = smooth)
+        database = ModMashup.Database(dir, id,
+                                    querys, labels_file = labels,
+                                    smooth = smooth,
+                                    int_type = :selection,
+                                    top_net = top_net)
 
         # Define the algorithm you want to use to integrate the networks
-        int_model = ModMashup.MashupIntegration()
-        lp_model = ModMashup.LabelPropagation(verbose = true)
+        model = ModMashup.MashupIntegration()
 
         # Running network integration
-        ModMashup.fit!(int_model, lp_model, database)
+        ModMashup.network_integration!(model, database)
 
-        # Pick up the result
-        combined_network = ModMashup.get_combined_network(int_model)
-        net_weights = ModMashup.get_weights(int_model)
-        score = ModMashup.get_score(lp_model)
-        result_tally = int_model.tally
-
+        net_weights = ModMashup.get_weights(model)
+        tally = ModMashup.get_tally(model)
 
         # Start Processing the result
         net_index = Dict()
@@ -133,16 +137,18 @@ function main()
 
         # Sort the networks weights 
         net_weights = sort(collect(net_weights),by = x->x[2], rev=true)
-        result_tally = sort(collect(result_tally),by = x->x[2], rev=true)
-        score = sort(collect(score),by = x->x[2], rev=true)
+        tally = sort(collect(tally),by = x->x[2], rev=true)
 
         # Print the result here
         println("============================Start printing result.........================")
         #Format the result for printing
         view_weights = print_pair(net_weights)
-        view_score = print_pair(score)
-        view_tally = print_pair(result_tally)
+        #view_score = print_pair(score)
+        view_tally = print_pair(tally)
         view_net_index = print_dict(net_index)
+        top_tally_networks = filter(x -> x[2] >= 9, view_tally)
+        top_tally_networks = map(x -> x[1], top_tally_networks)
+        length(top_tally_networks)
 
         
         println("======================================End================================")
@@ -155,9 +161,11 @@ function main()
         println("Saving the result...Please wait")
 
         # Save the result and write them into text files
-        writedlm("$(result_dir)/patient_score_with_name.txt", view_score)
+        #writedlm("$(result_dir)/patient_score_with_name.txt", view_score)
         writedlm("$(result_dir)/networks_weights_with_name.txt", view_weights)
         writedlm("$(result_dir)/mashup_tally.txt", view_tally)
+        writedlm("$(result_dir)/top_networks.txt", top_tally_networks)
+
         writedlm("$(result_dir)/networks_index.txt", view_net_index)
         writedlm("$(result_dir)/cv_query.txt",model.cv_query)
         writedlm("$(result_dir)/beta.txt",model.β)
@@ -168,23 +176,56 @@ function main()
 
     # This part is left for patient ranling part of netdx.
     # Still unfinished. 
-    elseif parsed_args["command"] == "query_runner"
+    elseif parsed_args["command"] == "ranking"
         
         dir = parsed_args["net"]
-        target_file = parsed_args["target"]
         querys = parsed_args["CV_query"]
         id = parsed_args["id"]
         smooth = parsed_args["smooth"]
+        top_net = parsed_args["top_net"]
         res_dir = parsed_args["res_dir"]
 
         # Construct the dabase, which contains the preliminary file.
-        database = ModMashup.Database(dir, target_file, id, querys, smooth = smooth)
+        database = ModMashup.Database(dir, id, 
+            querys, smooth = smooth,
+            int_type = :ranking,
+            top_net = top_net)
 
         # Define the algorithm you want to use to integrate the networks
-        model = ModMashup.GeneMANIAIntegration()
+        int_model = ModMashup.MashupIntegration()
+        lp_model = ModMashup.LabelPropagation(verbose = true)
 
         # Running network integration
-        ModMashup.network_integration!(model, database)
+        ModMashup.fit!(int_model, lp_model, database)
+
+        # Pick up the result
+        #combined_network = ModMashup.get_combined_network(int_model)
+        net_weights = ModMashup.get_weights(int_model)
+        score = ModMashup.get_score(lp_model)
+
+        # Sort the networks weights 
+        net_weights = sort(collect(net_weights),by = x->x[2], rev=true)
+        score = sort(collect(score),by = x->x[2], rev=true)
+
+        # Print the result here
+        println("============================Start printing result.........================")
+        #Format the result for printing
+        view_weights = print_pair(net_weights)
+        view_score = print_pair(score)
+        
+        println("======================================End================================")
+        # Save the result
+        # Smooth or not?
+        result_dir = smooth == 1 ? "$(res_dir)/smooth_result/ranking_result" : "$(res_dir)/no_smooth_result/ranking_result"
+        if !isdir(result_dir)
+            mkdir(result_dir)
+        end
+        println("Saving the result...Please wait")
+
+        # Save the result and write them into text files
+        writedlm("$(result_dir)/patient_score_with_name.txt", view_score)
+        writedlm("$(result_dir)/networks_weights_with_name.txt", view_weights)
+        println("Saved...")
     else
         error("Please provide correct command.")
     end

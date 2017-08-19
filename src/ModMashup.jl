@@ -8,7 +8,7 @@ module ModMashup
 
     using IterativeSolvers
     using ArgParse
-    using ProgressMeter
+    using StatsBase
 
 
     # Define basic data type

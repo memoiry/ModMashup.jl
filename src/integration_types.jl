@@ -92,6 +92,18 @@ end
 
 
 """
+    get_tally(model::IgAbstractParams)
+
+Get network tally from network integration model after cross validation.
+
+- `Input`: Network integration model after perfrom [`network_integration!`](@ref).
+- `Output`: Combined network.
+"""
+function get_tally(model::IgAbstractParams)
+    return model.tally
+end
+
+"""
     get_weights(model::IgAbstractParams)
 
 Get a dictionalry to map network name to its network weights from network integration model.

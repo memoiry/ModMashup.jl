@@ -1,5 +1,8 @@
 docs/site
 docs/build
 *.sh
-*.gitmodules
-*.DS_Store
+.gitmodules
+.DS_Store
+*/.DS_Store 
+test/data/profiles
+test/data/temp_res

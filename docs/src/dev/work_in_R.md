@@ -9,11 +9,11 @@ For those who want to integrate this package into R `netDx` packages, just run t
 
 Make sure you have julia which is above the version 0.5+ and also R. You can download latest julia from the [official website](https://julialang.org/downloads/).
 
-Cd into where netDX latest packages located.
+Enter where netDX latest packages located.
 
 ```bash
-cd netDx/inst/julia
-rm -rf ModMashup
+cd netDx/inst/bash
+bash install.sh 
 ```
 
 Download the ModMashup.jl from the github, and run the `intsall.sh` file to get the package working.
@@ -21,8 +21,18 @@ Download the ModMashup.jl from the github, and run the `intsall.sh` file to get 
 ```bash
 git clone --recursive https://github.com/memoiry/ModMashup.jl
 mv ModMashup.jl ModMashup
-bash ModMashup/src/install.sh 
 ```
+
+
+### Experimental results
+
+I have made two experiments to acquire network weight.
+
+- correlation between H_cur and beta.
+- dot product between H_cur and beta.
+
+see [GSoC report](https://docs.google.com/document/d/1OOcEZSCVdYF9aZbSPtgS9CCERti0DXsUJuTi3JMKYpI/edit?usp=sharing) for more details about the experimental result.
+
 
 
 

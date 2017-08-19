@@ -1,8 +1,8 @@
 # ModMashup.jl
 
-|Documentation|Build Status|Coverage Status|
-| :---: | :---: | :---:|
-|[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://memoiry.github.io/ModMashup.jl)|[![Build Status](https://travis-ci.org/memoiry/ModMashup.jl.svg?branch=master)](https://travis-ci.org/memoiry/ModMashup.jl)|[![Coverage Status](https://coveralls.io/repos/github/memoiry/ModMashup.jl/badge.svg?branch=master)](https://coveralls.io/github/memoiry/ModMashup.jl?branch=master)|
+|Documentation|Build Status|
+| :---: | :---: | 
+|[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://memoiry.github.io/ModMashup.jl)|[![Build Status](https://travis-ci.org/memoiry/ModMashup.jl.svg?branch=master)](https://travis-ci.org/memoiry/ModMashup.jl)
 
 This package provides real-time multiple association network integration algorithm for predicting gene function using both mashup and GeneMANIA.
 

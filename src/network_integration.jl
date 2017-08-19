@@ -39,7 +39,9 @@ function network_integration!(model::MashupIntegration,
     #@show eigen_value_list_
     println("$n_net networks loaded.")
     println("$n_patients patients loaded.")
-    @showprogress 1 "Running diffusion...." for i = 1:n_net
+    println("Running diffusion....")
+    tic()
+    Threads.@threads for i = 1:n_net
         #verbal ? (@printf "Loading %s\n" net_files[i]) : nothing
         A = load_net(net_files[i], database)#load the similarirty net.
 
@@ -57,6 +59,8 @@ function network_integration!(model::MashupIntegration,
         #eigenvalue, eigenvector = pca(A, n_patients)
         #eigen_value_list_[start:(start+n_patients-1),:] = eigenvector;
     end
+    print("Diffusion done, ")
+    toc()
 
     # Perform SVD here
     println("Computing SVD")
@@ -91,20 +95,23 @@ function network_integration!(model::MashupIntegration,
     n_query = size(query,1)
     @show n_query
 
-    # Define the number of query each cross validation round 
-    num_cv_query = Int(ceil((1-1/database.num_cv)*n_query))
-    weights_mat = zeros(n_net, database.num_cv)
+
     println("SVD finished, linear regression for β")
 
     # Linear regression for beta
     β = V \ database.labels
-    #writedlm("V.txt",V)
-    #writedlm("labels.txt",database.labels)
-    #@show β
-    #@show size(H)
-    #@show V * β - database.disease
+
+
+    # Define the number of query each cross validation round 
+    num_cv_query = Int(ceil((1-1/10)*n_query))
     cv_query = zeros(num_cv_query, database.num_cv)
-    temp = zeros(n_net, database.num_cv, num_cv_query)
+    # If for ranking, all query sample is used as positive
+    if database.int_type == :ranking
+        num_cv_query = n_query
+        cv_query = zeros(num_cv_query, database.num_cv)
+    end
+
+    weights_mat = zeros(n_net, database.num_cv)
     tally = zeros(Int, n_net)
 
     # add random seed so the result can be reproduced.
@@ -136,12 +143,15 @@ function network_integration!(model::MashupIntegration,
     ## Protection
 
     # If running for feature selection
-    n_cv = length(database.string_querys)
-    if database.string_querys != nothing
+    if database.int_type == :selection
         println("Running cross validation for feature selection ")
-        # Here we have 10 cross validation round
-        println("Got $(n_cv) round query files")
-        @showprogress 1 "Runing networks weights cv..." for i = 1:n_cv
+        println("Got $(database.num_cv) round query files")
+
+        # Start using cross validation to get network weights
+        println("Runing networks weights cv...")
+        tic()
+        Threads.@threads for i = 1:database.num_cv
+
             # Read query from genemnia's query file
             rand_query = parse_query(database.string_querys[i], database.patients_index)
 
@@ -150,14 +160,15 @@ function network_integration!(model::MashupIntegration,
 
             # For each network, we compute the weight using query
             for j = 1:n_net
-                # Get network index in H matrix
-
+                # Get specific network index in H matrix
                 base_query = (j-1) * n_query
 
                 # Here we compute the correlation of H and beta
-
                 cov_list = cor(H[base_query+rand_query,:]',β)
+
+                # dot product to represent the weight
                 #vec_list = H[base_query+rand_query,:] * β
+
                 #protection
                 # Aux func for statistics, just ignore here
                 #split_str = split(net_files[j], "/")[end]
@@ -171,32 +182,52 @@ function network_integration!(model::MashupIntegration,
 
                 # Get the mean to represent the weight
                 weights_mat[j,i] = mean(cov_list)
+
                 #weights_mat[j,i] = mean(vec_list)
 
                 # If weight > 0, get the tally plus 1.
-                if weights_mat[j,i] > 0
-                    tally[j] += 1
-                end
+                #if weights_mat[j,i] < 0
+                #    tally[j] += 1
+                #end
             end
         end
+    elseif database.int_type == :ranking
+        # If running for patient ranking
+
+        # Read query from genemnia's query file
+        # Record the query ID
+        cv_query[1:length(query), 1] = query
+        println("Runing networks weights cv...")
+
+        tic()
+        Threads.@threads for j = 1:n_net
+            # Get specific network index in H matrix
+            base_query = (j-1) * n_query
+
+            # Compute network weight using correlation
+            cov_list = cor(H[base_query+query, :]',β)
+
+            # Mean across each query to acquire final 
+            # network weight.
+            weights_mat[j,1] = mean(cov_list)
+        end
     else
-    # If running for patient ranking
-        @showprogress 1 "Runing networks weights cv..." for i = 1:database.num_cv
-            rand_index = randperm(n_query)
-            rand_query = query[rand_index][1:num_cv_query]
-            cv_query[:, i] = rand_query
-            for j = 1:n_net
-                base_query = (j-1) * n_query
+        error("Unexpected integration type!")
+    end
+    print("Cross validation done, ")
+    toc()
 
-    ### SP: Use correlation  (which is bounded by -1,1)
-    ### instead of covariance?
-
-                cov_list = cor(H[base_query+rand_query,:]',β)
-                #temp[j, i, :] = cov_list
-                weights_mat[j,i] = mean(cov_list)
+    # Generate network tally 
+    # +1 for those top 10% network
+    for i = 1:database.num_cv
+        num_90 = percentile(weights_mat[:, i], 90)
+        for j = 1:n_net
+            if weights_mat[j, i] > num_90
+                tally[j] += 1
             end
         end
     end
+
 
     # Save the box result for statistics
     # Just Ignore there
@@ -224,7 +255,7 @@ function network_integration!(model::MashupIntegration,
     #    writedlm(tem_str, temp[:,:,i])
     #end
 
-    #1Get mean weights for each network
+    #Get mean weights for each network
     # +1 to avoid negative weight
     net_weights = vec(mean(weights_mat, 2)) + 1
     # Normalize the weight
@@ -241,16 +272,20 @@ function network_integration!(model::MashupIntegration,
 
     # Combine the netowkr using network weights
     combined_network = zeros(n_patients, n_patients)
-    @showprogress 1 "Integrate networks...." for i = 1:n_net
-        #load the similarirty net.
-        net_name = database.string_nets[i]
-        net_true_name = split(net_name,".")[1]
-        A = load_net(net_name, database)
-        combined_network = combined_network + model.net_weights[net_true_name] / 100 * A
+    # Combined only for ranking
+    if database.int_type == :ranking
+        println("Integrate networks....")
+        Threads.@threads for i = 1:n_net
+            #load the similarirty net.
+            net_name = database.string_nets[i]
+            net_true_name = split(net_name,".")[1]
+            A = load_net(net_name, database)
+            combined_network = combined_network + model.net_weights[net_true_name] / 100 * A
+        end
+        model.combined_network = combined_network
     end
 
     # save the result into the mashup integration model
-    model.combined_network = combined_network
     model.cv_query = cv_query
     model.weights_mat = weights_mat
     model.H = H
@@ -304,7 +339,7 @@ function network_integration!(model::GeneMANIAIntegration, database::Database)
     old_mode = false
     scaled = true
 
-    @showprogress 1 "Computing network weights...." for i = 2:n_feature
+    Threads.@threads for i = 2:n_feature
         #Load the sim matrix
         A = load_net(net_files[i-1], database);
 
@@ -388,10 +423,7 @@ function solve!(KtK::Matrix, KtT::Vector,
         end
 
         total_weights = length(alpha)
-        @show alpha
-        @show total_weights
         pos_weights = find(alpha .>= delta)
-        @show pos_weights
         pos_weights = filter(x -> x!= 1, pos_weights)
 
         @assert length(pos_weights) != 0

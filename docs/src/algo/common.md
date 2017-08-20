@@ -1,4 +1,4 @@
-# Util function
+## Common function
 
 
 ```@docs

@@ -1,5 +1,4 @@
 docs/site
-docs/build
 *.sh
 .gitmodules
 .DS_Store

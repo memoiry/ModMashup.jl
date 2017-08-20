@@ -349,7 +349,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Common function",
     "title": "ModMashup.rwr",
     "category": "Function",
-    "text": "rwr(A::Matrix, restart_prob = 0.5)\n\nRandom walk with restart.\n\nArguments\n\nA::Matrix: Initial matrix for random walk.\n\nrestart_prob: Restart probability. Default 0.5.\n\nOutputs\n\nQ::Matrix: matrix after random walk.\n\n\n\n"
+    "text": "rwr(A::Matrix, restart_prob = 0.5)\n\nRandom walk with restart.\n\nArguments\n\nA: Initial matrix for random walk.\n\nrestart_prob: Restart probability. Default 0.5.\n\nOutputs\n\nQ::Matrix: matrix after random walk.\n\n\n\n"
 },
 
 {

@@ -17,7 +17,7 @@ Random walk with restart.
 
 # Arguments
 
-`A::Matrix`: Initial matrix for random walk.
+`A`: Initial matrix for random walk.
 
 `restart_prob`: Restart probability. Default 0.5.
 
@@ -26,7 +26,7 @@ Random walk with restart.
 `Q::Matrix`: matrix after random walk.
 
 """
-function rwr(A::Matrix, restart_prob = 0.5)
+function rwr(A, restart_prob = 0.5)
     n = size(A, 1);
     A = A - diagm(diag(A));
     A = A + diagm(sum(A,1) .== 0);
@@ -235,7 +235,7 @@ function load_net(filename::String,
     # Map patient name to its id
     for i in 1:n_relation
         for j in 1:2
-            network[i,j] = database.patients_index[network[i,j]] 
+            @inbounds network[i,j] = database.patients_index[network[i,j]] 
         end
     end
     #@show typeof(network)
@@ -243,7 +243,7 @@ function load_net(filename::String,
     #    network = convert(Array{Float64,2}, network)
     #end
     #@assert isa(network, Array{Float64, 2})
-    A = full(sparse(Int.(network[:,1]), Int.(network[:,2]), float.(network[:,3]), database.n_patients, database.n_patients));
+    @inbounds A = full(sparse(Int.(network[:,1]), Int.(network[:,2]), float.(network[:,3]), database.n_patients, database.n_patients));
     if !isequal(A, A') # symmetrize
         A = A + A'
     end

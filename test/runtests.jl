@@ -1,4 +1,4 @@
-using ModMashup
+import ModMashup
 
 using Base.Test
 
@@ -10,13 +10,14 @@ function separate_test(model::Symbol)
 
     #Set up database information
     dir = "networks"
-    target_file = "target.txt"
+    labels = "target.txt"
     querys = "."
     id = "ids.txt"
     smooth = true
 
     # Generate databse
-    database = ModMashup.Database(dir, target_file, id, querys, smooth = smooth)
+    database = ModMashup.Database(dir, id, querys, smooth = smooth,
+                                labels_file = labels, int_type = :selection)
 
     # Define the algorithm you want to use to integrate the networks
     int_model = is(model, :mashup) ? ModMashup.MashupIntegration(): ModMashup.GeneMANIAIntegration()   
@@ -52,8 +53,8 @@ function pipeline_test(model::Symbol)
     smooth = true
 
     # Generate databse
-    database = ModMashup.Database(dir, target_file, id, querys, smooth = smooth)
-
+    database = ModMashup.Database(dir, id, querys, smooth = smooth,
+                                labels_file = labels)
     # Define the algorithm you want to use to integrate the networks
     int_model = is(model, :mashup) ? ModMashup.MashupIntegration(): ModMashup.GeneMANIAIntegration()   
     lp_model = ModMashup.LabelPropagation(verbose = true)

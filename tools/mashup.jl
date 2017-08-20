@@ -93,6 +93,7 @@ end
 
 
 function main()
+    println("Started the program")
     parsed_args = parse_commandline()
     println("Parsed args:")
     for (arg,val) in parsed_args
@@ -216,7 +217,7 @@ function main()
         println("======================================End================================")
         # Save the result
         # Smooth or not?
-        result_dir = smooth == 1 ? "$(res_dir)/smooth_result/ranking_result" : "$(res_dir)/no_smooth_result/ranking_result"
+        result_dir = smooth ? "$(res_dir)/smooth_result/ranking_result" : "$(res_dir)/no_smooth_result/ranking_result"
         if !isdir(result_dir)
             mkdir(result_dir)
         end

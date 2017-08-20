@@ -33,7 +33,7 @@ function network_integration!(model::MashupIntegration,
     #@show net_files
     n_net = length(net_files)
     n_patients = database.n_patients
-    net = zeros(n_patients * n_net, n_patients);
+    net = SharedArray{Float64}(n_patients * n_net, n_patients)
     eigen_value_list_ = zeros(n_patients*n_net,n_patients)
 
     #@show eigen_value_list_
@@ -41,30 +41,39 @@ function network_integration!(model::MashupIntegration,
     println("$n_patients patients loaded.")
     println("Running diffusion....")
     tic()
-    Threads.@threads for i = 1:n_net
-        #verbal ? (@printf "Loading %s\n" net_files[i]) : nothing
-        A = load_net(net_files[i], database)#load the similarirty net.
-
-        #verbal ? (@printf "Running diffusion\n") : nothing
-        Q = rwr(A, 0.5) #running random walk.
-        # smooth or not?
-        start = n_patients * (i-1)+1 
-        if database.smooth
+    if database.smooth
+        Threads.@threads for i = 1:n_net
+            #verbal ? (@printf "Loading %s\n" net_files[i]) : nothing
+            A = load_net(net_files[i], database)#load the similarirty net.
+            #verbal ? (@printf "Running diffusion\n") : nothing
+            Q = rwr(A, 0.5) #running random walk.
+            # smooth or not?
+            start = n_patients * (i-1)+1 
             R = log(Q + 1/n_patients) #smoothing
             net[start:(start+n_patients-1),:] = R #concat each net together.
-        else
-            net[start:(start+n_patients-1),:] = Q
+            #eigenvalue, eigenvector = pca(A, n_patients)
+            #eigen_value_list_[start:(start+n_patients-1),:] = eigenvector;
         end
-
-        #eigenvalue, eigenvector = pca(A, n_patients)
-        #eigen_value_list_[start:(start+n_patients-1),:] = eigenvector;
+    else
+        Threads.@threads for i = 1:n_net
+            #verbal ? (@printf "Loading %s\n" net_files[i]) : nothing
+            A = load_net(net_files[i], database)#load the similarirty net.
+            #verbal ? (@printf "Running diffusion\n") : nothing
+            Q = rwr(A, 0.5) #running random walk.
+            # smooth or not?
+            start = n_patients * (i-1)+1 
+            net[start:(start+n_patients-1),:] = Q
+            #eigenvalue, eigenvector = pca(A, n_patients)
+            #eigen_value_list_[start:(start+n_patients-1),:] = eigenvector;
+        end
     end
+
     print("Diffusion done, ")
     toc()
 
     # Perform SVD here
     println("Computing SVD")
-    U,S,V = svd(net)
+    U,S,V = svd(full(net))
 
 
     # Find reducde dimension.
@@ -150,7 +159,7 @@ function network_integration!(model::MashupIntegration,
         # Start using cross validation to get network weights
         println("Runing networks weights cv...")
         tic()
-        Threads.@threads for i = 1:database.num_cv
+        @simd for i = 1:database.num_cv
 
             # Read query from genemnia's query file
             rand_query = parse_query(database.string_querys[i], database.patients_index)
@@ -159,12 +168,12 @@ function network_integration!(model::MashupIntegration,
             cv_query[1:length(rand_query), i] = rand_query
 
             # For each network, we compute the weight using query
-            for j = 1:n_net
+            @simd for j = 1:n_net
                 # Get specific network index in H matrix
                 base_query = (j-1) * n_query
 
                 # Here we compute the correlation of H and beta
-                cov_list = cor(H[base_query+rand_query,:]',β)
+                @inbounds cov_list = cor(H[base_query+rand_query,:]',β)
 
                 # dot product to represent the weight
                 #vec_list = H[base_query+rand_query,:] * β

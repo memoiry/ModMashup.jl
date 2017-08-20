@@ -12,13 +12,11 @@ makedocs(clean = false,
         "Database" => "algo/database.md",
         "Label Propagation" => "algo/label_propagation.md",
         "Network Integration" => "algo/network_integration.md",
-        "Pipeline" => "algo/pipeline.md"
-        ],
-        "Common function" => "algo/common.md",
+        "Pipeline" => "algo/pipeline.md",
+        "Common function" => "algo/common.md"],
         "Contribution" => "user/contributions.md"
     ]
 )
-
 
 deploydocs(
     repo = "github.com/memoiry/ModMashup.jl.git",

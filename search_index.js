@@ -45,7 +45,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "Functions",
     "category": "section",
-    "text": "Pages = [\"algo/database.md\", \"algo/label_propagation.md\", \"algo/network_integration.md\", \"algo/pipeline.md\", \"algo/util_function.md\"]\nOrder = [:function]"
+    "text": "Pages = [\"algo/database.md\", \"algo/label_propagation.md\", \"algo/network_integration.md\", \"algo/pipeline.md\", \"algo/common.md\"]\nOrder = [:function]"
 },
 
 {
@@ -53,7 +53,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "Types",
     "category": "section",
-    "text": "Pages = [\"algo/database.md\", \"algo/label_propagation.md\", \"algo/network_integration.md\", \"algo/pipeline.md\", \"algo/util_function.md\"]\nOrder = [:type]"
+    "text": "Pages = [\"algo/database.md\", \"algo/label_propagation.md\", \"algo/network_integration.md\", \"algo/pipeline.md\", \"algo/common.md\"]\nOrder = [:type]"
 },
 
 {

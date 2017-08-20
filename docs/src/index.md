@@ -14,14 +14,14 @@ Because the implementation of GeneMANIA in this package is different. We get int
 
 
 ```@index
-Pages = ["algo/database.md", "algo/label_propagation.md", "algo/network_integration.md", "algo/pipeline.md", "algo/util_function.md"]
+Pages = ["algo/database.md", "algo/label_propagation.md", "algo/network_integration.md", "algo/pipeline.md", "algo/common.md"]
 Order = [:function]
 ```
 
 ### Types
 
 ```@index
-Pages = ["algo/database.md", "algo/label_propagation.md", "algo/network_integration.md", "algo/pipeline.md", "algo/util_function.md"]
+Pages = ["algo/database.md", "algo/label_propagation.md", "algo/network_integration.md", "algo/pipeline.md", "algo/common.md"]
 Order = [:type]
 ```
 

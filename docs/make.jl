@@ -14,7 +14,7 @@ makedocs(clean = false,
         "Network Integration" => "algo/network_integration.md",
         "Pipeline" => "algo/pipeline.md",
         "Common function" => "algo/common.md"],
-        "Contribution" => "user/contributions.md"
+        "Contribution" => "dev/contributions.md"
     ]
 )
 

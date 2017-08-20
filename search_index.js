@@ -433,7 +433,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "user/contributions.html#",
+    "location": "dev/contributions.html#",
     "page": "Contribution",
     "title": "Contribution",
     "category": "page",
@@ -441,7 +441,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "user/contributions.html#Notes-for-contributing-1",
+    "location": "dev/contributions.html#Notes-for-contributing-1",
     "page": "Contribution",
     "title": "Notes for contributing",
     "category": "section",
@@ -449,7 +449,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "user/contributions.html#Setting-workspace-up-1",
+    "location": "dev/contributions.html#Setting-workspace-up-1",
     "page": "Contribution",
     "title": "Setting workspace up",
     "category": "section",
@@ -457,7 +457,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "user/contributions.html#Network-integration-1",
+    "location": "dev/contributions.html#Network-integration-1",
     "page": "Contribution",
     "title": "Network integration",
     "category": "section",
@@ -465,7 +465,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "user/contributions.html#Modified-mashup-algorithm-for-network-integration-1",
+    "location": "dev/contributions.html#Modified-mashup-algorithm-for-network-integration-1",
     "page": "Contribution",
     "title": "Modified mashup algorithm for network integration",
     "category": "section",
@@ -473,7 +473,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "user/contributions.html#Label-propagation-1",
+    "location": "dev/contributions.html#Label-propagation-1",
     "page": "Contribution",
     "title": "Label propagation",
     "category": "section",

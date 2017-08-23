@@ -83,8 +83,8 @@ function main_test()
     println("Start testing mashup command line tool")
     println("========================================")
     println(" ")
-    cd(joinpath(Pkg.dir("ModMashup"), "test"))
-    run(`bash mashup_tool_test.sh`)
+    test_path = joinpath(Pkg.dir("ModMashup"), "test")
+    run(`bash $(test_path)/mashup_tool_test.sh`)
     true
 end
 

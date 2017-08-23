@@ -2,6 +2,8 @@
 
 Google Summer of Code 2017 is approaching to its finish line. Time to sum up what has been completed! Check [ModMashup.jl](https://github.com/memoiry/ModMashup.jl) to get all the source code.
 
+
+
 ### What?
 
 The goal of the project was to reimplement GeneMANIA for high-performance computing. That means, having a command-line tool that can be integrated into any packages or system. The aim is to reduce the time needed to perform netDX query. Now we can say the project have successfully achieved this goal! (50x faster with promising accuracy)

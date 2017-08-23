@@ -19,7 +19,7 @@ Pkg.clone("https://github.com/memoiry/ModMashup.jl")
 
 #### Integrate with R `netDX` package
 
-See [`Working with R`](http://memoiry.me/ModMashup.jl/dev/work_in_R.html) for the information to update R `netDX` package with updated ModMashup.jl.
+See [`Working with R`](http://memoiry.me/ModMashup.jl/dev/GSoC.html) for the information to update R `netDX` package with updated ModMashup.jl.
 
 #### API
 

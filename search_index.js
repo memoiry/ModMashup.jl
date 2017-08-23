@@ -341,7 +341,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Label Propagation",
     "title": "ModMashup.LabelPropagation",
     "category": "Type",
-    "text": "Collection of information on the label propagation model. \n\nFields\n\ncombined_network::Matrix: combined network after network integration. labels::Vector: labels for all patients maxiter::Integer: maximum iterations taken by the method. tol::Real: stopping tolerance. verbose::Bool: print cg iteration information. plot::Bool: plot data. score::Vector: Store patient score after label propagation.\n\nConstructor\n\nLabelPropagation()\nLabelPropagation(combined_network, labels)\n\n\n\n"
+    "text": "Collection of information on the label propagation model. \n\nFields\n\ncombined_network::Matrix: combined network after network integration.\n\nlabels::Vector: labels for all patients\n\nmaxiter::Integer: maximum iterations taken by the method.\n\ntol::Real: stopping tolerance.\n\nverbose::Bool: print cg iteration information.\n\nplot::Bool: plot data.\n\nscore::Vector: Store patient score after label propagation.\n\nConstructor\n\nLabelPropagation()\nLabelPropagation(combined_network, labels)\n\n\n\n"
 },
 
 {
@@ -389,7 +389,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Network Integration",
     "title": "ModMashup.MashupIntegration",
     "category": "Type",
-    "text": "Modified Mashup algorithm for network integration. Inside MashupIntegration model, it contains all the result after mashup integration.\n\nFields\n\nβ::Vector: Beta vector as a result of linear regression.\nH::Matrix: Rows of H represent patients embendding in networks.\nnet_weights::Vector: Normalized mean network weights \nweights_mat::Matrix: Columns of weights_mat is computed network weights for each round of cross validation.\ncv_query::Matrix: Columns of cv_query is query id for each round of cross validation.\nsingular_value_sqrt::Vector: singular value from mashup for dimensianal reduction.\ntally::Vector{Int}: Network tally result\n\nConstructor\n\nMashupIntegration()\n\nCreate empty MashupIntegration model.\n\n\n\n"
+    "text": "Modified Mashup algorithm for network integration. Inside MashupIntegration model, it contains all the result after mashup integration.\n\nFields\n\nβ::Vector: Beta vector as a result of linear regression.\n\nH::Matrix: Rows of H represent patients embendding in networks.\n\nnet_weights::Vector: Normalized mean network weights \n\nweights_mat::Matrix: Columns of weights_mat is computed network weights for each round of cross validation.\n\ncv_query::Matrix: Columns of cv_query is query id for each round of cross validation.\n\nsingular_value_sqrt::Vector: singular value from mashup for dimensianal reduction.\n\ntally::Vector{Int}: Network tally result\n\nConstructor\n\nMashupIntegration()\n\nCreate empty MashupIntegration model.\n\n\n\n"
 },
 
 {
@@ -397,7 +397,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Network Integration",
     "title": "ModMashup.GeneMANIAIntegration",
     "category": "Type",
-    "text": "GeneMANIA lienar regression algorithm for network integration.\n\nFields\n\nnet_weights::Dict{String, Float64}: A dictionalry map network name to its final network weights result, which is same with GeneMANIA.jar.\nnormalized::Bool: Wether normlize the network weights\nreg::Bool: Wether add regularization term to \n\n\n\n"
+    "text": "GeneMANIA lienar regression algorithm for network integration.\n\nFields\n\nnet_weights::Dict{String, Float64}: A dictionalry map network name to its final network weights result, which is same with GeneMANIA.jar.\n\nnormalized::Bool: Wether normlize the network weights\n\nreg::Bool: Wether add regularization term to \n\n\n\n"
 },
 
 {
@@ -405,7 +405,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Network Integration",
     "title": "Integration model",
     "category": "section",
-    "text": "The package provided two algorithm for network integration, one is MashupIntegration and another is GeneMANIAIntegration.MashupIntegrationGeneMANIAIntegration"
+    "text": "The package provided two algorithm for network integration, one is MashupIntegration and another is GeneMANIAIntegration (GeneMANIA's raw netwokr integration is not fully tested).MashupIntegrationGeneMANIAIntegration"
 },
 
 {
@@ -445,7 +445,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Pipeline",
     "title": "ModMashup.fit!",
     "category": "Method",
-    "text": "fit!(int_model::MashupIntegration,\n         lp_model::LabelPropagation,\n         database::Database)\n\nPipeline the mashup integration and label propagation in one function.\n\nArguments\n\ndatabase::Database: Database for computation\nit_model::MashupIntegration: GeneMANIAIntegration model contains result from integration\nlp_model::LabelPropagation: LabelPropagation model contains result from label propgation\n\nOutputs\n\nit_model::MashupIntegration: outpus stored in model fileds.\nlp_model::LabelPropagation: outpus stored in model fileds.\n\n\n\n"
+    "text": "fit!(int_model::MashupIntegration,\n         lp_model::LabelPropagation,\n         database::Database)\n\nPipeline the mashup integration and label propagation in one function.\n\nArguments\n\ndatabase::Database: Database for computation\n\nit_model::MashupIntegration: GeneMANIAIntegration model contains result from integration\n\nlp_model::LabelPropagation: LabelPropagation model contains result from label propgation\n\nOutputs\n\nit_model::MashupIntegration: outpus stored in model fileds.\n\nlp_model::LabelPropagation: outpus stored in model fileds.\n\n\n\n"
 },
 
 {
@@ -453,7 +453,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Pipeline",
     "title": "ModMashup.fit!",
     "category": "Method",
-    "text": "fit!(database::Database,\n         it_model::GeneMANIAIntegration,\n         lp_model::LabelPropagation)\n\nPipeline the genemania integration and label propagation in one function.\n\nArguments\n\ndatabase::Database: Database for computation\nit_model::GeneMANIAIntegration: GeneMANIAIntegration model contains result from integration\nlp_model::LabelPropagation: LabelPropagation model contains result from label propgation\n\n\n\n"
+    "text": "fit!(database::Database,\n         it_model::GeneMANIAIntegration,\n         lp_model::LabelPropagation)\n\nPipeline the genemania integration and label propagation in one function.\n\nArguments\n\ndatabase::Database: Database for computation\n\nit_model::GeneMANIAIntegration: GeneMANIAIntegration model contains result from integration\n\nlp_model::LabelPropagation: LabelPropagation model contains result from label propgation\n\n\n\n"
 },
 
 {
@@ -533,7 +533,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Common function",
     "title": "ModMashup.get_combined_network",
     "category": "Function",
-    "text": "get_combined_network(model::IgAbstractParams)\n\nGet combined network from network integration model.\n\nInput: Network integration model after perfrom network_integration!.\nOutput: Combined network.\n\n\n\n"
+    "text": "get_combined_network(model::IgAbstractParams)\n\nGet combined network from network integration model.\n\nInput\n\nNetwork integration model after perfrom network_integration!.\n\nOutput\n\nCombined network.\n\n\n\n"
 },
 
 {
@@ -541,7 +541,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Common function",
     "title": "ModMashup.get_weights",
     "category": "Function",
-    "text": "get_weights(model::IgAbstractParams)\n\nGet a dictionalry to map network name to its network weights from network integration model.\n\nInput: Network integration model after perfrom network_integration!.\nOutput: a dictionalry to map network name to its network weights.\n\n\n\n"
+    "text": "get_weights(model::IgAbstractParams)\n\nGet a dictionalry to map network name to its network weights from network integration model.\n\nInput\n\nNetwork integration model after perfrom network_integration!.\n\nOutput\n\na dictionalry to map network name to its network weights.\n\n\n\n"
 },
 
 {

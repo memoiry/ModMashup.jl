@@ -17,13 +17,18 @@ Pkg.rm("ModMashup")
 Pkg.clone("https://github.com/memoiry/ModMashup.jl")
 ```
 
+
+#### Example
+
+See [Example section](http://memoiry.me/ModMashup.jl/dev/get_start.html) in the documentation for more information about the package usage.
+
 #### Integrate with R `netDX` package
 
-See [`Working with R`](http://memoiry.me/ModMashup.jl/dev/GSoC.html) for the information to update R `netDX` package with updated ModMashup.jl.
+See [GSoC summary and end-to-end example](http://memoiry.me/ModMashup.jl/dev/GSoC.html) for the information to update R `netDX` package with updated ModMashup.jl.
 
 #### API
 
-See [`Documentation`](https://memoiry.github.io/ModMashup.jl) for more information about API usage.
+See [Documentation](https://memoiry.github.io/ModMashup.jl) for more information about API usage.
 
 ## Background
 

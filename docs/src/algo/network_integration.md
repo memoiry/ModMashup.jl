@@ -3,7 +3,7 @@
 ### Integration model 
 
 
-The package provided two algorithm for network integration, one is `MashupIntegration` and another is `GeneMANIAIntegration` (GeneMANIA's raw netwokr integration is not fully tested).
+The package provided two algorithm for network integration, one is `MashupIntegration` and another is `GeneMANIAIntegration` (GeneMANIA's raw networks integration is not fully tested).
 
 ```@docs
 MashupIntegration

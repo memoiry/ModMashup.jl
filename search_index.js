@@ -309,7 +309,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Database",
     "title": "ModMashup.Database",
     "category": "Type",
-    "text": "Store general and in-depth information for network integration and label propagation.\n\nFields\n\nstring_nets::Vector{String}: Similarity networks name.\n\ndisease::OneHotAnnotation: Disease annotation for patients.\n\nn_patients::Int: The number of patients in the databse.\n\npatients_index::Dict{String,Int}: Map patient name to their id.\n\ninverse_index::Dict{Int,String}: Map patient id to their name.\n\nnum_cv::Int: The number of cross validation round. Default is 10.\n\nquery_attr::Int: Set the annotaion for query . Default is 1.\n\nstring_querys::Vector{String}: A list of query filename.\n\nsmooth::Int: Perform smooth in the simialarty or not. Default is true.\n\nthread::Int: Number of thread for parallel computing. Default it 1.\n\nConstructor\n\nDatabase(network_dir, target_file, id, query_dir)\n\nCreate new Database.\n\nExample\n\n# get example data directory\nexample_data_dir = joinpath(Pkg.dir(\"ModMashup\"), \"test/data\")\n\n# dir should be a directory containing similairty networks flat file.\nnetwork_dir = joinpaht(example_data_dir,\"networks\")\n\n# target_file should be a flat file contains disaese for patient\ntarget_file = joinpaht(example_data_dir,\"target.txt\")\n\n# Directory where a list of query flat files are located using the \n# same format and naming manner with genemania query.\nquery_dir = example_data_dir\n\n# Id file contains all the name of patients.\nid = joinpaht(example_data_dir,\"ids.txt\")\n\n# Other setting\n## Do smooth in the network or not for mashup integration.\nsmooth = true\n## The number of thread choosen to perform computation.\nthread = 2\n\n# We are ready now, then just construct the database\ndatabase = ModMashup.Database(network_dir, target_file, \n                id, query_dir, smooth = smooth, \n                thread = thread)\n\n\n\n"
+    "text": "Store general and in-depth information for network integration and label propagation.\n\nFields\n\nstring_nets::Vector{String}: Similarity networks name.\n\nlabels::OneHotAnnotation: Disease annotation for patients.\n\nn_patients::Int: The number of patients in the databse.\n\npatients_index::Dict{String,Int}: Map patient name to their id.\n\ninverse_index::Dict{Int,String}: Map patient id to their name.\n\nnum_cv::Int: The number of cross validation round. Default is 10.\n\nquery_attr::Int: Set the annotaion for query . Default is 1.\n\nstring_querys::Vector{String}: A list of query filename.\n\nsmooth::Int: Perform smooth in the simialarty or not. Default is true.\n\nint_type::Symbol: Symbol indicate the dabase is for networks selection or  patients ranking. It could be :ranking or :selection, Default is :selection.\n\nthread::Int: The number of thread used to running the program. Default it 1.\n\nKeywords\n\ntop_net::String: a txt file contains the name of selected top ranked networks.\n\n``\n\nConstructor\n\nDatabase(network_dir, target_file, id, query_dir)\n\nCreate new Database.\n\nExample\n\n# enter example data directory\ncd(joinpath(Pkg.dir(\"ModMashup\"), \"test/data\"))\n\n# dir should be a directory containing similairty networks flat file.\nnetwork_dir = \"networks\"\n\n# target_file should be a flat file contains disaese for patient\nlabels = \"target.txt\"\n\n# Directory where a list of query flat files are located using the \n# same format and naming manner with genemania query.\nquery_dir = \".\"\n\n# Id file contains all the name of patients.\nid = \"ids.txt\"\n\n# Other setting\n## Do smooth in the network or not for mashup integration.\nsmooth = true\n\n# Construct the dabase, which contains the preliminary file.\ndatabase = ModMashup.Database(dir, id,\n            querys, labels_file = labels,\n            smooth = smooth,\n            int_type = :selection)\n\n\n\n\n"
 },
 
 {
@@ -341,7 +341,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Label Propagation",
     "title": "ModMashup.LabelPropagation",
     "category": "Type",
-    "text": "Collection of information on the label propagation model. \n\nFields\n\ncombined_network::Matrix: combined network after network integration.\n\nlabels::Vector: labels for all patients\n\nmaxiter::Integer: maximum iterations taken by the method.\n\ntol::Real: stopping tolerance.\n\nverbose::Bool: print cg iteration information.\n\nplot::Bool: plot data.\n\nscore::Vector: Store patient score after label propagation.\n\nConstructor\n\nLabelPropagation()\nLabelPropagation(combined_network, labels)\n\n\n\n"
+    "text": "Collection of information on the label propagation model. \n\nFields\n\ncombined_network::Matrix: combined network after network integration.\n\nlabels::Vector: labels for all patients\n\nscore_method::Symbol: z-score or discriminant method to score the patients.\n\nmaxiter::Integer: maximum iterations taken by the method.\n\ntol::Real: stopping tolerance.\n\nverbose::Bool: print cg iteration information.\n\nplot::Bool: plot the norm of the residual from label propagation‘s Conjugate Gradient optimization history.\n\nscore::Vector: Store patient score after label propagation.\n\nConstructor\n\nLabelPropagation()\nLabelPropagation(combined_network, labels)\n\n\n\n"
 },
 
 {
@@ -389,7 +389,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Network Integration",
     "title": "ModMashup.MashupIntegration",
     "category": "Type",
-    "text": "Modified Mashup algorithm for network integration. Inside MashupIntegration model, it contains all the result after mashup integration.\n\nFields\n\nβ::Vector: Beta vector as a result of linear regression.\n\nH::Matrix: Rows of H represent patients embendding in networks.\n\nnet_weights::Vector: Normalized mean network weights \n\nweights_mat::Matrix: Columns of weights_mat is computed network weights for each round of cross validation.\n\ncv_query::Matrix: Columns of cv_query is query id for each round of cross validation.\n\nsingular_value_sqrt::Vector: singular value from mashup for dimensianal reduction.\n\ntally::Vector{Int}: Network tally result\n\nConstructor\n\nMashupIntegration()\n\nCreate empty MashupIntegration model.\n\n\n\n"
+    "text": "Modified Mashup algorithm for network integration. Inside MashupIntegration model, it contains all the result after mashup integration.\n\nFields\n\nβ::Vector: Beta vector as a result of linear regression.\n\nH::Matrix: Rows of H represent patients embendding in networks.\n\nnet_weights::Dict{String, Float64}: Normalized mean network weights \n\nweights_mat::Matrix: Columns of weights_mat is computed network weights for each round of cross validation.\n\ncv_query::Matrix: Columns of cv_query is query id for each round of cross validation.\n\nsingular_value_sqrt::Vector: singular value from mashup for dimensianal reduction.\n\ntally::Dict{String, Int}: Network tally result\n\ncombined_network::Matrix: Combined single similarity network using network weights.\n\nConstructor\n\nMashupIntegration()\n\nCreate empty MashupIntegration model.\n\n\n\n"
 },
 
 {
@@ -397,7 +397,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Network Integration",
     "title": "ModMashup.GeneMANIAIntegration",
     "category": "Type",
-    "text": "GeneMANIA lienar regression algorithm for network integration.\n\nFields\n\nnet_weights::Dict{String, Float64}: A dictionalry map network name to its final network weights result, which is same with GeneMANIA.jar.\n\nnormalized::Bool: Wether normlize the network weights\n\nreg::Bool: Wether add regularization term to \n\n\n\n"
+    "text": "GeneMANIA lienar regression algorithm for network integration.\n\nFields\n\nnet_weights::Dict{String, Float64}: A dictionalry map network name to its final network weights result, which is same with GeneMANIA.jar.\n\ncombined_network::Matrix: Combined single similarity network using network weights.\n\nnormalized::Bool: Wether normlize the network weights.\n\nreg::Bool: Wether add regularization term to the model.\n\n\n\n"
 },
 
 {
@@ -413,7 +413,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Network Integration",
     "title": "ModMashup.network_integration!",
     "category": "Method",
-    "text": "network_integration!(model::MashupIntegration, database::GMANIA)\n\nImplement modified mashup network integration. Result will be save in the model. See MashupIntegration for more information about the result.\n\nArguments\n\nmodel::MashupIntegration: Label Propagation model.\n\ndatabase::Database: store general information about the patients.\n\nOutput\n\nmodel::LabelPropagation: Result will be saved in the model fileds.\n\n\n\n"
+    "text": "network_integration!(model::MashupIntegration, database::GMANIA)\n\nImplement modified mashup network integration. Result will be save in the model. See MashupIntegration for more information about the result.\n\nArguments\n\nmodel::MashupIntegration: Mashup network integration model.\n\ndatabase::Database: Store general information about the patients and networks. \n\n\n\n"
 },
 
 {
@@ -421,7 +421,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Network Integration",
     "title": "ModMashup.network_integration!",
     "category": "Method",
-    "text": "network_integration!(model::GeneMANIAIntegration, database::GMANIA)\n\nImplement Raw mashup network integration. Result will be saved in the model. See GeneMANIAIntegration for more information about the result.\n\n\n\n"
+    "text": "network_integration!(model::GeneMANIAIntegration, database::GMANIA)\n\nArguments\n\nmodel::GeneMANIAIntegration: GeneMANIA network integration model.\n\ndatabase::Database: Store general information about the patients and networks. \n\nImplement Raw mashup network integration. Result will be saved in the model. See GeneMANIAIntegration for more information about the result. (Currently not fully tested.)\n\n\n\n"
 },
 
 {
@@ -453,7 +453,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Pipeline",
     "title": "ModMashup.fit!",
     "category": "Method",
-    "text": "fit!(database::Database,\n         it_model::GeneMANIAIntegration,\n         lp_model::LabelPropagation)\n\nPipeline the genemania integration and label propagation in one function.\n\nArguments\n\ndatabase::Database: Database for computation\n\nit_model::GeneMANIAIntegration: GeneMANIAIntegration model contains result from integration\n\nlp_model::LabelPropagation: LabelPropagation model contains result from label propgation\n\n\n\n"
+    "text": "fit!(database::Database,\n         it_model::GeneMANIAIntegration,\n         lp_model::LabelPropagation)\n\nPipeline the genemania integration and label propagation in one function. (Currently not implemented.)\n\nArguments\n\ndatabase::Database: Database for computation\n\nit_model::GeneMANIAIntegration: GeneMANIAIntegration model contains result from integration\n\nlp_model::LabelPropagation: LabelPropagation model contains result from label propgation\n\n\n\n"
 },
 
 {
@@ -493,7 +493,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Common function",
     "title": "ModMashup.build_index",
     "category": "Method",
-    "text": "build_index(index_file::String)\n\nGet two dictionary, one map patients name to its id, another map patient id to its name.\n\nArguments\n\nindex_file::String: \n\nOutputs\n\npatients_index::Dict{String, Int}: map patientd name to its internal id.\n\ninverse_index::Dict{Int, String}: map patientd internal id to its name.\n\nExample\n\n# get example data directory\nexample_data_dir = joinpath(Pkg.dir(\"ModMashup\"), \"test/data\")\n\n# Id file contains all the name of patients.\nid = joinpaht(example_data_dir,\"ids.txt\")\n\n# Build the index\npatients_index, inverse_index = build_index(id)\n\n\n\n"
+    "text": "build_index(index_file::String)\n\nGet two dictionary, one map patients name to its id, another map patient id to its name.\n\nArguments\n\nindex_file::String: \n\nOutputs\n\npatients_index::Dict{String, Int}: map patientd name to its internal id.\n\ninverse_index::Dict{Int, String}: map patientd internal id to its name.\n\nExample\n\n# get example data directory\nexample_data_dir = joinpath(Pkg.dir(\"ModMashup\"), \"test/data\")\n\n# Id file contains all the name of patients.\nid = joinpath(example_data_dir,\"ids.txt\")\n\n# Build the index\npatients_index, inverse_index = build_index(id)\n\n\n\n"
 },
 
 {
@@ -501,7 +501,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Common function",
     "title": "ModMashup.parse_target",
     "category": "Method",
-    "text": "parse_target(target, patients_index)\n\nGet a vector of annotation for patients. (+1 for interested, -1 for others)\n\nInputs\n\ntarget::Matrix: colume one is patient name, colume two is patient label.\n\npatients_index::Dict{String, Int}: map patientd name to its internal id.\n\nOutputs\n\nid_label::Matrix: colume one is patient id, colume two is patient label.\n\nExample\n\n\n# get example data directory\nexample_data_dir = joinpath(Pkg.dir(\"ModMashup\"), \"test/data\")\n\n# Id file contains all the name of patients.\nid = joinpaht(example_data_dir,\"ids.txt\")\n\n# Build the patient index\npatients_index, inverse_index = build_index(id)\n\n# target_file should be a flat file contains disaese for patient\ntarget_file = joinpaht(example_data_dir,\"target.txt\")\n\n# Build the annotation for each patients\nannotation = parse_target(readdlm(target_file), patients_index)\n\n\n\n"
+    "text": "parse_target(target::Matrix,\n    patients_index::Dict{String, Int})\n\nGet a vector of annotation for patients. (+1 for interested, -1 for others)\n\nInputs\n\ntarget::Matrix: colume one is patient name, colume two is patient label.\n\npatients_index::Dict{String, Int}: map patientd name to its internal id.\n\nOutputs\n\nid_label::Matrix: colume one is patient id, colume two is patient label.\n\nExample\n\n\n# get example data directory\nexample_data_dir = joinpath(Pkg.dir(\"ModMashup\"), \"test/data\")\n\n# Id file contains all the name of patients.\nid = joinpath(example_data_dir,\"ids.txt\")\n\n# Build the patient index\npatients_index, inverse_index = build_index(id)\n\n# target_file should be a flat file contains disaese for patient\ntarget_file = joinpath(example_data_dir,\"target.txt\")\n\n# Build the annotation for each patients\nannotation = parse_target(readdlm(target_file), patients_index)\n\n\n\n"
 },
 
 {
@@ -509,7 +509,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Common function",
     "title": "ModMashup.parse_query",
     "category": "Method",
-    "text": "parse_query(query_file, patients_index)\n\nGet query patient id from the query file.\n\nInputs\n\nquery_file::String: query filename whose format same with GeneMANIA query.\n\npatients_index::Dict{String, Int}: map patientd name to its internal id.\n\nOutputs\n\nquery_id::Vector: query patient id.\n\nExample\n\n\n# get example data directory\nexample_data_dir = joinpath(Pkg.dir(\"ModMashup\"), \"test/data\")\n\n# Id file contains all the name of patients.\nid = joinpaht(example_data_dir,\"ids.txt\")\n\n# Build the patient index\npatients_index, inverse_index = build_index(id)\n\n# Query file using the same format with genemania query\nquery = joinpaht(example_data_dir,\"query.txt\")\n\n# Build the annotation for each patients\nquery = parse_query(query, patients_index)\n\n\n\n"
+    "text": "parse_query(query_file, patients_index)\n\nGet query patient id from the query file.\n\nInputs\n\nquery_file::String: query filename whose format same with GeneMANIA query.\n\npatients_index::Dict{String, Int}: map patientd name to its internal id.\n\nOutputs\n\nquery_id::Vector: query patient id.\n\nExample\n\n\n# get example data directory\nexample_data_dir = joinpath(Pkg.dir(\"ModMashup\"), \"test/data\")\n\n# Id file contains all the name of patients.\nid = joinpath(example_data_dir,\"ids.txt\")\n\n# Build the patient index\npatients_index, inverse_index = build_index(id)\n\n# Query file using the same format with genemania query\nquery = joinpath(example_data_dir,\"query.txt\")\n\n# Build the annotation for each patients\nquery = parse_query(query, patients_index)\n\n\n\n"
 },
 
 {
@@ -549,7 +549,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Common function",
     "title": "ModMashup.get_score",
     "category": "Function",
-    "text": "Pick up score from model after label propagation.\n\n\n\n"
+    "text": "get_score(model::LabelPropagation)\n\nArguments\n\nmodel::LabelPropagation: Label propagation model.\n\nOutputs\n\nscore::Dict{String, Float64}: A dictionary maps patients' name to their score.\n\nPick up score from model after label propagation.\n\n\n\n"
 },
 
 {

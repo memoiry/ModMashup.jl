@@ -123,7 +123,7 @@ The result will be saved at `temp_res` folder.
 After feature selection, you can run the command below to get patients ranking.
 
 ```bash
-$ julia ../../tools/mashup.jl ranking --top_net temp_res/smooth_result/top_networks.txt --net profiles --id ids.txt --CV_query CV_1.query --smooth true --res_dir temp_res
+$ julia ../../tools/mashup.jl ranking --top_net temp_res/smooth_result/top_networks.txt --net networks --id ids.txt --CV_query CV_1.query --smooth true --res_dir temp_res
 ```
 
 The result will be saved at `temp_res` folder.

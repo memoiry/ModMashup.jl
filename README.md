@@ -1,4 +1,3 @@
-# ModMashup.jl
 
 
 <p align="center"><img src="https://i.loli.net/2017/08/24/599dc111c4dff.png" width="300"></img></p>

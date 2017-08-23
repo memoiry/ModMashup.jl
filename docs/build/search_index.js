@@ -189,7 +189,7 @@ var documenterSearchIndex = {"docs": [
     "page": "GSoC summary - End-to-end example",
     "title": "Result",
     "category": "section",
-    "text": "This implementation in Julia is 50x faster(90 s ) than Java's implementation(4500 s) while achieving same and even better accuracy than raw GeneMANIA. Class #total #train # selected networks accuracy PPV\nLumA 154 103 83 48/51(94.1%) 48/58(81.4%)\nother 194 129 73 55/65(84.5%) 55/58(94.9%)Table 1: netDX with ModMashup as kernel on BreastCancer dataset.Class #total #train # selected networks accuracy PPV\nLumA 154 103 58 47/51(92.2%) 47/58(81.0%)\nother 194 129 49 54/65(83.1%) 54/58(93.1%)Table 2: netDX with GeneMANIA as kernel on BreastCancer dataset with AUC 0..</p>"
+    "text": "This implementation in Julia is 50x faster(90 s ) than Java's implementation(4500 s) while achieving same and even better accuracy than raw GeneMANIA. Class #total #train # selected networks accuracy PPV\nLumA 154 103 83 48/51(94.1%) 48/58(81.4%)\nother 194 129 73 55/65(84.5%) 55/58(94.9%)Table 1: netDX with ModMashup as kernel on BreastCancer dataset.Class #total #train # selected networks accuracy PPV\nLumA 154 103 58 47/51(92.2%) 47/58(81.0%)\nother 194 129 49 54/65(83.1%) 54/58(93.1%)Table 2: netDX with GeneMANIA as kernel on BreastCancer dataset."
 },
 
 {

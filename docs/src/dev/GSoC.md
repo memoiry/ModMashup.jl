@@ -35,7 +35,7 @@ The main contribution of ModMashup.
 | other| 194 | 129 | 49|54/65(83.1%)| 54/58(93.1%)| 
 
 
-**Table 2**: netDX with **GeneMANIA** as kernel on BreastCancer dataset with AUC 0..</p>
+**Table 2**: netDX with **GeneMANIA** as kernel on BreastCancer dataset.
 
 #### Relation between networks obtained from GeneMANIA and ModMashup
 

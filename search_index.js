@@ -405,7 +405,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Network Integration",
     "title": "Integration model",
     "category": "section",
-    "text": "The package provided two algorithm for network integration, one is MashupIntegration and another is GeneMANIAIntegration (GeneMANIA's raw netwokr integration is not fully tested).MashupIntegrationGeneMANIAIntegration"
+    "text": "The package provided two algorithm for network integration, one is MashupIntegration and another is GeneMANIAIntegration (GeneMANIA's raw networks integration is not fully tested).MashupIntegrationGeneMANIAIntegration"
 },
 
 {

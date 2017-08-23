@@ -1,5 +1,4 @@
 julia 0.5
-ProgressMeter
 ArgParse
 IterativeSolvers
 StatsBase

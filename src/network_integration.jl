@@ -42,7 +42,7 @@ function network_integration!(model::MashupIntegration,
     println("Running diffusion....")
     tic()
     if database.smooth
-        Threads.@threads for i = 1:n_net
+        @simd for i = 1:n_net
             #verbal ? (@printf "Loading %s\n" net_files[i]) : nothing
             A = load_net(net_files[i], database)#load the similarirty net.
             #verbal ? (@printf "Running diffusion\n") : nothing
@@ -55,7 +55,7 @@ function network_integration!(model::MashupIntegration,
             #eigen_value_list_[start:(start+n_patients-1),:] = eigenvector;
         end
     else
-        Threads.@threads for i = 1:n_net
+        @simd for i = 1:n_net
             #verbal ? (@printf "Loading %s\n" net_files[i]) : nothing
             A = load_net(net_files[i], database)#load the similarirty net.
             #verbal ? (@printf "Running diffusion\n") : nothing
@@ -110,6 +110,7 @@ function network_integration!(model::MashupIntegration,
     # Linear regression for beta
     β = V \ database.labels
 
+    print("Linear regression done, ")
 
     # Define the number of query each cross validation round 
     num_cv_query = Int(ceil((1-1/10)*n_query))
@@ -284,7 +285,7 @@ function network_integration!(model::MashupIntegration,
     # Combined only for ranking
     if database.int_type == :ranking
         println("Integrate networks....")
-        Threads.@threads for i = 1:n_net
+        @simd for i = 1:n_net
             #load the similarirty net.
             net_name = database.string_nets[i]
             net_true_name = split(net_name,".")[1]

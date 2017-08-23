@@ -58,6 +58,10 @@ function parse_commandline()
         "--res_dir"
             help = "where to put the result"
             arg_type = String
+        "--cut_off"
+            help = "where to put the result"
+            arg_type = Int
+            default = 9
     end
 
     return parse_args(s)
@@ -65,7 +69,6 @@ end
 
 
 # Function to print the dict
-
 function print_dict(dict_::Dict)
     tmp = Vector()
     for i in keys(dict_)
@@ -91,6 +94,33 @@ function print_pair(pair_)
     return tmp
 end
 
+# Format the score dictionary into GeneMANIA's NRANK file
+function print_patient_rank(score, database)
+    inverse_index = database.inverse_index
+    patients_index = database.patients_index
+    n_patients = database.n_patients
+    labels = database.labels
+    unlabeled_name = map(x -> x[1], score)
+    prank = Vector()
+    push!(prank   ,("Gene","Score","Description"))    
+    for i = 1:n_patients
+        patients_name = inverse_index[i]
+        if labels[i] == 1
+            push!(prank, (patients_name, "", patients_name))
+        end
+    end
+
+    for i in 1:length(score)
+        net_string = score[i][1]
+        id_ = patients_index[net_string]
+        #@show labels, id_
+        if labels[id_] == -1
+            push!(prank, (net_string, score[i][2], net_string))
+        end
+    end
+
+    return prank
+end
 
 function main()
     println("Started the program")
@@ -109,6 +139,13 @@ function main()
         smooth = parsed_args["smooth"]
         top_net = parsed_args["top_net"]
         res_dir = parsed_args["res_dir"]
+        cut_off = parsed_args["cut_off"]
+
+        println(" ")
+        println("========================================")
+        println("Start running network selection ")
+        println("========================================")
+        println(" ")
 
         # Construct the dabase, which contains the preliminary file.
         database = ModMashup.Database(dir, id,
@@ -147,7 +184,7 @@ function main()
         #view_score = print_pair(score)
         view_tally = print_pair(tally)
         view_net_index = print_dict(net_index)
-        top_tally_networks = filter(x -> x[2] >= 9, view_tally)
+        top_tally_networks = filter(x -> x[2] >= cut_off, view_tally)
         top_tally_networks = map(x -> x[1], top_tally_networks)
         length(top_tally_networks)
 
@@ -170,7 +207,7 @@ function main()
         writedlm("$(result_dir)/networks_index.txt", view_net_index)
         writedlm("$(result_dir)/cv_query.txt",model.cv_query)
         writedlm("$(result_dir)/beta.txt",model.β)
-        writedlm("$(result_dir)/H.txt",model.H)
+        #writedlm("$(result_dir)/H.txt",model.H)
         writedlm("$(result_dir)/networks_weights_each_cv.txt",model.weights_mat)
         writedlm("$(result_dir)/singular_value_sqrt.txt",model.singular_value_sqrt)
         println("Saved...")
@@ -185,6 +222,12 @@ function main()
         smooth = parsed_args["smooth"]
         top_net = parsed_args["top_net"]
         res_dir = parsed_args["res_dir"]
+
+        println(" ")
+        println("========================================")
+        println("Start running label propagation for patients ranking")
+        println("========================================")
+        println(" ")
 
         # Construct the dabase, which contains the preliminary file.
         database = ModMashup.Database(dir, id, 
@@ -212,20 +255,20 @@ function main()
         println("============================Start printing result.........================")
         #Format the result for printing
         view_weights = print_pair(net_weights)
-        view_score = print_pair(score)
+        view_score = print_patient_rank(score, database)
         
         println("======================================End================================")
         # Save the result
         # Smooth or not?
-        result_dir = smooth ? "$(res_dir)/smooth_result/ranking_result" : "$(res_dir)/no_smooth_result/ranking_result"
-        if !isdir(result_dir)
-            mkdir(result_dir)
-        end
+        score = smooth ? "$(querys)_smooth_mashup_PRANK.txt" : "$(querys)_no_smooth_mashup_PRANK.txt"
+        network_weight = smooth ? "$(querys)_smooth_mashup_NRANK.txt" : "$(querys)_no_smooth_mashup_NRANK.txt"
+
+
         println("Saving the result...Please wait")
 
         # Save the result and write them into text files
-        writedlm("$(result_dir)/patient_score_with_name.txt", view_score)
-        writedlm("$(result_dir)/networks_weights_with_name.txt", view_weights)
+        writedlm("$(score)", view_score)
+        writedlm("$(network_weight)", view_weights)
         println("Saved...")
     else
         error("Please provide correct command.")

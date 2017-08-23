@@ -5,3 +5,5 @@ docs/site
 */.DS_Store 
 test/data/profiles
 test/data/temp_res
+test/data/ex
+

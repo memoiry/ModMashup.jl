@@ -1,28 +1,60 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Quick Start · ModMashup.jl</title><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link href="../assets/highlightjs/default.css" rel="stylesheet" type="text/css"/><link href="../assets/documenter.css" rel="stylesheet" type="text/css"/></head><body><nav class="toc"><h1>ModMashup.jl</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" action="../search.html"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li><a class="toctext" href="../index.html">Home</a></li><li class="current"><a class="toctext" href="get_start.html">Quick Start</a><ul class="internal"><li><a class="toctext" href="#ModMashup.jl-1">ModMashup.jl</a></li></ul></li><li><a class="toctext" href="work_in_R.html">Working in R</a></li><li><span class="toctext">Algorithms</span><ul><li><a class="toctext" href="../algo/database.html">Database</a></li><li><a class="toctext" href="../algo/label_propagation.html">Label Propagation</a></li><li><a class="toctext" href="../algo/network_integration.html">Network Integration</a></li><li><a class="toctext" href="../algo/pipeline.html">Pipeline</a></li><li><a class="toctext" href="../algo/common.html">Common function</a></li></ul></li><li><a class="toctext" href="contributions.html">Contribution</a></li></ul></nav><article id="docs"><header><nav><ul><li><a href="get_start.html">Quick Start</a></li></ul><a class="edit-page" href="https://github.com/memoiry/GeneMANIA.jl/tree/d360e704b64a40e63245d868e7aa566c3b7ea1d5/docs/src/dev/get_start.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>Quick Start</span><a class="fa fa-bars" href="#"></a></div></header><h2><a class="nav-anchor" id="ModMashup.jl-1" href="#ModMashup.jl-1">ModMashup.jl</a></h2><h3><a class="nav-anchor" id="Quick-Start-1" href="#Quick-Start-1">Quick Start</a></h3><h4><a class="nav-anchor" id="Required-Dependencies-1" href="#Required-Dependencies-1">Required Dependencies</a></h4><ul><li><p>julia v0.5 +</p></li></ul><p>You can download latest Julia from the <a href="https://julialang.org/downloads/">official website</a>. Version 0.5 or higher is highly recommended.</p><h4><a class="nav-anchor" id="Installation-1" href="#Installation-1">Installation</a></h4><p>Enter Julia REPL.</p><pre><code class="language-bash">$ julia</code></pre><p>Then run the command below in REPL.</p><pre><code class="language-bash">Pkg.rm(&quot;ModMashup&quot;)
-Pkg.clone(&quot;https://github.com/memoiry/ModMashup.jl&quot;)</code></pre><h4><a class="nav-anchor" id="Example-usage-in-Julia-1" href="#Example-usage-in-Julia-1">Example usage in Julia</a></h4><pre><code class="language-julia">import ModMashup
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Quick Start · ModMashup.jl</title><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link href="../assets/highlightjs/default.css" rel="stylesheet" type="text/css"/><link href="../assets/documenter.css" rel="stylesheet" type="text/css"/></head><body><nav class="toc"><h1>ModMashup.jl</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" action="../search.html"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li><a class="toctext" href="../index.html">Home</a></li><li class="current"><a class="toctext" href="get_start.html">Quick Start</a><ul class="internal"><li><a class="toctext" href="#ModMashup.jl-1">ModMashup.jl</a></li></ul></li><li><a class="toctext" href="GSoC.html">GSoC summary - End-to-end example</a></li><li><span class="toctext">Algorithms</span><ul><li><a class="toctext" href="../algo/database.html">Database</a></li><li><a class="toctext" href="../algo/label_propagation.html">Label Propagation</a></li><li><a class="toctext" href="../algo/network_integration.html">Network Integration</a></li><li><a class="toctext" href="../algo/pipeline.html">Pipeline</a></li><li><a class="toctext" href="../algo/common.html">Common function</a></li></ul></li><li><a class="toctext" href="contributions.html">Contribution</a></li></ul></nav><article id="docs"><header><nav><ul><li><a href="get_start.html">Quick Start</a></li></ul><a class="edit-page" href="https://github.com/memoiry/GeneMANIA.jl/tree/35c67f656fc4a5d8885fb69f3d344fc440077082/docs/src/dev/get_start.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>Quick Start</span><a class="fa fa-bars" href="#"></a></div></header><h2><a class="nav-anchor" id="ModMashup.jl-1" href="#ModMashup.jl-1">ModMashup.jl</a></h2><h3><a class="nav-anchor" id="Quick-Start-1" href="#Quick-Start-1">Quick Start</a></h3><h4><a class="nav-anchor" id="Required-Dependencies-1" href="#Required-Dependencies-1">Required Dependencies</a></h4><ul><li><p>julia v0.5 +</p></li></ul><p>You can download latest Julia from the <a href="https://julialang.org/downloads/">official website</a>. Version 0.5 or higher is highly recommended.</p><h4><a class="nav-anchor" id="Installation-1" href="#Installation-1">Installation</a></h4><p>Enter Julia REPL.</p><pre><code class="language-bash">$ julia</code></pre><p>Then run the command below in Julia REPL.</p><pre><code class="language-bash">Pkg.rm(&quot;ModMashup&quot;)
+Pkg.clone(&quot;https://github.com/memoiry/ModMashup.jl&quot;)</code></pre><h4><a class="nav-anchor" id="Example-usage-in-Julia-1" href="#Example-usage-in-Julia-1">Example usage in Julia</a></h4><h5><a class="nav-anchor" id="Usage-1:-Mashup-Feature-Selection-1" href="#Usage-1:-Mashup-Feature-Selection-1">Usage 1: Mashup Feature Selection</a></h5><pre><code class="language-julia">import ModMashup
 cd(joinpath(Pkg.dir(&quot;ModMashup&quot;), &quot;test/data&quot;))
+
+#Set up database information
 dir = &quot;networks&quot;
-target_file = &quot;target.txt&quot;
+labels = &quot;target.txt&quot;
 querys = &quot;.&quot;
 id = &quot;ids.txt&quot;
 smooth = true
+top_net = &quot;nothing&quot;
 
 # Construct the dabase, which contains the preliminary file.
-database = ModMashup.Database(dir, target_file, id, querys, smooth = smooth)
+database = ModMashup.Database(dir, id,
+                           querys, labels_file = labels,
+                           smooth = smooth,
+                           int_type = :selection,
+                           top_net = top_net)
 
 # Define the algorithm you want to use to integrate the networks
-int_model = is(model, :mashup) ? ModMashup.MashupIntegration(): ModMashup.GeneMANIAIntegration()   
+model = ModMashup.MashupIntegration()
+
+# Running network integration
+ModMashup.network_integration!(model, database)
+
+net_weights = ModMashup.get_weights(model)
+tally = ModMashup.get_tally(model)</code></pre><h5><a class="nav-anchor" id="Usage-2:-Mashup-query-runner-for-patients-ranking-using-selected-networks-1" href="#Usage-2:-Mashup-query-runner-for-patients-ranking-using-selected-networks-1">Usage 2: Mashup query runner for patients ranking using selected networks</a></h5><pre><code class="language-julia">import ModMashup
+cd(joinpath(Pkg.dir(&quot;ModMashup&quot;), &quot;test/data&quot;))
+
+#Set up database information
+dir = &quot;networks&quot;
+querys = &quot;CV_1.query&quot;
+id = &quot;ids.txt&quot;
+smooth = true
+# Top_networks contains selected top ranked networks.
+top_net = &quot;top_networks.txt&quot;
+
+# Construct the dabase, which contains the preliminary file.
+database = ModMashup.Database(dir, id, 
+   querys, smooth = smooth,
+   int_type = :ranking,
+   top_net = top_net)
+
+# Define the algorithm you want to use to integrate the networks
+int_model = ModMashup.MashupIntegration()
 lp_model = ModMashup.LabelPropagation(verbose = true)
 
-# Do both network integration and label propagation
+# Running network integration
 ModMashup.fit!(int_model, lp_model, database)
 
 # Pick up the result
-combined_network = ModMashup.get_combined_network(int_model)
-net_weights::Dict{String, Float64} = ModMashup.get_weights(int_model)
-score = ModMashup.get_score(lp_model)</code></pre><h3><a class="nav-anchor" id="Mashup-command-tool-1" href="#Mashup-command-tool-1">Mashup command tool</a></h3><p>This project provide a <code>Command Line Tool</code> located in <a href="https://github.com/memoiry/ModMashup.jl/blob/master/tools/mashup.jl">mashup.jl</a>, which has two usage.</p><ol><li><p>Modified Mashup feature selection.</p></li><li><p>GeneMANIA query runner same with <a href="http://apps.cytoscape.org/apps/genemania">GeneMANIA.jar</a>.</p></li></ol><h4><a class="nav-anchor" id="Example-1" href="#Example-1">Example</a></h4><h5><a class="nav-anchor" id="Usage-1:-Mashup-Feature-Selection-1" href="#Usage-1:-Mashup-Feature-Selection-1">Usage 1: Mashup Feature Selection</a></h5><p>First ensure that you have ModMashup.jl correctly installed in your computer.</p><pre><code class="language-bash">$ var=$(julia -e &quot;println(Pkg.dir())&quot;)
+#combined_network = ModMashup.get_combined_network(int_model)
+net_weights = ModMashup.get_weights(int_model)
+score = ModMashup.get_score(lp_model)
+    </code></pre><h3><a class="nav-anchor" id="Mashup-command-tool-1" href="#Mashup-command-tool-1">Mashup command tool</a></h3><p>This project provide a <code>Command Line Tool</code> located in <a href="https://github.com/memoiry/ModMashup.jl/blob/master/tools/mashup.jl">mashup.jl</a>, which has two usage.</p><ol><li><p>Modified Mashup feature selection.</p></li><li><p>Label propagation for patients ranking.</p></li></ol><h4><a class="nav-anchor" id="Example-1" href="#Example-1">Example</a></h4><h5><a class="nav-anchor" id="Usage-1:-Mashup-Feature-Selection-2" href="#Usage-1:-Mashup-Feature-Selection-2">Usage 1: Mashup Feature Selection</a></h5><p>First ensure that you have ModMashup.jl correctly installed in your computer.</p><pre><code class="language-bash">$ var=$(julia -e &quot;println(Pkg.dir())&quot;)
 $ var=&quot;$var/ModMashup/test/data&quot;
 $ cd $var
 $ mkdir temp_res
-$ julia ../../tools/mashup.jl feature_selection --net networks --id ids.txt --target target.txt --CV_query . --smooth true --res_dir temp_res</code></pre><p>The result will be saved at <code>temp_res</code> folder.</p><h5><a class="nav-anchor" id="Usage-2:-GeneMANIA-query-runner-1" href="#Usage-2:-GeneMANIA-query-runner-1">Usage 2: GeneMANIA query runner</a></h5><pre><code class="language-bash">$ julia ../../tools/mashup.jl query_runner --net networks --id ids.txt --target target.txt --CV_query . --smooth true --res_dir temp_res</code></pre><footer><hr/><a class="previous" href="../index.html"><span class="direction">Previous</span><span class="title">Home</span></a><a class="next" href="work_in_R.html"><span class="direction">Next</span><span class="title">Working in R</span></a></footer></article></body></html>
+$ julia ../../tools/mashup.jl selection --net networks --id ids.txt --labels target.txt --CV_query . --smooth true --res_dir temp_res</code></pre><p>The result will be saved at <code>temp_res</code> folder.</p><h5><a class="nav-anchor" id="Usage-2:-Mashup-query-runner-for-patients-ranking-using-selected-networks-2" href="#Usage-2:-Mashup-query-runner-for-patients-ranking-using-selected-networks-2">Usage 2: Mashup query runner for patients ranking using selected networks</a></h5><p>After feature selection, you can run the command below to get patients ranking.</p><pre><code class="language-bash">$ julia ../../tools/mashup.jl ranking --top_net temp_res/smooth_result/top_networks.txt --net profiles --id ids.txt --CV_query CV_1.query --smooth true --res_dir temp_res</code></pre><p>The result will be saved at <code>temp_res</code> folder.</p><footer><hr/><a class="previous" href="../index.html"><span class="direction">Previous</span><span class="title">Home</span></a><a class="next" href="GSoC.html"><span class="direction">Next</span><span class="title">GSoC summary - End-to-end example</span></a></footer></article></body></html>

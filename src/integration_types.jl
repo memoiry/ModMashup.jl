@@ -17,7 +17,7 @@ Inside MashupIntegration model, it contains all the result after mashup integrat
 
 `H::Matrix`: Rows of H represent patients embendding in networks.
 
-`net_weights::Vector`: Normalized mean network weights 
+`net_weights::Dict{String, Float64}`: Normalized mean network weights 
 
 `weights_mat::Matrix`: Columns of weights_mat is computed network weights for each round of cross validation.
 
@@ -25,7 +25,9 @@ Inside MashupIntegration model, it contains all the result after mashup integrat
 
 `singular_value_sqrt::Vector`: singular value from mashup for dimensianal reduction.
 
-`tally::Vector{Int}`: Network tally result
+`tally::Dict{String, Int}`: Network tally result
+
+`combined_network::Matrix`: Combined single similarity network using network weights.
 
 # Constructor
 
@@ -55,9 +57,11 @@ GeneMANIA lienar regression algorithm for network integration.
 
 `net_weights::Dict{String, Float64}`: A dictionalry map network name to its final network weights result, which is same with GeneMANIA.jar.
 
-`normalized::Bool`: Wether normlize the network weights
+`combined_network::Matrix`: Combined single similarity network using network weights.
 
-`reg::Bool`: Wether add regularization term to 
+`normalized::Bool`: Wether normlize the network weights.
+
+`reg::Bool`: Wether add regularization term to the model.
 """
 type GeneMANIAIntegration <: IgAbstractParams
     net_weights::Dict{String, Float64}

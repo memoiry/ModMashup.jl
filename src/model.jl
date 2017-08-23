@@ -14,7 +14,7 @@ Store general and in-depth information for network integration and label propaga
 
 `string_nets::Vector{String}`: Similarity networks name.
 
-`disease::OneHotAnnotation`: Disease annotation for patients.
+`labels::OneHotAnnotation`: Disease annotation for patients.
 
 `n_patients::Int`: The number of patients in the databse.
 
@@ -30,7 +30,16 @@ Store general and in-depth information for network integration and label propaga
 
 `smooth::Int`: Perform smooth in the simialarty or not. Default is true.
 
-`thread::Int`: Number of thread for parallel computing. Default it 1.
+`int_type::Symbol`: Symbol indicate the dabase is for networks selection or 
+patients ranking. It could be `:ranking` or `:selection`, Default is :selection.
+
+`thread::Int`: The number of thread used to running the program. Default it 1.
+
+# Keywords
+
+`top_net::String`: a txt file contains the name of selected top ranked networks.
+
+``
 
 # Constructor
 
@@ -41,32 +50,32 @@ Create new `Database`.
 # Example
 
 ```julia
-# get example data directory
-example_data_dir = joinpath(Pkg.dir("ModMashup"), "test/data")
+# enter example data directory
+cd(joinpath(Pkg.dir("ModMashup"), "test/data"))
 
 # dir should be a directory containing similairty networks flat file.
-network_dir = joinpaht(example_data_dir,"networks")
+network_dir = "networks"
 
 # target_file should be a flat file contains disaese for patient
-target_file = joinpaht(example_data_dir,"target.txt")
+labels = "target.txt"
 
 # Directory where a list of query flat files are located using the 
 # same format and naming manner with genemania query.
-query_dir = example_data_dir
+query_dir = "."
 
 # Id file contains all the name of patients.
-id = joinpaht(example_data_dir,"ids.txt")
+id = "ids.txt"
 
 # Other setting
 ## Do smooth in the network or not for mashup integration.
 smooth = true
-## The number of thread choosen to perform computation.
-thread = 2
 
-# We are ready now, then just construct the database
-database = ModMashup.Database(network_dir, target_file, 
-                id, query_dir, smooth = smooth, 
-                thread = thread)
+# Construct the dabase, which contains the preliminary file.
+database = ModMashup.Database(dir, id,
+            querys, labels_file = labels,
+            smooth = smooth,
+            int_type = :selection)
+
 ```
 """
 immutable Database <: AbstractDatabase

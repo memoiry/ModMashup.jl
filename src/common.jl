@@ -100,7 +100,7 @@ Get two dictionary, one map patients name to its id, another map patient id to i
 example_data_dir = joinpath(Pkg.dir("ModMashup"), "test/data")
 
 # Id file contains all the name of patients.
-id = joinpaht(example_data_dir,"ids.txt")
+id = joinpath(example_data_dir,"ids.txt")
 
 # Build the index
 patients_index, inverse_index = build_index(id)
@@ -121,7 +121,8 @@ function build_index(index_file::String)
 end
 
 """
-    parse_target(target, patients_index)
+    parse_target(target::Matrix,
+        patients_index::Dict{String, Int})
 
 Get a vector of annotation for patients. (+1 for interested, -1 for others)
 
@@ -143,13 +144,13 @@ Get a vector of annotation for patients. (+1 for interested, -1 for others)
 example_data_dir = joinpath(Pkg.dir("ModMashup"), "test/data")
 
 # Id file contains all the name of patients.
-id = joinpaht(example_data_dir,"ids.txt")
+id = joinpath(example_data_dir,"ids.txt")
 
 # Build the patient index
 patients_index, inverse_index = build_index(id)
 
 # target_file should be a flat file contains disaese for patient
-target_file = joinpaht(example_data_dir,"target.txt")
+target_file = joinpath(example_data_dir,"target.txt")
 
 # Build the annotation for each patients
 annotation = parse_target(readdlm(target_file), patients_index)
@@ -187,13 +188,13 @@ Get query patient id from the query file.
 example_data_dir = joinpath(Pkg.dir("ModMashup"), "test/data")
 
 # Id file contains all the name of patients.
-id = joinpaht(example_data_dir,"ids.txt")
+id = joinpath(example_data_dir,"ids.txt")
 
 # Build the patient index
 patients_index, inverse_index = build_index(id)
 
 # Query file using the same format with genemania query
-query = joinpaht(example_data_dir,"query.txt")
+query = joinpath(example_data_dir,"query.txt")
 
 # Build the annotation for each patients
 query = parse_query(query, patients_index)

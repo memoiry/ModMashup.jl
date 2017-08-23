@@ -18,13 +18,15 @@ Collection of information on the label propagation model.
 
 `labels::Vector`: labels for all patients
 
+`score_method::Symbol`: z-score or discriminant method to score the patients.
+
 `maxiter::Integer`: maximum iterations taken by the method.
 
 `tol::Real`: stopping tolerance.
 
 `verbose::Bool`: print cg iteration information.
 
-`plot::Bool`: plot data.
+`plot::Bool`: plot the norm of the residual from label propagation‘s Conjugate Gradient optimization history.
 
 `score::Vector`: Store patient score after label propagation.
 
@@ -61,14 +63,10 @@ end
 
 
 """
-    LabelPropagation(;maxiter = nothing, tol = nothing,
-                verbose::Bool = false, 
-                plot::Bool = false) = LabelPropagation(Matrix(), 
-                Vector(), plot = plot,
-                maxiter = maxiter, tol = tol,
-                verbose = verbose)
+    LabelPropagation(;kwargs...) = LabelPropagation(Matrix(), 
+                Vector();kwargs...)
 
-Empty label propagation model for piple in [fit!](@ref).
+Empty label propagation model with some keywords.
 """
 LabelPropagation(;kwargs...) = LabelPropagation(Matrix(), 
                 Vector();kwargs...)
@@ -93,9 +91,9 @@ end
 
 
 
-#########################
-# Method Implementation #
-#########################
+####################################################
+# Label Propagation Method Implementation #
+####################################################
 """
     label_propagation!(model::LabelPropagation, database::Database)
 
@@ -172,6 +170,17 @@ function set_label_bias(score::Vector)
 end
 
 
+"""
+    convert_score(score::Vector, 
+                      score_method::Symbol)
+# Arguments
+
+`score::Vector`: Score vector needed to be converted.
+`score_method::Symbol`: Score convert method.
+
+convert score from label progation to explanable patients score.
+Currently only support :discriminant.
+"""
 function convert_score(score::Vector, 
                       score_method::Symbol)
     # convert score
@@ -187,6 +196,15 @@ function convert_score(score::Vector,
 end
 
 """
+    get_score(model::LabelPropagation)
+# Arguments
+
+`model::LabelPropagation`: Label propagation model.
+
+# Outputs
+
+`score::Dict{String, Float64}`: A dictionary maps patients' name to their score.
+
 Pick up score from model after label propagation.
 """
 function get_score(model::LabelPropagation)

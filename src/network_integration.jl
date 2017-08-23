@@ -19,13 +19,10 @@ See [`MashupIntegration`](@ref) for more information about the result.
 
 # Arguments
 
-`model::MashupIntegration`: Label Propagation model.
+`model::MashupIntegration`: Mashup network integration model.
 
-`database::Database`: store general information about the patients.
+`database::Database`: Store general information about the patients and networks. 
 
-# Output
-
-`model::LabelPropagation`: Result will be saved in the model fileds.
 """
 function network_integration!(model::MashupIntegration,
                               database::Database)
@@ -123,34 +120,6 @@ function network_integration!(model::MashupIntegration,
 
     weights_mat = zeros(n_net, database.num_cv)
     tally = zeros(Int, n_net)
-
-    # add random seed so the result can be reproduced.
-    #protection
-    #test_string = ["SIGNALING_EVENTS_MEDIATED_BY_HDAC_CLASS_II_cont.txt",
-    #"BIOCARTA_PDGF_PATHWAY_cont.txt",
-    #"REGULATION_OF_RETINOBLASTOMA_PROTEIN_cont.txt",
-    #"SUPERPATHWAY_OF_CHOLESTEROL_BIOSYNTHESIS_cont.txt",
-    #"SUMOYLATION_cont.txt",
-    #"BASE_EXCISION_REPAIR_cont.txt",
-    #"ACETYLCHOLINE_NEUROTRANSMITTER_RELEASE_CYCLE_cont.txt",
-    #"BIOCARTA_EIF4_PATHWAY_cont.txt",
-    #"PDGFR-BETA_SIGNALING_PATHWAY_cont.txt",
-    #"CLASS_I_MHC_MEDIATED_ANTIGEN_PROCESSING___PRESENTATION_cont.txt"]
-    #test_string = ["CONSTITUTIVE_SIGNALING_BY_LIGAND-RESPONSIVE_EGFR_CANCER_VARIANTS_cont.txt",
-    #"FORMATION_OF_ATP_BY_CHEMIOSMOTIC_COUPLING_cont.txt",
-    #"SYNTHESIS_OF_IP3_AND_IP4_IN_THE_CYTOSOL_cont.txt",
-    #"INTERNALIZATION_OF_ERBB1_cont.txt",
-    #"SA_PROGRAMMED_CELL_DEATH_cont.txt",
-    #"HYPOXIA_RESPONSE_VIA_HIF_ACTIVATION_cont.txt",
-    #"E-CADHERIN_SIGNALING_IN_KERATINOCYTES_cont.txt",
-    #"REELIN_SIGNALING_PATHWAY_cont.txt",
-    #"BIOCARTA_PARKIN_PATHWAY_cont.txt",
-    #"G_PROTEIN_GATED_POTASSIUM_CHANNELS_cont.txt"]
-    #test_box = Dict{String, Vector}()
-    #for sym in test_string
-    #    test_box[sym] = Vector{Float64}()
-    #end
-    ## Protection
 
     # If running for feature selection
     if database.int_type == :selection
@@ -304,11 +273,23 @@ function network_integration!(model::MashupIntegration,
 end
 
 
+
+#########################
+# Method Implementation #
+#########################
+
 """
     network_integration!(model::GeneMANIAIntegration, database::GMANIA)
 
+# Arguments
+
+`model::GeneMANIAIntegration`: GeneMANIA network integration model.
+
+`database::Database`: Store general information about the patients and networks. 
+
 Implement Raw mashup network integration. Result will be saved in the model.
 See [`GeneMANIAIntegration`](@ref) for more information about the result.
+(Currently not fully tested.)
 """
 function network_integration!(model::GeneMANIAIntegration, database::Database)
     net_files = database.string_nets

@@ -54,6 +54,7 @@ end
              lp_model::LabelPropagation)
 
 Pipeline the genemania integration and label propagation in one function.
+(Currently not implemented.)
 
 # Arguments
 

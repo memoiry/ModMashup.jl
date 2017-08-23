@@ -1,7 +1,6 @@
 ## GSoC Project Summary and End-to-End Example
 
-Google Summer of Code 2017 is approaching to its finish line. Time to sum up what has been completed! Check [ModMashup.jl](https://github.com/memoiry/ModMashup.jl) to get all the source code.
-
+Google Summer of Code 2017 is approaching to its finish line. Time to sum up what has been completed! Check [ModMashup.jl](https://github.com/memoiry/ModMashup.jl) to get all the source code. 
 
 
 ### What?

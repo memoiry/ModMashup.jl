@@ -2,7 +2,7 @@
 
 ## Project Goal and Motivations
 
-The aim of the project is to Reimplement GeneMANIA in Julia to optimize netDx for high-performance computing. 
+This project is a part of Google summer of code 2017 program. The aim of the project is to reimplement [GeneMANIA](https://github.com/geneMANIA/genemania) in Julia to optimize netDx for high-performance computing. 
 
 ## Why called ModMashup?
 

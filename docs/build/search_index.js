@@ -21,7 +21,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "Project Goal and Motivations",
     "category": "section",
-    "text": "The aim of the project is to Reimplement GeneMANIA in Julia to optimize netDx for high-performance computing. "
+    "text": "This project is a part of Google summer of code 2017 program. The aim of the project is to reimplement GeneMANIA in Julia to optimize netDx for high-performance computing. "
 },
 
 {
@@ -165,7 +165,7 @@ var documenterSearchIndex = {"docs": [
     "page": "GSoC summary - End-to-end example",
     "title": "GSoC Project Summary and End-to-End Example",
     "category": "section",
-    "text": "Google Summer of Code 2017 is approaching to its finish line. Time to sum up what has been completed! Check ModMashup.jl to get all the source code."
+    "text": "Google Summer of Code 2017 is approaching to its finish line. Time to sum up what has been completed! Check ModMashup.jl to get all the source code. "
 },
 
 {

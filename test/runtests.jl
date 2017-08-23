@@ -78,17 +78,13 @@ function main_test()
     println("========================================")
     println(" ")
     pipeline_test()
-    #println(" ")
-    #println("========================================")
-    #println("Start testing mashup command line tool")
-    #println("========================================")
-    #println(" ")
-    # Seems there are some problems for travis to find the bash file.
-    # So we are not testing the command line tool here
-    # you can uncomment two line below to test the command line tool provided
-    # in the tools folder. Have fun!
-    #test_path = joinpath(Pkg.dir("ModMashup"), "test")
-    #run(`bash $(test_path)/mashup_tool_test.sh`)
+    println(" ")
+    println("========================================")
+    println("Start testing mashup command line tool")
+    println("========================================")
+    println(" ")
+    test_path = joinpath(Pkg.dir("ModMashup"), "test")
+    run(`bash $(test_path)/mashup_tool_test.sh`)
     true
 end
 

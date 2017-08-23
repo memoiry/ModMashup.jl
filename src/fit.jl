@@ -16,14 +16,17 @@ Pipeline the mashup integration and label propagation in one function.
 
 # Arguments
 
-- `database::Database`: Database for computation
-- `it_model::MashupIntegration`: GeneMANIAIntegration model contains result from integration
-- `lp_model::LabelPropagation`: LabelPropagation model contains result from label propgation
+`database::Database`: Database for computation
+
+`it_model::MashupIntegration`: GeneMANIAIntegration model contains result from integration
+
+`lp_model::LabelPropagation`: LabelPropagation model contains result from label propgation
 
 # Outputs
 
-- `it_model::MashupIntegration`: outpus stored in model fileds.
-- `lp_model::LabelPropagation`: outpus stored in model fileds.
+`it_model::MashupIntegration`: outpus stored in model fileds.
+
+`lp_model::LabelPropagation`: outpus stored in model fileds.
 
 """
 function fit!(int_model::MashupIntegration,
@@ -54,9 +57,11 @@ Pipeline the genemania integration and label propagation in one function.
 
 # Arguments
 
-- `database::Database`: Database for computation
-- `it_model::GeneMANIAIntegration`: GeneMANIAIntegration model contains result from integration
-- `lp_model::LabelPropagation`: LabelPropagation model contains result from label propgation
+`database::Database`: Database for computation
+
+`it_model::GeneMANIAIntegration`: GeneMANIAIntegration model contains result from integration
+
+`lp_model::LabelPropagation`: LabelPropagation model contains result from label propgation
 """
 function fit!(database::Database,
              it_model::GeneMANIAIntegration,

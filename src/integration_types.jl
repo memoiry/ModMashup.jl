@@ -13,19 +13,19 @@ Inside MashupIntegration model, it contains all the result after mashup integrat
 
 # Fields
 
-* `β::Vector`: Beta vector as a result of linear regression.
+`β::Vector`: Beta vector as a result of linear regression.
 
-* `H::Matrix`: Rows of H represent patients embendding in networks.
+`H::Matrix`: Rows of H represent patients embendding in networks.
 
-* `net_weights::Vector`: Normalized mean network weights 
+`net_weights::Vector`: Normalized mean network weights 
 
-* `weights_mat::Matrix`: Columns of weights_mat is computed network weights for each round of cross validation.
+`weights_mat::Matrix`: Columns of weights_mat is computed network weights for each round of cross validation.
 
-* `cv_query::Matrix`: Columns of cv_query is query id for each round of cross validation.
+`cv_query::Matrix`: Columns of cv_query is query id for each round of cross validation.
 
-* `singular_value_sqrt::Vector`: singular value from mashup for dimensianal reduction.
+`singular_value_sqrt::Vector`: singular value from mashup for dimensianal reduction.
 
-* `tally::Vector{Int}`: Network tally result
+`tally::Vector{Int}`: Network tally result
 
 # Constructor
 
@@ -53,9 +53,11 @@ GeneMANIA lienar regression algorithm for network integration.
 
 # Fields
 
-* `net_weights::Dict{String, Float64}`: A dictionalry map network name to its final network weights result, which is same with GeneMANIA.jar.
-* `normalized::Bool`: Wether normlize the network weights
-* `reg::Bool`: Wether add regularization term to 
+`net_weights::Dict{String, Float64}`: A dictionalry map network name to its final network weights result, which is same with GeneMANIA.jar.
+
+`normalized::Bool`: Wether normlize the network weights
+
+`reg::Bool`: Wether add regularization term to 
 """
 type GeneMANIAIntegration <: IgAbstractParams
     net_weights::Dict{String, Float64}
@@ -71,8 +73,13 @@ GeneMANIAIntegration() = GeneMANIAIntegration(Dict{String, Float64}(), Matrix(),
 
 Get network tally from mashup model.
 
-- `Input`: Mashup result type.
-- `Output`: intermediate and final result.
+# Input
+
+Mashup result type.
+
+# Output
+
+intermediate and final result.
 """
 function get_tally(model::MashupIntegration)
     return model.tally
@@ -83,8 +90,13 @@ end
 
 Get combined network from network integration model.
 
-- `Input`: Network integration model after perfrom [`network_integration!`](@ref).
-- `Output`: Combined network.
+# Input 
+
+Network integration model after perfrom [`network_integration!`](@ref).
+
+# Output 
+
+Combined network.
 """
 function get_combined_network(model::IgAbstractParams)
     return model.combined_network
@@ -96,8 +108,13 @@ end
 
 Get network tally from network integration model after cross validation.
 
-- `Input`: Network integration model after perfrom [`network_integration!`](@ref).
-- `Output`: Combined network.
+# Input
+
+Network integration model after perfrom [`network_integration!`](@ref).
+
+# Output
+
+ Combined network.
 """
 function get_tally(model::IgAbstractParams)
     return model.tally
@@ -108,8 +125,13 @@ end
 
 Get a dictionalry to map network name to its network weights from network integration model.
 
-- `Input`: Network integration model after perfrom [`network_integration!`](@ref).
-- `Output`: a dictionalry to map network name to its network weights.
+# Input
+
+ Network integration model after perfrom [`network_integration!`](@ref).
+
+# Output
+
+ a dictionalry to map network name to its network weights.
 """
 function get_weights(model::IgAbstractParams)
     return model.net_weights

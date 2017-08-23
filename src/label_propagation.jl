@@ -15,11 +15,17 @@ Collection of information on the label propagation model.
 # Fields
 
 `combined_network::Matrix`: combined network after network integration.
+
 `labels::Vector`: labels for all patients
+
 `maxiter::Integer`: maximum iterations taken by the method.
+
 `tol::Real`: stopping tolerance.
+
 `verbose::Bool`: print cg iteration information.
+
 `plot::Bool`: plot data.
+
 `score::Vector`: Store patient score after label propagation.
 
 # Constructor

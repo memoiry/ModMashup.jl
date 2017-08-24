@@ -3,9 +3,11 @@
 <p align="center"><img src="https://i.loli.net/2017/08/24/599dc111c4dff.png" width="300"></img></p>
 
 <p align="center">
+  <br>
   <a href="https://memoiry.github.io/ModMashup.jl"><img src="https://img.shields.io/badge/docs-stable-blue.svg" alt="Documentation"></a>
   <a href="https://travis-ci.org/memoiry/ModMashup.jl"><img src="https://travis-ci.org/memoiry/ModMashup.jl.svg?branch=master" alt="Build Status"></a>
   <a href="https://codecov.io/gh/memoiry/ModMashup.jl"><img src="https://codecov.io/gh/memoiry/ModMashup.jl/branch/master/graph/badge.svg" alt="Coverage Status"></a>
+  <a href="https://opensource.org/licenses/mit-license.php"><img src="https://badges.frapsoft.com/os/mit/mit.svg?v=103" alt="License"></a>
 </p>
 
 

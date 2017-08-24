@@ -66,7 +66,7 @@ Enter where latest netDX_mashup packages located, you can find it in [github](ht
 
 ```bash
 git clone https://github.com/memoiry/netDx_mashup
-cd netDx_mashup/inst/julia
+cd netDx_mashup/netDx/inst/julia
 bash install.sh
 ```
 

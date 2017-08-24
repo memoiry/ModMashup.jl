@@ -213,7 +213,7 @@ var documenterSearchIndex = {"docs": [
     "page": "GSoC summary - End-to-end example",
     "title": "Required Dependencies",
     "category": "section",
-    "text": "R\njulia 0.5 +Make sure you have julia which is above the version 0.5+ and also R. You can download latest julia from the official website.Enter where latest netDX_mashup packages located, you can find it in github.git clone https://github.com/memoiry/netDx_mashup\ncd netDx_mashup/inst/julia\nbash install.shEverything should be working now."
+    "text": "R\njulia 0.5 +Make sure you have julia which is above the version 0.5+ and also R. You can download latest julia from the official website.Enter where latest netDX_mashup packages located, you can find it in github.git clone https://github.com/memoiry/netDx_mashup\ncd netDx_mashup/netDx/inst/julia\nbash install.shEverything should be working now."
 },
 
 {

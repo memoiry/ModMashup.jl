@@ -4,7 +4,7 @@ export
 
 #typealias SimilarityNetworks Union{Array{Float64,3},Vector{SparseMatrixCSC{Float64,Int64}}}
 #typealias SimilarityNetwork Union{Array{Float64,2},SparseMatrixCSC{Float64,Int64}}
-typealias OneHotAnnotation Union{Vector{Int},Array{Int, 2}, SparseMatrixCSC{Int64,Int64}}
+const OneHotAnnotation = Union{Vector{Int},Array{Int, 2}, SparseMatrixCSC{Int64,Int64}}
 abstract AbstractDatabase
 
 """
@@ -119,17 +119,17 @@ function Database(dir::String,
         string_nets = searchdir(dir, "cont.txt")
 
         # add directory prefix for locating
-        map!(x -> joinpath(dir, x), string_nets)
+        map!(x -> joinpath(dir, x), string_nets, string_nets)
     else
     # If top networks is provided
         # Get top network's name
         string_nets = convert(Vector{String}, vec(readdlm(top_net)))
 
         # add flat file postfix
-        map!(x -> x * ".txt", string_nets)
+        map!(x -> x * ".txt", string_nets, string_nets)
 
         # add directory prefix for locating
-        map!(x -> joinpath(dir, x), string_nets)
+        map!(x -> joinpath(dir, x), string_nets, string_nets)
     end
 
     # Build the index to map patients name to id and also id to name.
@@ -143,7 +143,7 @@ function Database(dir::String,
     if int_type == :selection
         @assert isdir(querys)
         string_querys = filter(x -> length(x) < 12 ,searchdir(querys, "query"))
-        map!(x -> joinpath(querys, x), string_querys)
+        map!(x -> joinpath(querys, x), string_querys, string_querys)
     # If used for patient ranking 
     # querys should be a single query file
     elseif int_type == :ranking

@@ -65,13 +65,34 @@ Make sure you have julia which is above the version 0.5+ and also R. You can dow
 Enter where latest netDX_mashup packages located, you can find it in [github](https://github.com/memoiry/netDx_mashup).
 
 ```bash
-git clone https://github.com/memoiry/netDx_mashup
-cd netDx_mashup/netDx/inst/julia
-bash install.sh
+$ git clone https://github.com/memoiry/netDx_mashup
+$ cd netDx_mashup
 ```
 
-Everything should be working now.
+First install netDX R pakcage
 
+```bash
+$ R
+install.packages(c("bigmemory","foreach","combinat","doParallel","ROCR","pracma","RColorBrewer","reshape2"))
+install.packages("netDx",type="source",repos=NULL)
+install.packages("netDx.examples",type="source",repos=NULL)
+install.packages("knitr")
+```
+
+Then install ModMashup dependency.
+
+```bash
+$ cd netDx/inst/julia
+$ bash install.sh
+```
+
+Test ModMashup package to ensure you have correctly installed it.
+
+```bash
+julia -e 'Pkg.test("ModMashup")'
+```
+
+If the test has passed, everything should be working now.
 
 #### Tutorial
 

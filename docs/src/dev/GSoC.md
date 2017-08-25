@@ -102,14 +102,14 @@ install.packages("knitr")
 Then install ModMashup dependency.
 
 ```bash
-## $ cd netDx/inst/julia
+$ cd netDx/inst/julia
 $ bash install.sh
 ```
 
 Test ModMashup package to ensure you have correctly installed it.
 
 ```bash
-julia -e 'Pkg.test("ModMashup")'
+$ julia -e 'Pkg.test("ModMashup")'
 ```
 
 If the test has passed, everything should be working now.

@@ -134,7 +134,7 @@ function label_propagation!(model::LabelPropagation, database::Database)
 
     # Solve A*x=b with the conjugate gradients method.
     score, ch = cg(laplacian, model.labels, maxiter = model.maxiter,
-    verbose = model.verbose, plot = model.plot, tol = model.tol, log = true)
+    verbose = model.verbose, tol = model.tol, log = true)
 
 
     # Check if label propagation is converged

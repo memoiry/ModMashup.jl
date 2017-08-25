@@ -47,7 +47,7 @@ type MashupIntegration <: IgAbstractParams
     tally::Dict{String, Int}
     combined_network::Matrix
 end
-MashupIntegration() = MashupIntegration(Vector(), Matrix(), Dict{String, Float64}(), Matrix(), Matrix(), Vector(), Dict{String, Int}(), Matrix())
+MashupIntegration() = MashupIntegration(Vector(), Matrix(0,0), Dict{String, Float64}(), Matrix(0,0), Matrix(0,0), Vector(), Dict{String, Int}(), Matrix(0,0))
 
 
 

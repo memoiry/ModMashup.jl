@@ -121,32 +121,40 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "dev/get_start.html#Mashup-command-tool-1",
-    "page": "Quick Start",
-    "title": "Mashup command tool",
-    "category": "section",
-    "text": "This project provide a Command Line Tool located in mashup.jl, which has two usage.Modified Mashup feature selection.\nLabel propagation for patients ranking."
+    "location": "dev/CommandLine.html#",
+    "page": "Command line tool",
+    "title": "Command line tool",
+    "category": "page",
+    "text": ""
 },
 
 {
-    "location": "dev/get_start.html#Example-1",
-    "page": "Quick Start",
+    "location": "dev/CommandLine.html#Mashup-command-tool-1",
+    "page": "Command line tool",
+    "title": "Mashup command tool",
+    "category": "section",
+    "text": "This project provide a Command Line Tool located in mashup.jl, which has two usage.Modified Mashup feature selection.\nLabel propagation for patients ranking.Arguments:\"command\"\n  help = \"what function do you want to use? ie. selection, ranking\"\n  arg_type = String\n  required = true\n\"--net\"\n  help = \"Folder name where the similarity network is stored\"\n  arg_type = String\n  required = true\n\"--id\"\n  help = \"Patients name in the database\"\n  arg_type = String\n  required = true\n\"--labels\"\n  help = \"If for selection, it should be labels file name. If for ranking, it should be query file name and we use it to label patients.\"\n  arg_type = String\n  default = \"nothing\"\n\"--CV_query\"\n  help = \"If for selection, folder name where Query files stored. If for ranking, single query file name for use to label patients\"\n  arg_type = String\n\"--top_net\"\n  help = \"This keyword is used for ranking, it should be file containing selected networks name.\"\n  arg_type = String\n  default = \"nothing\"\n\"--smooth\"\n  help = \"smooth the net or not\"\n  arg_type = Bool\n  default = true\n\"--res_dir\"\n  help = \"where to put the result\"\n  arg_type = String\n\"--cut_off\"\n  help = \"cut_off to select top ranked network in network integration\"\n  arg_type = Int\n  default = 9Outputs:For selectionnetworks_weights_with_name.txt: Txt file mapping networks name to its weights.\nmashup_tally.txt: Txt file mapping networks name to its tally.\ntop_networks.txt: Txt file containing selected networks after cross validation.\nnetworks_index.txt: Txt file mapping networks name to its internal id.\ncv_query.txt: Txt file containing query internal id of each cross validation.\nbeta.txt: Txt file containing beta vector.\nnetworks_weights_each_cv.txt: Txt file containing network weights of each cross validation.\nsingular_value_sqrt.txt: Txt file containing sqrt of singular value.For rankingxxx_mashup_PRANK.txt: Txt file mapping patients name to their weights.\nxxx_mashup_NRANK.txt: Txt file mapping networks name to its weights."
+},
+
+{
+    "location": "dev/CommandLine.html#Example-1",
+    "page": "Command line tool",
     "title": "Example",
     "category": "section",
     "text": ""
 },
 
 {
-    "location": "dev/get_start.html#Usage-1:-Mashup-Feature-Selection-2",
-    "page": "Quick Start",
+    "location": "dev/CommandLine.html#Usage-1:-Mashup-Feature-Selection-1",
+    "page": "Command line tool",
     "title": "Usage 1: Mashup Feature Selection",
     "category": "section",
     "text": "First ensure that you have ModMashup.jl correctly installed in your computer.$ var=$(julia -e \"println(Pkg.dir())\")\n$ var=\"$var/ModMashup/test/data\"\n$ cd $var\n$ mkdir temp_res\n$ julia ../../tools/mashup.jl selection --net networks --id ids.txt --labels target.txt --CV_query . --smooth true --res_dir temp_resThe result will be saved at temp_res folder."
 },
 
 {
-    "location": "dev/get_start.html#Usage-2:-Mashup-query-runner-for-patients-ranking-using-selected-networks-2",
-    "page": "Quick Start",
+    "location": "dev/CommandLine.html#Usage-2:-Mashup-query-runner-for-patients-ranking-using-selected-networks-1",
+    "page": "Command line tool",
     "title": "Usage 2: Mashup query runner for patients ranking using selected networks",
     "category": "section",
     "text": "After feature selection, you can run the command below to get patients ranking.$ julia ../../tools/mashup.jl ranking --top_net temp_res/smooth_result/top_networks.txt --net networks --id ids.txt --CV_query CV_1.query --smooth true --res_dir temp_resThe result will be saved at temp_res folder."
@@ -173,7 +181,7 @@ var documenterSearchIndex = {"docs": [
     "page": "GSoC summary - End-to-end example",
     "title": "What?",
     "category": "section",
-    "text": "The goal of the project was to reimplement GeneMANIA for high-performance computing. That means, having a command-line tool that can be integrated into any packages or system. The aim is to reduce the time needed to perform netDX query. Now we can say the project have successfully achieved this goal! (50x faster with promising accuracy)"
+    "text": "The goal of the project was to replace GeneMANIA's network integration algorithm with a smaller memory footprint for high-performance computing. And, of course, having a command-line tool that can be integrated into any packages or system. The aim is to reduce the time needed to perform netDX query. Now we can say the project have successfully achieved this goal! (50x faster with promising accuracy)"
 },
 
 {
@@ -181,7 +189,7 @@ var documenterSearchIndex = {"docs": [
     "page": "GSoC summary - End-to-end example",
     "title": "How?",
     "category": "section",
-    "text": "We design a novel method to replace linear regression part of GeneMANIA with a network embedding algorithm called Mashup, check Algorithm details here.The main contribution of ModMashup.Utilize network embedding to infer network weights.\nRun cross validation in single query with a list of queries file, no more time is needed for re-initialization.\nOnly need similarity networks file and utilize julia's internal functionality to index patients' name to their id while GeneMANIA cost many time to construct Java database."
+    "text": "We design a novel method to replace linear regression part of GeneMANIA with a network embedding algorithm called Mashup, check Algorithm details here.The main contribution of ModMashup.Utilize network embedding to infer network weights.\nRun cross validation in single query with a list of queries file, no more time is needed for re-initialization.\nOnly need similarity networks file and utilize julia's internal functionality to index patients' name to their id while GeneMANIA cost many time to construct Java database.Input of this tutorial: Mashup and GeneMANIA example shared same input.TCGA Breast cancer dataset. Information used was patient ID and whether tumour is of subtype ‘Luminal A’ (LumA) or other.\nN=348 patients with 232 as traning samples. Classes={LumA, other} annotation. \nSimilarity nets defined at the level of pathways, using Pearson correlation (ProfileToNetworkDriver) as similarity. Generates 1801 networks."
 },
 
 {
@@ -193,9 +201,17 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "dev/GSoC.html#Relation-between-networks-obtained-from-GeneMANIA-and-ModMashup-1",
+    "location": "dev/GSoC.html#Relation-between-networks-tally-obtained-from-GeneMANIA-and-ModMashup-1",
     "page": "GSoC summary - End-to-end example",
-    "title": "Relation between networks obtained from GeneMANIA and ModMashup",
+    "title": "Relation between networks tally obtained from GeneMANIA and ModMashup",
+    "category": "section",
+    "text": "(Image: )Figure 1: networks tally from GeneMANIA versus those from ModMashup for LumA type.(Image: )Figure 2: networks tally from GeneMANIA versus those from ModMashup for other type."
+},
+
+{
+    "location": "dev/GSoC.html#Relation-between-networks-weight-obtained-from-GeneMANIA-and-ModMashup-1",
+    "page": "GSoC summary - End-to-end example",
+    "title": "Relation between networks weight obtained from GeneMANIA and ModMashup",
     "category": "section",
     "text": "I have made two experiments to acquire network weight.Correlation between H_cur and beta.\nDot product between H_cur and beta.see GSoC report for more details about the experimental result."
 },
@@ -213,7 +229,7 @@ var documenterSearchIndex = {"docs": [
     "page": "GSoC summary - End-to-end example",
     "title": "Required Dependencies",
     "category": "section",
-    "text": "R\njulia 0.5 +Make sure you have julia which is above the version 0.5+ and also R. You can download latest julia from the official website.Enter where latest netDX_mashup packages located, you can find it in github.git clone https://github.com/memoiry/netDx_mashup\ncd netDx_mashup/netDx/inst/julia\nbash install.shEverything should be working now."
+    "text": "R\njulia 0.5 +Make sure you have julia which is above the version 0.5+ and also R. You can download latest julia from the official website.Enter where latest netDX_mashup packages located, you can find it in github.$ git clone https://github.com/memoiry/netDx_mashup\n$ cd netDx_mashupFirst install netDX R pakcage$ R\ninstall.packages(c(\"bigmemory\",\"foreach\",\"combinat\",\"doParallel\",\"ROCR\",\"pracma\",\"RColorBrewer\",\"reshape2\"))\ninstall.packages(\"netDx\",type=\"source\",repos=NULL)\ninstall.packages(\"netDx.examples\",type=\"source\",repos=NULL)\ninstall.packages(\"knitr\")Then install ModMashup dependency.$ cd netDx/inst/julia\n$ bash install.shTest ModMashup package to ensure you have correctly installed it.$ julia -e 'Pkg.test(\"ModMashup\")'If the test has passed, everything should be working now."
 },
 
 {
@@ -221,7 +237,7 @@ var documenterSearchIndex = {"docs": [
     "page": "GSoC summary - End-to-end example",
     "title": "Tutorial",
     "category": "section",
-    "text": "This tutorial shows the steps to build a breast tumour classifier using ModMashup and GeneMANIA(To enable GeneMANIA parts, you need to uncomment GeneMANIA's code below) by integrating gene expression. To keep things simple, in this tutorial we build a binary classifier that discriminates between the Luminal A and other subtypes. You can find the source code of the tutorial at gist and generated pdf report.Through this Tutorial, we will use the following capabilities of ModMashup:Perform feature selection on the training set\nAssess performance on the test setInput of this tutorial: Mashup and GeneMANIA example shared same input.TCGA Breast cancer dataset. Information used was patient ID and whether tumour is of subtype ‘Luminal A’ (LumA) or other.\nN=348 patients with 232 as traning samples. Classes={LumA, other} annotation. \nSimilarity nets defined at the level of pathways, using Pearson correlation (ProfileToNetworkDriver) as similarity. Generates 1801 networks.The algorithm proceeds in two steps:Feature selection\nPredicting classes of test samples"
+    "text": "This tutorial shows the steps to build a breast tumour classifier using ModMashup and GeneMANIA(To enable GeneMANIA parts, you need to uncomment GeneMANIA's code below) by integrating gene expression. To keep things simple, in this tutorial we build a binary classifier that discriminates between the Luminal A and other subtypes. You can find the source code of the tutorial at gist and generated pdf report.Through this Tutorial, we will use the following capabilities of ModMashup:Perform feature selection on the training set\nAssess performance on the test setThe algorithm proceeds in two steps:Feature selection\nPredicting classes of test samples"
 },
 
 {
@@ -309,7 +325,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Database",
     "title": "ModMashup.Database",
     "category": "Type",
-    "text": "Store general and in-depth information for network integration and label propagation.\n\nFields\n\nstring_nets::Vector{String}: Similarity networks name.\n\nlabels::OneHotAnnotation: Disease annotation for patients.\n\nn_patients::Int: The number of patients in the databse.\n\npatients_index::Dict{String,Int}: Map patient name to their id.\n\ninverse_index::Dict{Int,String}: Map patient id to their name.\n\nnum_cv::Int: The number of cross validation round. Default is 10.\n\nquery_attr::Int: Set the annotaion for query . Default is 1.\n\nstring_querys::Vector{String}: A list of query filename.\n\nsmooth::Int: Perform smooth in the simialarty or not. Default is true.\n\nint_type::Symbol: Symbol indicate the dabase is for networks selection or  patients ranking. It could be :ranking or :selection, Default is :selection.\n\nthread::Int: The number of thread used to running the program. Default it 1.\n\nKeywords\n\ntop_net::String: a txt file contains the name of selected top ranked networks.\n\n``\n\nConstructor\n\nDatabase(network_dir, target_file, id, query_dir)\n\nCreate new Database.\n\nExample\n\n# enter example data directory\ncd(joinpath(Pkg.dir(\"ModMashup\"), \"test/data\"))\n\n# dir should be a directory containing similairty networks flat file.\nnetwork_dir = \"networks\"\n\n# target_file should be a flat file contains disaese for patient\nlabels = \"target.txt\"\n\n# Directory where a list of query flat files are located using the \n# same format and naming manner with genemania query.\nquery_dir = \".\"\n\n# Id file contains all the name of patients.\nid = \"ids.txt\"\n\n# Other setting\n## Do smooth in the network or not for mashup integration.\nsmooth = true\n\n# Construct the dabase, which contains the preliminary file.\ndatabase = ModMashup.Database(dir, id,\n            querys, labels_file = labels,\n            smooth = smooth,\n            int_type = :selection)\n\n\n\n\n"
+    "text": "Store general and in-depth information for network integration and label propagation.\n\nGenerally, it contains all similairty networks's file name, patient id-name dictionary,  query, patients labels, (keyword: smooth or not, use 1 as query or -1, selection or patients ranking, if ranking , provide top_net file containing selected network).\n\nInside Database, I simply use a dictionary to map patients' name to their internal id.\n\nFor example, you can access labels information in Database through  database.labels\n\nFields\n\nstring_nets::Vector{String}: A vector of similarity networks file name.\n\nlabels::OneHotAnnotation: Disease annotation for patients.\n\nn_patients::Int: The number of patients in the databse.\n\npatients_index::Dict{String,Int}: Map patient name to their id.\n\ninverse_index::Dict{Int,String}: Map patient id to their name.\n\nnum_cv::Int: The number of cross validation round. Default is 10.\n\nquery_attr::Int: Set the annotaion for query . Default is 1.\n\nstring_querys::Vector{String}: A list of query filename.\n\nsmooth::Int: Perform smooth in the simialarty or not. Default is true.\n\nint_type::Symbol: Symbol indicate the dabase is for networks selection or  patients ranking. It could be :ranking or :selection, Default is :selection.\n\nthread::Int: The number of thread used to running the program. Default it 1.\n\nKeywords\n\nnum_cv::Int: The number of cross validation round. Default is 10.\n\nquery_attr::Int: Set the annotaion for query . Default is 1.\n\nstring_querys::Vector{String}: A list of query filename.\n\nsmooth::Int: Perform smooth in the simialarty or not. Default is true.\n\nint_type::Symbol: Symbol indicate the dabase is for networks selection or  patients ranking. It could be :ranking or :selection, Default is :selection.\n\nthread::Int: The number of thread used to running the program. Default it 1.\n\ntop_net::String: a txt file contains the name of selected top ranked networks.\n\nConstructor\n\nDatabase(network_dir, id, query_dir;kwarg...)\n\nCreate new Database. See example data in test/data folder.\n\nExample\n\n# enter example data directory\ncd(joinpath(Pkg.dir(\"ModMashup\"), \"test/data\"))\n\n# dir should be a directory containing similairty networks flat file.\nnetwork_dir = \"networks\"\n\n# target_file should be a flat file contains labels for patient\nlabels = \"target.txt\"\n\n# Directory where a list of query flat files are located using the \n# same format and naming manner with genemania query.\n# If database is used to ranking instead of selection,\n# query_dir should be a single query file instead of a directory.\n# query files should contains keyword `query`.\nquery_dir = \".\"\n# If runs for patient ranking, you only need to provide one query file.\n# So do provide the name of query file instead of the directory.\nquery = \"CV_1.query\"\n\n# Id file contains all the name of patients.\nid = \"ids.txt\"\n\n# Other setting\n## Do smooth in the network or not for mashup integration.\nsmooth = true\n## Txt file containing the name of selected networks \n## for patients ranking\ntop_net = \"top_networks.txt\"\n\n# Construct the dabase, which contains the preliminary file.\n# Mode 1: Construct the dabase for networks selection\ndatabase = ModMashup.Database(network_dir, id,\n                            query_dir, labels_file = labels,\n                            smooth = smooth,\n                            int_type = :selection)\n\n# Mode 2: Construct the database for patients ranking.\n\ndatabase = ModMashup.Database(network_dir, id, \n                            query, smooth = smooth,\n                            top_net = top_net,\n                            int_type = :ranking)\n\n\n\n"
 },
 
 {
@@ -497,7 +513,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "algo/common.html#ModMashup.parse_target-Tuple{Array{T,2},Dict{String,Int64}}",
+    "location": "algo/common.html#ModMashup.parse_target-Tuple{Array{T,2} where T,Dict{String,Int64}}",
     "page": "Common function",
     "title": "ModMashup.parse_target",
     "category": "Method",

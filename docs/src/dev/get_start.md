@@ -95,38 +95,4 @@ score = ModMashup.get_score(lp_model)
     
 ```
 
-### Mashup command tool
-
-This project provide a `Command Line Tool` located in [mashup.jl](https://github.com/memoiry/ModMashup.jl/blob/master/tools/mashup.jl), which has two usage.
-
-1. Modified Mashup feature selection.
-2. Label propagation for patients ranking.
-
-#### Example 
- 
-##### Usage 1: Mashup Feature Selection
- 
-First ensure that you have ModMashup.jl correctly installed in your computer.
-
-```bash
-$ var=$(julia -e "println(Pkg.dir())")
-$ var="$var/ModMashup/test/data"
-$ cd $var
-$ mkdir temp_res
-$ julia ../../tools/mashup.jl selection --net networks --id ids.txt --labels target.txt --CV_query . --smooth true --res_dir temp_res
-```
-
-The result will be saved at `temp_res` folder.
-
-##### Usage 2: Mashup query runner for patients ranking using selected networks
-
-After feature selection, you can run the command below to get patients ranking.
-
-```bash
-$ julia ../../tools/mashup.jl ranking --top_net temp_res/smooth_result/top_networks.txt --net networks --id ids.txt --CV_query CV_1.query --smooth true --res_dir temp_res
-```
-
-The result will be saved at `temp_res` folder.
-
-
 

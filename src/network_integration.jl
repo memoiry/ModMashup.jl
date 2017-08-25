@@ -46,7 +46,7 @@ function network_integration!(model::MashupIntegration,
             Q = rwr(A, 0.5) #running random walk.
             # smooth or not?
             start = n_patients * (i-1)+1 
-            R = log(Q + 1/n_patients) #smoothing
+            R = log.(Q + 1/n_patients) #smoothing
             net[start:(start+n_patients-1),:] = R #concat each net together.
             #eigenvalue, eigenvector = pca(A, n_patients)
             #eigen_value_list_[start:(start+n_patients-1),:] = eigenvector;
@@ -75,7 +75,7 @@ function network_integration!(model::MashupIntegration,
 
     # Find reducde dimension.
     #S_squared = S.^2
-    S_sqrt = sqrt(S)
+    S_sqrt = sqrt.(S)
     model.singular_value_sqrt = S_sqrt
 
     println("Get 0.9 ratio")

@@ -5,8 +5,7 @@ Google Summer of Code 2017 is approaching to its finish line. Time to sum up wha
 
 ### What?
 
-The goal of the project was to reimplement GeneMANIA for high-performance computing. That means, having a command-line tool that can be integrated into any packages or system. The aim is to reduce the time needed to perform netDX query. Now we can say the project have successfully achieved this goal! (50x faster with promising accuracy)
-
+The goal of the project was to replace GeneMANIA's network integration algorithm with a smaller memory footprint for high-performance computing. And, of course, having a command-line tool that can be integrated into any packages or system. The aim is to reduce the time needed to perform netDX query. Now we can say the project have successfully achieved this goal! (50x faster with promising accuracy)
 
 ### How?
 
@@ -18,9 +17,19 @@ The main contribution of ModMashup.
 2. Run cross validation in single query with a list of queries file, no more time is needed for re-initialization.
 3. Only need similarity networks file and utilize julia's internal functionality to index patients' name to their id while GeneMANIA cost many time to construct Java database.
 
+
+**Input of this tutorial**: Mashup and GeneMANIA example shared same input.
+
+- TCGA Breast cancer dataset. Information used was patient ID and whether tumour is of subtype ‘Luminal A’ (LumA) or other.
+- N=348 patients with 232 as traning samples. Classes={LumA, other} annotation. 
+- Similarity nets defined at the level of pathways, using Pearson correlation (ProfileToNetworkDriver) as similarity. Generates 1801 networks.
+
+
 ### Result 
 
 * This implementation in Julia is 50x faster(90 s ) than Java's implementation(4500 s) while achieving same and even better accuracy than raw GeneMANIA. 
+
+
 
 | Class | #total | #train | # selected networks | accuracy | PPV | 
 |:-:| :-: | :-: | :-: | :-: | :-: | 
@@ -37,7 +46,18 @@ The main contribution of ModMashup.
 
 **Table 2**: netDX with **GeneMANIA** as kernel on BreastCancer dataset.
 
-#### Relation between networks obtained from GeneMANIA and ModMashup
+#### Relation between networks tally obtained from GeneMANIA and ModMashup
+
+![](https://i.loli.net/2017/08/25/599fb1f8203dc.png)
+
+**Figure 1**: networks tally from GeneMANIA versus those from ModMashup for LumA type.
+
+![](https://i.loli.net/2017/08/25/599fb1f43987d.png)
+
+**Figure 2**: networks tally from GeneMANIA versus those from ModMashup for other type.
+
+
+#### Relation between networks weight obtained from GeneMANIA and ModMashup
 
 I have made two experiments to acquire network weight.
 
@@ -65,13 +85,34 @@ Make sure you have julia which is above the version 0.5+ and also R. You can dow
 Enter where latest netDX_mashup packages located, you can find it in [github](https://github.com/memoiry/netDx_mashup).
 
 ```bash
-git clone https://github.com/memoiry/netDx_mashup
-cd netDx_mashup/netDx/inst/julia
-bash install.sh
+$ git clone https://github.com/memoiry/netDx_mashup
+$ cd netDx_mashup
 ```
 
-Everything should be working now.
+First install netDX R pakcage
 
+```bash
+$ R
+install.packages(c("bigmemory","foreach","combinat","doParallel","ROCR","pracma","RColorBrewer","reshape2"))
+install.packages("netDx",type="source",repos=NULL)
+install.packages("netDx.examples",type="source",repos=NULL)
+install.packages("knitr")
+```
+
+Then install ModMashup dependency.
+
+```bash
+$ cd netDx/inst/julia
+$ bash install.sh
+```
+
+Test ModMashup package to ensure you have correctly installed it.
+
+```bash
+$ julia -e 'Pkg.test("ModMashup")'
+```
+
+If the test has passed, everything should be working now.
 
 #### Tutorial
 
@@ -82,12 +123,6 @@ Through this Tutorial, we will use the following capabilities of ModMashup:
 
 1. Perform feature selection on the training set
 2. Assess performance on the test set
-
-**Input of this tutorial**: Mashup and GeneMANIA example shared same input.
-
-- TCGA Breast cancer dataset. Information used was patient ID and whether tumour is of subtype ‘Luminal A’ (LumA) or other.
-- N=348 patients with 232 as traning samples. Classes={LumA, other} annotation. 
-- Similarity nets defined at the level of pathways, using Pearson correlation (ProfileToNetworkDriver) as similarity. Generates 1801 networks.
 
 The algorithm proceeds in two steps:
 

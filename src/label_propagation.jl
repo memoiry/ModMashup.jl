@@ -68,7 +68,7 @@ end
 
 Empty label propagation model with some keywords.
 """
-LabelPropagation(;kwargs...) = LabelPropagation(Matrix(), 
+LabelPropagation(;kwargs...) = LabelPropagation(Matrix(0,0), 
                 Vector();kwargs...)
 
 
@@ -133,8 +133,8 @@ function label_propagation!(model::LabelPropagation, database::Database)
     println("\nLabel propagation converge history")
 
     # Solve A*x=b with the conjugate gradients method.
-    score, ch = cg(laplacian, model.labels, maxiter = model.maxiter,
-    verbose = model.verbose, plot = model.plot, tol = model.tol, log = true)
+    score, ch = cg(laplacian, convert(Vector{Float64}, model.labels), maxiter = model.maxiter,
+    verbose = model.verbose, tol = model.tol, log = true)
 
 
     # Check if label propagation is converged

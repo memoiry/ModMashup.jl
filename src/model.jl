@@ -6,9 +6,12 @@ abstract AbstractDatabase
 
 """
 Store general and in-depth information for network integration and label propagation.
+
 Generally, it contains all similairty networks's file name, patient id-name dictionary, 
 query, patients labels, (keyword: smooth or not, use 1 as query or -1, selection or patients ranking, if ranking ,
 provide top_net file containing selected network).
+
+Inside Database, I simply use a dictionary to map patients' name to their internal id.
 
 For example, you can access labels information in Database through 
 database.labels
@@ -58,7 +61,7 @@ patients ranking. It could be `:ranking` or `:selection`, Default is :selection.
 
 # Constructor
 
-    Database(network_dir, target_file, id, query_dir)
+    Database(network_dir, id, query_dir;kwarg...)
 
 Create new `Database`. See example data in `test/data` folder.
 
@@ -89,8 +92,8 @@ id = "ids.txt"
 smooth = true
 
 # Construct the dabase, which contains the preliminary file.
-database = ModMashup.Database(dir, id,
-            querys, labels_file = labels,
+database = ModMashup.Database(network_dir, id,
+            query_dir, labels = labels,
             smooth = smooth,
             int_type = :selection)
 ```

@@ -7,16 +7,20 @@
 using ArgParse
 using ModMashup
 
+# this scsript can be called with two modes, 
+# One is network selection.
+# One is patients ranking.
+
 #=
                         Example 
- Usage 1: 
+ Usage 1 - network selection: 
                 Mashup Feature Selection
  julia mashup.jl selection --net networks 
  --id ids.txt --labels target.txt 
  --CV_query . --smooth true --res_dir temp_res
 
 
- Usage 2: 
+ Usage 2 - patients ranking: 
           Mashup query runner for patient ranking
 julia mashup.jl ranking --top_net top_networks.txt 
 --net networks --id ids.txt --CV_query CV_1.query 
@@ -41,11 +45,11 @@ function parse_commandline()
             arg_type = String
             required = true
         "--labels"
-            help = "For selection, it should be labels file name. For ranking, it should be query file name and we use it to label patients."
+            help = "If for selection, it should be labels file name. If for ranking, it should be query file name and we use it to label patients."
             arg_type = String
             default = "nothing"
         "--CV_query"
-            help = "For selection, folder name where Query files stored. For ranking, single query file name for use to label patients"
+            help = "If for selection, folder name where Query files stored. If for ranking, single query file name for use to label patients"
             arg_type = String
         "--top_net"
             help = "This keyword is used for ranking, it should be file containing selected networks name."
@@ -125,12 +129,17 @@ function main()
     for (arg,val) in parsed_args
         println("  $arg  =>  $val")
     end
+
+
+#---------------------------------------------------------------
+# Option "selection": feature selection for mashup
+#---------------------------------------------------------------
     #Running feature selection for mashup
     if parsed_args["command"] == "selection"
         # parse arguments
-        dir = parsed_args["net"]
+        network_dir = parsed_args["net"]
         labels = parsed_args["labels"]
-        querys = parsed_args["CV_query"]
+        query_dir = parsed_args["CV_query"]
         id = parsed_args["id"]
         smooth = parsed_args["smooth"]
         top_net = parsed_args["top_net"]
@@ -142,18 +151,21 @@ function main()
         println("Start running network selection ")
         println("========================================")
         println(" ")
-
+        # Check http://memoiry.me/ModMashup.jl/algo/database.html for 
+        # contructor usage.
         # Construct the dabase, which contains the preliminary file.
-        database = ModMashup.Database(dir, id,
-                                    querys, labels_file = labels,
+        database = ModMashup.Database(network_dir, id,
+                                    query_dir, labels_file = labels,
                                     smooth = smooth,
                                     int_type = :selection,
                                     top_net = top_net)
 
         # Define the algorithm you want to use to integrate the networks
+        # model is used for generic methods(network_integration! here) to find how to implementt 
+        # corresponding algorith.
         model = ModMashup.MashupIntegration()
 
-        # Running network integration
+        # Running network integration, which is where mashup algorithm is implemented
         ModMashup.network_integration!(model, database)
 
         # Acquire a dictionary mapping networks name to its weight
@@ -178,8 +190,6 @@ function main()
         net_weights = sort(collect(net_weights),by = x->x[2], rev=true)
         tally = sort(collect(tally),by = x->x[2], rev=true)
 
-        # Print the result here
-        println("============================Start printing result.........================")
         # Format the result for printing since net_weights and tally both are dictionary
         # view_ variable is just a structure making it easy to print the dictionary
         view_weights = print_pair(net_weights)
@@ -190,15 +200,15 @@ function main()
         top_tally_networks = filter(x -> x[2] >= cut_off, view_tally)
         top_tally_networks = map(x -> x[1], top_tally_networks)
 
-        println("======================================End================================")
-        # Save the result
-        # Smooth or not?
         # Get resut directory
         result_dir = smooth == 1 ? "$(res_dir)/smooth_result" : "$(res_dir)/no_smooth_result"
         if !isdir(result_dir)
             mkdir(result_dir)
         end
         println("Saving the result...Please wait")
+
+
+        # Print the network tally, weights and a various of results here
 
         # Save the result and write them into text files
         # Txt file mapping networks name to its weights
@@ -211,7 +221,7 @@ function main()
         # Below are some internal result for reference
         # Txt file mapping networks name to its internal id
         writedlm("$(result_dir)/networks_index.txt", view_net_index)
-        # Txt file containing query internal id of each cross validaiton 
+        # Txt file containing query internal id of each cross validation 
         writedlm("$(result_dir)/cv_query.txt",model.cv_query)
         # Txt file containing beta vector
         writedlm("$(result_dir)/beta.txt",model.β)
@@ -224,11 +234,14 @@ function main()
         writedlm("$(result_dir)/singular_value_sqrt.txt",model.singular_value_sqrt)
         println("Saved...")
 
-    # This part is left for patient ranling part of netdx.
+# This part is left for patient ranling part of netdx.
+#---------------------------------------------------------------
+# Option "ranking": patients ranking for mashup
+#---------------------------------------------------------------
     elseif parsed_args["command"] == "ranking"
         
-        dir = parsed_args["net"]
-        querys = parsed_args["CV_query"]
+        network_dir = parsed_args["net"]
+        query = parsed_args["CV_query"]
         id = parsed_args["id"]
         smooth = parsed_args["smooth"]
         top_net = parsed_args["top_net"]
@@ -241,16 +254,21 @@ function main()
         println(" ")
 
         # Construct the dabase, which contains the preliminary file.
-        database = ModMashup.Database(dir, id, 
-            querys, smooth = smooth,
+        database = ModMashup.Database(network_dir, id, 
+            query, smooth = smooth,
             int_type = :ranking,
             top_net = top_net)
 
         # Define the algorithm you want to use to integrate the networks
+        # Two types model is used for generic methods to find how to implementt 
+        # corresponding algorith.
         int_model = ModMashup.MashupIntegration()
         lp_model = ModMashup.LabelPropagation(verbose = true)
 
         # Running network integration and patient ranking
+        # fit is just a pipeline function to run both network integration 
+        # and label progation
+        # Running network integration and label progation
         ModMashup.fit!(int_model, lp_model, database)
 
         # Pick up the result
@@ -267,19 +285,18 @@ function main()
         net_weights = sort(collect(net_weights),by = x->x[2], rev=true)
         score = sort(collect(score),by = x->x[2], rev=true)
 
-        # Print the result here
-        println("============================Start printing result.........================")
         ## Format the result for printing since net_weights and score both are dictionary
         # view_ variable is just a structure making it easy to print the dictionary
+        #Format the result for printing
+        
         view_weights = print_pair(net_weights)
         view_score = print_patient_rank(score, database)
         
-        println("======================================End================================")
         # Save the result
         # Smooth or not?
         # Generate result file name 
-        score = smooth ? "$(querys)_smooth_mashup_PRANK.txt" : "$(querys)_no_smooth_mashup_PRANK.txt"
-        network_weight = smooth ? "$(querys)_smooth_mashup_NRANK.txt" : "$(querys)_no_smooth_mashup_NRANK.txt"
+        score = smooth ? "$(query)_smooth_mashup_PRANK.txt" : "$(query)_no_smooth_mashup_PRANK.txt"
+        network_weight = smooth ? "$(query)_smooth_mashup_NRANK.txt" : "$(query)_no_smooth_mashup_NRANK.txt"
 
 
         println("Saving the result...Please wait")

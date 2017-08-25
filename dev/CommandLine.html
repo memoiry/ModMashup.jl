@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Command line tool · ModMashup.jl</title><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link href="../assets/documenter.css" rel="stylesheet" type="text/css"/></head><body><nav class="toc"><a href="../index.html"><img class="logo" src="../assets/logo.png" alt="ModMashup.jl logo"/></a><h1>ModMashup.jl</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" action="../search.html"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li><a class="toctext" href="../index.html">Home</a></li><li><a class="toctext" href="get_start.html">Quick Start</a></li><li class="current"><a class="toctext" href="CommandLine.html">Command line tool</a><ul class="internal"><li><a class="toctext" href="#Mashup-command-tool-1">Mashup command tool</a></li></ul></li><li><a class="toctext" href="GSoC.html">GSoC summary - End-to-end example</a></li><li><span class="toctext">Algorithms</span><ul><li><a class="toctext" href="../algo/database.html">Database</a></li><li><a class="toctext" href="../algo/label_propagation.html">Label Propagation</a></li><li><a class="toctext" href="../algo/network_integration.html">Network Integration</a></li><li><a class="toctext" href="../algo/pipeline.html">Pipeline</a></li><li><a class="toctext" href="../algo/common.html">Common function</a></li></ul></li><li><a class="toctext" href="contributions.html">Contribution</a></li></ul></nav><article id="docs"><header><nav><ul><li><a href="CommandLine.html">Command line tool</a></li></ul><a class="edit-page" href="https://github.com/memoiry/GeneMANIA.jl/tree/d50a11d9de9dc0853d3c1fa1b565277a177b148b/docs/src/dev/CommandLine.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>Command line tool</span><a class="fa fa-bars" href="#"></a></div></header><h2><a class="nav-anchor" id="Mashup-command-tool-1" href="#Mashup-command-tool-1">Mashup command tool</a></h2><p>This project provide a <code>Command Line Tool</code> located in <a href="https://github.com/memoiry/ModMashup.jl/blob/master/tools/mashup.jl">mashup.jl</a>, which has two usage.</p><ol><li><p>Modified Mashup feature selection.</p></li><li><p>Label propagation for patients ranking.</p></li></ol><p><strong>Arguments</strong>:</p><pre><code class="language-julia">&quot;command&quot;
+  help = &quot;what function do you want to use? ie. selection, ranking&quot;
+  arg_type = String
+  required = true
+&quot;--net&quot;
+  help = &quot;Folder name where the similarity network is stored&quot;
+  arg_type = String
+  required = true
+&quot;--id&quot;
+  help = &quot;Patients name in the database&quot;
+  arg_type = String
+  required = true
+&quot;--labels&quot;
+  help = &quot;If for selection, it should be labels file name. If for ranking, it should be query file name and we use it to label patients.&quot;
+  arg_type = String
+  default = &quot;nothing&quot;
+&quot;--CV_query&quot;
+  help = &quot;If for selection, folder name where Query files stored. If for ranking, single query file name for use to label patients&quot;
+  arg_type = String
+&quot;--top_net&quot;
+  help = &quot;This keyword is used for ranking, it should be file containing selected networks name.&quot;
+  arg_type = String
+  default = &quot;nothing&quot;
+&quot;--smooth&quot;
+  help = &quot;smooth the net or not&quot;
+  arg_type = Bool
+  default = true
+&quot;--res_dir&quot;
+  help = &quot;where to put the result&quot;
+  arg_type = String
+&quot;--cut_off&quot;
+  help = &quot;cut_off to select top ranked network in network integration&quot;
+  arg_type = Int
+  default = 9</code></pre><p><strong>Outputs</strong>:</p><p>For selection</p><ol><li><p><code>networks_weights_with_name.txt</code>: Txt file mapping networks name to its weights.</p></li><li><p><code>mashup_tally.txt</code>: Txt file mapping networks name to its tally.</p></li><li><p><code>top_networks.txt</code>: Txt file containing selected networks after cross validation.</p></li><li><p><code>networks_index.txt</code>: Txt file mapping networks name to its internal id.</p></li><li><p><code>cv_query.txt</code>: Txt file containing query internal id of each cross validation.</p></li><li><p><code>beta.txt</code>: Txt file containing beta vector.</p></li><li><p><code>networks_weights_each_cv.txt</code>: Txt file containing network weights of each cross validation.</p></li><li><p><code>singular_value_sqrt.txt</code>: Txt file containing sqrt of singular value.</p></li></ol><p>For ranking</p><ol><li><p><code>xxx_mashup_PRANK.txt</code>: Txt file mapping patients name to their weights.</p></li><li><p><code>xxx_mashup_NRANK.txt</code>: Txt file mapping networks name to its weights.</p></li></ol><h3><a class="nav-anchor" id="Example-1" href="#Example-1">Example</a></h3><h4><a class="nav-anchor" id="Usage-1:-Mashup-Feature-Selection-1" href="#Usage-1:-Mashup-Feature-Selection-1">Usage 1: Mashup Feature Selection</a></h4><p>First ensure that you have ModMashup.jl correctly installed in your computer.</p><pre><code class="language-bash">$ var=$(julia -e &quot;println(Pkg.dir())&quot;)
+$ var=&quot;$var/ModMashup/test/data&quot;
+$ cd $var
+$ mkdir temp_res
+$ julia ../../tools/mashup.jl selection --net networks --id ids.txt --labels target.txt --CV_query . --smooth true --res_dir temp_res</code></pre><p>The result will be saved at <code>temp_res</code> folder.</p><h4><a class="nav-anchor" id="Usage-2:-Mashup-query-runner-for-patients-ranking-using-selected-networks-1" href="#Usage-2:-Mashup-query-runner-for-patients-ranking-using-selected-networks-1">Usage 2: Mashup query runner for patients ranking using selected networks</a></h4><p>After feature selection, you can run the command below to get patients ranking.</p><pre><code class="language-bash">$ julia ../../tools/mashup.jl ranking --top_net temp_res/smooth_result/top_networks.txt --net networks --id ids.txt --CV_query CV_1.query --smooth true --res_dir temp_res</code></pre><p>The result will be saved at <code>temp_res</code> folder.</p><footer><hr/><a class="previous" href="get_start.html"><span class="direction">Previous</span><span class="title">Quick Start</span></a><a class="next" href="GSoC.html"><span class="direction">Next</span><span class="title">GSoC summary - End-to-end example</span></a></footer></article></body></html>

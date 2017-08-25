@@ -83,6 +83,9 @@ labels = "target.txt"
 # query_dir should be a single query file instead of a directory.
 # query files should contains keyword `query`.
 query_dir = "."
+# If runs for patient ranking, you only need to provide one query file.
+# So do provide the name of query file instead of the directory.
+query = "CV_1.query"
 
 # Id file contains all the name of patients.
 id = "ids.txt"
@@ -90,12 +93,23 @@ id = "ids.txt"
 # Other setting
 ## Do smooth in the network or not for mashup integration.
 smooth = true
+## Txt file containing the name of selected networks 
+## for patients ranking
+top_net = "top_networks.txt"
 
 # Construct the dabase, which contains the preliminary file.
+# Mode 1: Construct the dabase for networks selection
 database = ModMashup.Database(network_dir, id,
-            query_dir, labels = labels,
-            smooth = smooth,
-            int_type = :selection)
+                            query_dir, labels_file = labels,
+                            smooth = smooth,
+                            int_type = :selection)
+
+# Mode 2: Construct the database for patients ranking.
+
+database = ModMashup.Database(network_dir, id, 
+                            query, smooth = smooth,
+                            top_net = top_net,
+                            int_type = :ranking)
 ```
 """
 immutable Database <: AbstractDatabase

@@ -48,12 +48,12 @@ The main contribution of ModMashup.
 
 #### Relation between networks tally obtained from GeneMANIA and ModMashup
 
-
-<p align="center"><img src="https://i.loli.net/2017/08/25/599fb1f8203dc.png" width=500></img></p>
+![](https://i.loli.net/2017/08/25/599fb1f8203dc.png)
 
 **Figure 1**: networks tally from GeneMANIA versus those from ModMashup for LumA type.
 
-<p align="center"><img src="https://i.loli.net/2017/08/25/599fb1f43987d.png" width=500></img></p>
+![](https://i.loli.net/2017/08/25/599fb1f43987d.png)
+
 **Figure 2**: networks tally from GeneMANIA versus those from ModMashup for other type.
 
 

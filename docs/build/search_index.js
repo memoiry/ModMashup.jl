@@ -205,7 +205,7 @@ var documenterSearchIndex = {"docs": [
     "page": "GSoC summary - End-to-end example",
     "title": "Relation between networks tally obtained from GeneMANIA and ModMashup",
     "category": "section",
-    "text": "<p align=\"center\"><img src=\"https://i.loli.net/2017/08/25/599fb1f8203dc.png\" width=500></img></p>Figure 1: networks tally from GeneMANIA versus those from ModMashup for LumA type.<p align=\"center\"><img src=\"https://i.loli.net/2017/08/25/599fb1f43987d.png\" width=500></img></p> Figure 2: networks tally from GeneMANIA versus those from ModMashup for other type."
+    "text": "(Image: )Figure 1: networks tally from GeneMANIA versus those from ModMashup for LumA type.(Image: )Figure 2: networks tally from GeneMANIA versus those from ModMashup for other type."
 },
 
 {

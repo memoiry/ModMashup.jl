@@ -7,6 +7,7 @@ makedocs(clean = false,
         pages = Any[
         "Home" => "index.md",
         "Quick Start" => "dev/get_start.md",
+        "Command line tool" => "dev/CommandLine.md",
         "GSoC summary - End-to-end example" => "dev/GSoC.md",
         "Algorithms" => Any[
         "Database" => "algo/database.md",

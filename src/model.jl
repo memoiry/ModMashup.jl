@@ -2,17 +2,20 @@
 export 
         Database
 
-#typealias SimilarityNetworks Union{Array{Float64,3},Vector{SparseMatrixCSC{Float64,Int64}}}
-#typealias SimilarityNetwork Union{Array{Float64,2},SparseMatrixCSC{Float64,Int64}}
-const OneHotAnnotation = Union{Vector{Int},Array{Int, 2}, SparseMatrixCSC{Int64,Int64}}
 abstract AbstractDatabase
 
 """
 Store general and in-depth information for network integration and label propagation.
+Generally, it contains all similairty networks's file name, patient id-name dictionary, 
+query, patients labels, (keyword: smooth or not, use 1 as query or -1, selection or patients ranking, if ranking ,
+provide top_net file containing selected network).
+
+For example, you can access labels information in Database through 
+database.labels
 
 # Fields
 
-`string_nets::Vector{String}`: Similarity networks name.
+`string_nets::Vector{String}`: A vector of similarity networks file name.
 
 `labels::OneHotAnnotation`: Disease annotation for patients.
 
@@ -37,15 +40,27 @@ patients ranking. It could be `:ranking` or `:selection`, Default is :selection.
 
 # Keywords
 
+`num_cv::Int`: The number of cross validation round. Default is 10.
+
+`query_attr::Int`: Set the annotaion for query . Default is 1.
+
+`string_querys::Vector{String}`: A list of query filename.
+
+`smooth::Int`: Perform smooth in the simialarty or not. Default is true.
+
+`int_type::Symbol`: Symbol indicate the dabase is for networks selection or 
+patients ranking. It could be `:ranking` or `:selection`, Default is :selection.
+
+`thread::Int`: The number of thread used to running the program. Default it 1.
+
 `top_net::String`: a txt file contains the name of selected top ranked networks.
 
-``
 
 # Constructor
 
     Database(network_dir, target_file, id, query_dir)
 
-Create new `Database`.
+Create new `Database`. See example data in `test/data` folder.
 
 # Example
 
@@ -56,11 +71,14 @@ cd(joinpath(Pkg.dir("ModMashup"), "test/data"))
 # dir should be a directory containing similairty networks flat file.
 network_dir = "networks"
 
-# target_file should be a flat file contains disaese for patient
+# target_file should be a flat file contains labels for patient
 labels = "target.txt"
 
 # Directory where a list of query flat files are located using the 
 # same format and naming manner with genemania query.
+# If database is used to ranking instead of selection,
+# query_dir should be a single query file instead of a directory.
+# query files should contains keyword `query`.
 query_dir = "."
 
 # Id file contains all the name of patients.
@@ -75,12 +93,11 @@ database = ModMashup.Database(dir, id,
             querys, labels_file = labels,
             smooth = smooth,
             int_type = :selection)
-
 ```
 """
 immutable Database <: AbstractDatabase
     string_nets::Vector{String}
-    labels::OneHotAnnotation
+    labels::Vector{Int}
     n_patients::Int
     patients_index::Dict{String,Int}
     inverse_index::Dict{Int,String}
@@ -105,6 +122,9 @@ function Database(dir::String,
 
     if int_type == :selection && labels_file == "nothing"
         error("labels file is needed if you want to do network selection")
+    end
+    if num_cv != 10
+        error("currently only support 10 rounds of cross validation")
     end
 
     # Initialization

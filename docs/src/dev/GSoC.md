@@ -82,7 +82,7 @@ install.packages("knitr")
 Then install ModMashup dependency.
 
 ```bash
-$ cd netDx/inst/julia
+## $ cd netDx/inst/julia
 $ bash install.sh
 ```
 

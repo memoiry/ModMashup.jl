@@ -1,6 +1,7 @@
 abstract IgAbstractParams
 #IgParams(args...;kwargs...) = NetworkIntegration(args...;kwargs...)
 
+### TODO  -- has this been addressed?
 ## SP: Separate each "piece" of this .jl file. Or better, put different things in different .jl files. This file has an object definition and a network_integration() function. Put them in two Julia files. 
 
 export MashupIntegration,
@@ -49,6 +50,8 @@ end
 MashupIntegration() = MashupIntegration(Vector(), Matrix(0,0), Dict{String, Float64}(), Matrix(0,0), Matrix(0,0), Vector(), Dict{String, Int}(), Matrix(0,0))
 
 
+
+### TODO - move this into a different .jl file. It isn't mashup.
 
 """
 GeneMANIA lienar regression algorithm for network integration.

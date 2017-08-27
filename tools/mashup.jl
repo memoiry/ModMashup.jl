@@ -93,6 +93,16 @@ function print_pair(pair_)
     return lines
 end
 
+function print_cv_weight(view_id, cv)
+    lines = Vector()
+    for i in 1:size(cv, 1)
+        name_ = filter(x -> x[2] == i, view_id)[1][1]
+        push!(lines, (i, name_, cv[i,:]...))
+    end
+    return lines
+end
+
+
 # Format the score dictionary to pritable file that could be 
 # write into into GeneMANIA's NRANK file
 function print_patient_rank(score, database)
@@ -195,6 +205,8 @@ function main()
         view_weights = print_pair(net_weights)
         view_tally = print_pair(tally)
         view_net_index = print_dict(net_index)
+        view_weight_cv = print_cv_weight(view_net_index, model.weights_mat)
+
 
         # Filter tally lower than cut-off
         top_tally_networks = filter(x -> x[2] >= cut_off, view_tally)
@@ -229,7 +241,8 @@ function main()
         # If you want to generate it for reference, just uncomment it.
         #writedlm("$(result_dir)/H.txt",model.H)
         # Txt file containing network weights of each cross validaiton 
-        writedlm("$(result_dir)/networks_weights_each_cv.txt",model.weights_mat)
+        @show view_weight_cv
+        writedlm("$(result_dir)/networks_weights_each_cv.txt",view_weight_cv)
         # Txt file containing sqrt of singular value.
         writedlm("$(result_dir)/singular_value_sqrt.txt",model.singular_value_sqrt)
         println("Saved...")

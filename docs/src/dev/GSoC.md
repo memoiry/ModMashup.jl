@@ -18,7 +18,7 @@ The main contribution of ModMashup.
 3. Only need similarity networks file and utilize julia's internal functionality to index patients' name to their id while GeneMANIA cost many time to construct Java database.
 
 
-**Input of this tutorial**: Mashup and GeneMANIA example shared same input.
+**Input of this experiments**: Mashup and GeneMANIA example shared same input.
 
 - TCGA Breast cancer dataset. Information used was patient ID and whether tumour is of subtype ‘Luminal A’ (LumA) or other.
 - N=348 patients with 232 as traning samples. Classes={LumA, other} annotation. 
@@ -27,6 +27,8 @@ The main contribution of ModMashup.
 
 ### Result 
 
+**Attention: Test needs to be repeated and the conclusion needs to be confirmed after changing the call to makePSN_NamedMatrix(), with writeProfiles=TRUE, I only test `_con.txt` file as currently ModMashup.jl only support that kind of format and so I have not make a experiment with `.profile`**
+ 
 * This implementation in Julia is 50x faster(90 s ) than Java's implementation(4500 s) while achieving same and even better accuracy than raw GeneMANIA. 
 
 

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>End-to-End Example · ModMashup.jl</title><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link href="../assets/documenter.css" rel="stylesheet" type="text/css"/></head><body><nav class="toc"><a href="../index.html"><img class="logo" src="../assets/logo.png" alt="ModMashup.jl logo"/></a><h1>ModMashup.jl</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" action="../search.html"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li><a class="toctext" href="../index.html">Home</a></li><li><a class="toctext" href="get_start.html">Quick Start</a></li><li class="current"><a class="toctext" href="End-to-End_example.html">End-to-End Example</a><ul class="internal"></ul></li><li><a class="toctext" href="GSoC.html">GSoC summary - End-to-end example</a></li><li><span class="toctext">Algorithms</span><ul><li><a class="toctext" href="../algo/database.html">Database</a></li><li><a class="toctext" href="../algo/label_propagation.html">Label Propagation</a></li><li><a class="toctext" href="../algo/network_integration.html">Network Integration</a></li><li><a class="toctext" href="../algo/pipeline.html">Pipeline</a></li><li><a class="toctext" href="../algo/common.html">Common function</a></li></ul></li><li><a class="toctext" href="contributions.html">Contribution</a></li></ul></nav><article id="docs"><header><nav><ul><li><a href="End-to-End_example.html">End-to-End Example</a></li></ul><a class="edit-page" href="https://github.com/memoiry/GeneMANIA.jl/tree/3b142182d4246471953fb6dac9082c25b1e59953/docs/src/dev/End-to-End_example.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>End-to-End Example</span><a class="fa fa-bars" href="#"></a></div></header><h3><a class="nav-anchor" id="End-to-End-example-in-R-1" href="#End-to-End-example-in-R-1">End-to-End example in R</a></h3><p>For those who want to use <a href="https://github.com/memoiry/ModMashup.jl">ModMashup</a> in R and reproduce the experiment above.</p><ol><li><p>I have developed a <a href="https://github.com/memoiry/ModMashup.jl/blob/master/tools/mashup.jl">ModMashup command line tool</a> for R&#39;s calling. </p></li><li><p>To wrap Julia&#39;s command line tool in R, I created two function to facilitate the procedure.One is <a href="https://gist.github.com/memoiry/30715257430b3896507996c53532fe5c#file-runmashup-r"><code>runMashup.R</code></a>, which is the main function to call mashup command line tool. Another one is <a href="https://gist.github.com/memoiry/30715257430b3896507996c53532fe5c#file-mashup_runcv_featureset-r"><code>mashup_runCV_featureSet.R</code></a>, a wrapper function around <code>runMashup.R</code> to facilitate selection of interested networks.</p></li></ol><h5><a class="nav-anchor" id="Required-Dependencies-1" href="#Required-Dependencies-1">Required Dependencies</a></h5><ul><li><p>R</p></li><li><p>julia 0.5 +</p></li></ul><p>Make sure you have julia which is above the version 0.5+ and also R. You can download latest julia from the <a href="https://julialang.org/downloads/">official website</a>.</p><p>Enter where latest netDX_mashup packages located. </p><pre><code class="language-bash">cd netDx_mashup</code></pre><p>First install netDX R pakcage.</p><pre><code class="language-bash">$ R
+install.packages(c(&quot;bigmemory&quot;,&quot;foreach&quot;,&quot;combinat&quot;,&quot;doParallel&quot;,&quot;ROCR&quot;,&quot;pracma&quot;,&quot;RColorBrewer&quot;,&quot;reshape2&quot;))
+install.packages(&quot;netDx&quot;,type=&quot;source&quot;,repos=NULL)
+install.packages(&quot;netDx.examples&quot;,type=&quot;source&quot;,repos=NULL)
+install.packages(&quot;knitr&quot;)</code></pre><p>Then install ModMashup dependency.</p><pre><code class="language-bash">$ cd netDx/inst/julia
+$ bash install.sh</code></pre><p>Test ModMashup package to ensure you have correctly installed it.</p><pre><code class="language-bash">$ julia -e &#39;Pkg.test(&quot;ModMashup&quot;)&#39;</code></pre><p>If the test has passed, everything should be working now.</p><h4><a class="nav-anchor" id="Tutorial-1" href="#Tutorial-1">Tutorial</a></h4><p>This tutorial shows the steps to build a breast tumour classifier using ModMashup and GeneMANIA(To enable GeneMANIA parts, you need to uncomment GeneMANIA&#39;s code below) by integrating gene expression. To keep things simple, in this tutorial we build a binary classifier that discriminates between the Luminal A and other subtypes. You can find the source code of the tutorial at <a href="https://gist.github.com/memoiry/875d62d6cf89a7ac3a34b09d3e34113e">gist</a> and <a href="http://memoiry.me/files/Mashup_BreastCancer.pdf">generated pdf report</a>.</p><p>Through this Tutorial, we will use the following capabilities of ModMashup:</p><ol><li><p>Perform feature selection on the training set</p></li><li><p>Assess performance on the test set</p></li></ol><p>The algorithm proceeds in two steps:</p><ol><li><p>Feature selection</p></li><li><p>Predicting classes of test samples</p></li></ol><h5><a class="nav-anchor" id="Set-up-environment-1" href="#Set-up-environment-1">Set up environment</a></h5><pre><code class="language-julia">
+################################################################################
+#Uncoment GeneMANIA parts to compare it with Mashup using #same queries
+################################################################################
+
+rm(list=ls())
+
+
+# Change this to a local directory where you have write permission
+outDir &lt;- sprintf(&quot;%s/TCGA_BRCA&quot;,getwd())
+cat(sprintf(&quot;All intermediate files are stored in:\n%s\n&quot;,outDir))
+
+numCores 	&lt;- 2L  	# num cores available for parallel processing
+GMmemory 	&lt;- 4L  	# java memory in Gb
+cutoff		&lt;- 9L  	# score cutoff for feature-selected networks
+TRAIN_PROP &lt;- 0.67 	# fraction of samples to use for training
+
+if (file.exists(outDir)) unlink(outDir,recursive=TRUE)
+dir.create(outDir)</code></pre><h5><a class="nav-anchor" id="Load-the-netDx-software-and-data-packages.-Finally,-load-the-breast-cancer-dataset.-1" href="#Load-the-netDx-software-and-data-packages.-Finally,-load-the-breast-cancer-dataset.-1">Load the netDx software and data packages. Finally, load the breast cancer dataset.</a></h5><pre><code class="language-julia"># import the required packages
+require(netDx)
+require(netDx.examples)
+data(TCGA_BRCA)</code></pre><h5><a class="nav-anchor" id="Split-the-train-and-test-1" href="#Split-the-train-and-test-1">Split the train and test</a></h5><pre><code class="language-julia">subtypes&lt;- c(&quot;LumA&quot;)
+pheno$STATUS[which(!pheno$STATUS %in% subtypes)] &lt;- &quot;other&quot;
+subtypes &lt;- c(subtypes,&quot;other&quot;) # add residual
+
+pheno$TT_STATUS &lt;- splitTestTrain(pheno,
+                                  pctT = TRAIN_PROP,setSeed = 42)</code></pre><h5><a class="nav-anchor" id="Create-similairty-network-1" href="#Create-similairty-network-1">Create similairty network</a></h5><pre><code class="language-julia">pheno_FULL	&lt;- pheno
+xpr_FULL 	&lt;- xpr
+pheno		&lt;- subset(pheno,TT_STATUS %in% &quot;TRAIN&quot;)
+xpr			&lt;- xpr[,which(colnames(xpr)%in% pheno$ID)]
+
+## Pathway
+pathFile &lt;- sprintf(&quot;%s/extdata/Human_160124_AllPathways.gmt&quot;, 
+                    path.package(&quot;netDx.examples&quot;))
+pathwayList &lt;- readPathways(pathFile)
+head(pathwayList)</code></pre><h5><a class="nav-anchor" id="Gene-data-networks-1" href="#Gene-data-networks-1">Gene data networks</a></h5><p>From gene expression data, we create one network per cellular pathway. Similarity between two patients is defined as the Pearson correlation of the expression vector; each network is limited to genes for the corresponding pathway. </p><pre><code class="language-julia">profDir &lt;- sprintf(&quot;%s/profiles&quot;,outDir)
+netDir &lt;- sprintf(&quot;%s/networks&quot;,outDir)
+
+
+netList &lt;- makePSN_NamedMatrix(xpr, rownames(xpr), 
+                               pathwayList,profDir,verbose=FALSE,
+                               numCores=numCores,writeProfiles=FALSE)
+
+netList &lt;- unlist(netList)
+head(netList)
+
+##################################################################
+## Create GM database and also interaction &#39;txt&#39; file
+#dbDir	&lt;- GM_createDB(profDir, pheno$ID, outDir,numCores=numCores)
+##################################################################</code></pre><h5><a class="nav-anchor" id="Feature-selection-for-each-class-1" href="#Feature-selection-for-each-class-1">Feature selection for each class</a></h5><p>The goal of this step is to extract the networks that are most predictive of a given class. For each subtype, here &quot;LumA&quot; and &quot;other&quot;, feature selection is performed once.</p><ul><li><p><code>mashup_runCV_featureSet()</code>, which runs the cross-validation with successive ModMashup queries and returns top ranked network.</p></li></ul><p><strong>Remember to set mashup_runCV_featureSet&#39;s keyword <code>write_query</code> to FALSE if you want to uncomment GeneMANIA&#39;s code so that mashup will use query files generated by GeneMANIA for comparing the result.</strong></p><pre><code class="language-julia">top_net_file &lt;- list()
+mashup_tally &lt;- list()
+for (g in subtypes) {
+  pDir &lt;- sprintf(&quot;%s/%s&quot;,outDir,g)
+  if (file.exists(pDir)) unlink(pDir,recursive=TRUE)
+  dir.create(pDir)
+  
+  cat(sprintf(&quot;\n******\nSubtype %s\n&quot;,g))
+  pheno_subtype &lt;- pheno
+  
+  ## label patients not in the current class as a residual
+  pheno_subtype$STATUS[which(!pheno_subtype$STATUS %in% g)] &lt;- &quot;nonpred&quot;
+  ## sanity check
+  print(table(pheno_subtype$STATUS,useNA=&quot;always&quot;))
+  
+  GM_resDir    &lt;- sprintf(&quot;%s/GM_results&quot;,pDir)
+  Mashup_resDir &lt;- sprintf(&quot;%s/Mashup_results&quot;,pDir)
+  ## query for feature selection comprises of training 
+  ## samples from the class of interest
+  trainPred &lt;- pheno$ID[which(pheno$STATUS %in% g)]
+  
+  
+  ######$$Here we call GeneMANIA feature network selection################
+  # Cross validation for genemania
+  #GM_runCV_featureSet(trainPred, GM_resDir, dbDir$dbDir, 
+  #                  nrow(pheno_subtype),verbose=T, numCores=numCores,
+  #                    GMmemory=GMmemory)
+  #
+  # patient similarity ranks
+  #prank &lt;- dir(path=GM_resDir,pattern=&quot;PRANK$&quot;)
+  ## network ranks
+  #nrank &lt;- dir(path=GM_resDir,pattern=&quot;NRANK$&quot;)
+  #cat(sprintf(&quot;Got %i prank files\n&quot;,length(prank)))
+
+  # Compute network score
+  #pTally	&lt;- GM_networkTally(paste(GM_resDir,nrank,sep=&quot;/&quot;))
+  #head(pTally)
+  # write to file
+  #tallyFile	&lt;- sprintf(&quot;%s/%s_pathway_CV_score_genemania.txt&quot;,GM_resDir,g)
+  #write.table(pTally,file=tallyFile,sep=&quot;\t&quot;,col=T,row=F,quote=F)
+  #####################################################################
+  
+  # Cross validation for mashup
+  # remember to set keyword write_query = FALSE if you want to uncomment GeneMANIA algorithm,
+  # which indicates mashup will use query file from genemania instead of 
+  # generating query files by itself, so the query files are shared between genemania and 
+  # mashup for further comparation.
+  mashup_res &lt;- mashup_runCV_featureSet(profDir, GM_resDir, pheno_subtype, trainID_pred = trainPred,
+                                        write_query = TRUE, smooth = TRUE, verbose=T, 
+                                        numCores = numCores, cut_off = cutoff)
+  # List of selected top networks name
+  mashup_tally[[g]] &lt;- mashup_res$tally
+  # Selected top networks txt file name
+  top_net_file[[g]] &lt;- mashup_res$top_net
+  cat(sprintf(&quot;Mashup-%s: %i networks\n&quot;,g,length(mashup_tally[[g]])))
+}</code></pre><h5><a class="nav-anchor" id="Rank-test-patients-using-trained-model-1" href="#Rank-test-patients-using-trained-model-1">Rank test patients using trained model</a></h5><ul><li><p><code>runMashup()</code>, which runs ModMashup patients ranking and return the name of NRANK file.</p></li></ul><pre><code class="language-julia">pheno &lt;- pheno_FULL
+predRes_GM &lt;- list()
+predRes_mashup &lt;- list()
+for (g in subtypes) {
+  pDir &lt;- sprintf(&quot;%s/%s&quot;,outDir,g)
+  #####################################################################
+  # get GeneMANIA&#39;s feature selected net names
+  #pTally &lt;- read.delim(
+  #sprintf(&quot;%s/GM_results/%s_pathway_CV_score_genemania.txt&quot;,pDir,g),
+  #sep=&quot;\t&quot;,h=T,as.is=T)
+  #pTally &lt;- pTally[which(pTally[,2]&gt;=cutoff),1]
+  #pTally &lt;- sub(&quot;.profile&quot;,&quot;&quot;,pTally)
+  #pTally &lt;- sub(&quot;_cont&quot;,&quot;&quot;,pTally)
+#  
+  #cat(sprintf(&quot;%s: %i pathways\n&quot;,g,length(pTally)))
+  #profDir_GM &lt;- sprintf(&quot;%s/profiles_GM&quot;,pDir)
+  #####################################################################
+  profDir_mashup &lt;- sprintf(&quot;%s/profiles_mashup&quot;,pDir)
+  if(!file.exists(profDir_mashup)) 
+    dir.create(profDir_mashup)
+  
+  # prepare nets for net mashup db
+  tmp &lt;- makePSN_NamedMatrix(xpr_FULL,rownames(xpr),
+                             pathwayList[which(names(pathwayList)%in% mashup_tally[[g]])],
+                             profDir_mashup,verbose=F,numCores=numCores)
+  #####################################################################
+  # prepare nets for new genemania db
+  #tmp &lt;- makePSN_NamedMatrix(xpr_FULL,rownames(xpr),
+  #                           pathwayList[which(names(pathwayList)%in% pTally)],
+  #                           profDir_GM,verbose=F,numCores=numCores)
+  #
+  # create db
+  #dbDir &lt;- GM_createDB(profDir_GM,pheno$ID,pDir,numCores=numCores)
+  #####################################################################
+  
+  # Delete existed result file in case conflicts.
+  redundant_result_file &lt;- list.files(path = sprintf(&quot;%s&quot;, pDir), pattern = &quot;query&quot;)
+  unlink(paste0(pDir, &quot;/&quot;,redundant_result_file))
+  
+  # query of all training samples for this class
+  qSamps &lt;- pheno$ID[which(pheno$STATUS %in% g &amp; pheno$TT_STATUS%in%&quot;TRAIN&quot;)]
+  qFile &lt;- sprintf(&quot;%s/%s_query&quot;,pDir,g)
+  GM_writeQueryFile(qSamps,&quot;all&quot;,nrow(pheno),qFile)
+  
+  # Running patient ranking for mashup
+  mashup_resFile &lt;- runMashup(profDir_mashup, qFile, pheno, top_net = top_net_file[[g]], ranking = TRUE, 
+                              smooth = TRUE)
+  # Save the reresult.
+  predRes_mashup[[g]] &lt;- GM_getQueryROC(mashup_resFile, pheno, g, plotIt=TRUE)
+
+  #####################################################################
+  ## Running patient ranking for genemania
+  #Genemania_resFile &lt;- runGeneMANIA(dbDir$dbDir,qFile,resDir=pDir)
+  # Analysis the ROC
+  #predRes_GM[[g]] &lt;- GM_getQueryROC(sprintf(&quot;%s.PRANK&quot;,Genemania_resFile),pheno, g, plotIt=TRUE)
+  #####################################################################
+}</code></pre><h5><a class="nav-anchor" id="Assign-labels-to-test-patients-1" href="#Assign-labels-to-test-patients-1">Assign labels to test patients</a></h5><p>Here we use <code>GM_OneVAll_getClass()</code> to label patients by max rank and finally evaluate the performance of the classifier.</p><pre><code class="language-julia">## Stats for Mashup result
+predClass_mashup &lt;- GM_OneVAll_getClass(predRes_mashup)
+cat(&quot;Start Print result of mashup..&quot;)
+both &lt;- merge(x=pheno,y=predClass_mashup,by=&quot;ID&quot;)
+print(table(both[,c(&quot;STATUS&quot;,&quot;PRED_CLASS&quot;)]))
+pos &lt;- (both$STATUS %in% &quot;LumA&quot;)
+tp &lt;- sum(both$PRED_CLASS[pos]==&quot;LumA&quot;)
+fp &lt;- sum(both$PRED_CLASS[!pos]==&quot;LumA&quot;)
+tn &lt;- sum(both$PRED_CLASS[!pos]==&quot;other&quot;)
+fn &lt;- sum(both$PRED_CLASS[pos]==&quot;other&quot;)
+cat(sprintf(&quot;Accuracy = %i of %i (%i %%)\n&quot;,tp+tn,nrow(both),
+            round(((tp+tn)/nrow(both))*100)))
+cat(sprintf(&quot;PPV = %i %%\n&quot;, round((tp/(tp+fp))*100)))
+cat(sprintf(&quot;Recall = %i %%\n&quot;, round((tp/(tp+fn))*100)))
+
+######################################################################
+## Stats for GeneMANIA result
+#predClass_GM &lt;- GM_OneVAll_getClass(predRes_GM)
+#cat(&quot;Start Print result of genemania&quot;)
+#both &lt;- merge(x=pheno,y=predClass_GM,by=&quot;ID&quot;)
+#print(table(both[,c(&quot;STATUS&quot;,&quot;PRED_CLASS&quot;)]))
+#pos &lt;- (both$STATUS %in% &quot;LumA&quot;)
+#tp &lt;- sum(both$PRED_CLASS[pos]==&quot;LumA&quot;)
+#fp &lt;- sum(both$PRED_CLASS[!pos]==&quot;LumA&quot;)
+#tn &lt;- sum(both$PRED_CLASS[!pos]==&quot;other&quot;)
+#fn &lt;- sum(both$PRED_CLASS[pos]==&quot;other&quot;)
+#cat(sprintf(&quot;Accuracy = %i of %i (%i %%)\n&quot;,tp+tn,nrow(both),
+#            round(((tp+tn)/nrow(both))*100)))
+#cat(sprintf(&quot;PPV = %i %%\n&quot;, round((tp/(tp+fp))*100)))
+#cat(sprintf(&quot;Recall = %i %%\n&quot;, round((tp/(tp+fn))*100)))
+#####################################################################</code></pre><h4><a class="nav-anchor" id="Credits-1" href="#Credits-1">Credits</a></h4><p><a href="http://netdx.org/wp-content/uploads/2016/06/BreastCancer.pdf">netDX BreastCancer example</a></p><footer><hr/><a class="previous" href="get_start.html"><span class="direction">Previous</span><span class="title">Quick Start</span></a><a class="next" href="GSoC.html"><span class="direction">Next</span><span class="title">GSoC summary - End-to-end example</span></a></footer></article></body></html>

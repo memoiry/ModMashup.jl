@@ -231,14 +231,18 @@ Use databse to map patient_name to internal id.
 """
 function load_net(filename::String,
                   database::Database)
-    network = readdlm(filename);
+    network = readdlm(filename)
     n_relation = size(network, 1)
-    # Map patient name to its id
-    for i in 1:n_relation
-        for j in 1:2
-            @inbounds network[i,j] = database.patients_index[network[i,j]] 
+    if !isa(network, Array{Float64,2})
+        for i in 1:n_relation
+            for j in 1:2
+                @inbounds network[i,j] = database.patients_index[network[i,j]] 
+            end
         end
     end
+
+    # Map patient name to its id
+
     #@show typeof(network)
     #if isa(network, Array{any,2}) 
     #    network = convert(Array{Float64,2}, network)

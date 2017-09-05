@@ -154,6 +154,8 @@ function Database(dir::String,
         # Get all similairty file in the network directory 
         # using the "cont.txt" keyword.
         string_nets = searchdir(dir, "cont.txt")
+        string_nets2 = searchdir(dir, "1.")
+        string_nets = [string_nets; string_nets2]
 
         # add directory prefix for locating
         map!(x -> joinpath(dir, x), string_nets, string_nets)

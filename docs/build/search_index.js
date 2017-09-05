@@ -121,43 +121,107 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "dev/CommandLine.html#",
-    "page": "Command line tool",
-    "title": "Command line tool",
+    "location": "dev/End-to-End_example.html#",
+    "page": "End-to-End Example",
+    "title": "End-to-End Example",
     "category": "page",
     "text": ""
 },
 
 {
-    "location": "dev/CommandLine.html#Mashup-command-tool-1",
-    "page": "Command line tool",
-    "title": "Mashup command tool",
+    "location": "dev/End-to-End_example.html#End-to-End-example-in-R-1",
+    "page": "End-to-End Example",
+    "title": "End-to-End example in R",
     "category": "section",
-    "text": "This project provide a Command Line Tool located in mashup.jl, which has two usage.Modified Mashup feature selection.\nLabel propagation for patients ranking.Arguments:\"command\"\n  help = \"what function do you want to use? ie. selection, ranking\"\n  arg_type = String\n  required = true\n\"--net\"\n  help = \"Folder name where the similarity network is stored\"\n  arg_type = String\n  required = true\n\"--id\"\n  help = \"Patients name in the database\"\n  arg_type = String\n  required = true\n\"--labels\"\n  help = \"If for selection, it should be labels file name. If for ranking, it should be query file name and we use it to label patients.\"\n  arg_type = String\n  default = \"nothing\"\n\"--CV_query\"\n  help = \"If for selection, folder name where Query files stored. If for ranking, single query file name for use to label patients\"\n  arg_type = String\n\"--top_net\"\n  help = \"This keyword is used for ranking, it should be file containing selected networks name.\"\n  arg_type = String\n  default = \"nothing\"\n\"--smooth\"\n  help = \"smooth the net or not\"\n  arg_type = Bool\n  default = true\n\"--res_dir\"\n  help = \"where to put the result\"\n  arg_type = String\n\"--cut_off\"\n  help = \"cut_off to select top ranked network in network integration\"\n  arg_type = Int\n  default = 9Outputs:For selectionnetworks_weights_with_name.txt: Txt file mapping networks name to its weights.\nmashup_tally.txt: Txt file mapping networks name to its tally.\ntop_networks.txt: Txt file containing selected networks after cross validation.\nnetworks_index.txt: Txt file mapping networks name to its internal id.\ncv_query.txt: Txt file containing query internal id of each cross validation.\nbeta.txt: Txt file containing beta vector.\nnetworks_weights_each_cv.txt: Txt file containing network weights of each cross validation.\nsingular_value_sqrt.txt: Txt file containing sqrt of singular value.For rankingxxx_mashup_PRANK.txt: Txt file mapping patients name to their weights.\nxxx_mashup_NRANK.txt: Txt file mapping networks name to its weights."
+    "text": "For those who want to use ModMashup in R and reproduce the experiment above.I have developed a ModMashup command line tool for R's calling. \nTo wrap Julia's command line tool in R, I created two function to facilitate the procedure.One is runMashup.R, which is the main function to call mashup command line tool. Another one is mashup_runCV_featureSet.R, a wrapper function around runMashup.R to facilitate selection of interested networks."
 },
 
 {
-    "location": "dev/CommandLine.html#Example-1",
-    "page": "Command line tool",
-    "title": "Example",
+    "location": "dev/End-to-End_example.html#Required-Dependencies-1",
+    "page": "End-to-End Example",
+    "title": "Required Dependencies",
     "category": "section",
-    "text": ""
+    "text": "R\njulia 0.5 +Make sure you have julia which is above the version 0.5+ and also R. You can download latest julia from the official website.Enter where latest netDX_mashup packages located. cd netDx_mashupFirst install netDX R pakcage.$ R\ninstall.packages(c(\"bigmemory\",\"foreach\",\"combinat\",\"doParallel\",\"ROCR\",\"pracma\",\"RColorBrewer\",\"reshape2\"))\ninstall.packages(\"netDx\",type=\"source\",repos=NULL)\ninstall.packages(\"netDx.examples\",type=\"source\",repos=NULL)\ninstall.packages(\"knitr\")Then install ModMashup dependency.$ cd netDx/inst/julia\n$ bash install.shTest ModMashup package to ensure you have correctly installed it.$ julia -e 'Pkg.test(\"ModMashup\")'If the test has passed, everything should be working now."
 },
 
 {
-    "location": "dev/CommandLine.html#Usage-1:-Mashup-Feature-Selection-1",
-    "page": "Command line tool",
-    "title": "Usage 1: Mashup Feature Selection",
+    "location": "dev/End-to-End_example.html#Tutorial-1",
+    "page": "End-to-End Example",
+    "title": "Tutorial",
     "category": "section",
-    "text": "First ensure that you have ModMashup.jl correctly installed in your computer.$ var=$(julia -e \"println(Pkg.dir())\")\n$ var=\"$var/ModMashup/test/data\"\n$ cd $var\n$ mkdir temp_res\n$ julia ../../tools/mashup.jl selection --net networks --id ids.txt --labels target.txt --CV_query . --smooth true --res_dir temp_resThe result will be saved at temp_res folder."
+    "text": "This tutorial shows the steps to build a breast tumour classifier using ModMashup and GeneMANIA(To enable GeneMANIA parts, you need to uncomment GeneMANIA's code below) by integrating gene expression. To keep things simple, in this tutorial we build a binary classifier that discriminates between the Luminal A and other subtypes. You can find the source code of the tutorial at gist and generated pdf report.Through this Tutorial, we will use the following capabilities of ModMashup:Perform feature selection on the training set\nAssess performance on the test setThe algorithm proceeds in two steps:Feature selection\nPredicting classes of test samples"
 },
 
 {
-    "location": "dev/CommandLine.html#Usage-2:-Mashup-query-runner-for-patients-ranking-using-selected-networks-1",
-    "page": "Command line tool",
-    "title": "Usage 2: Mashup query runner for patients ranking using selected networks",
+    "location": "dev/End-to-End_example.html#Set-up-environment-1",
+    "page": "End-to-End Example",
+    "title": "Set up environment",
     "category": "section",
-    "text": "After feature selection, you can run the command below to get patients ranking.$ julia ../../tools/mashup.jl ranking --top_net temp_res/smooth_result/top_networks.txt --net networks --id ids.txt --CV_query CV_1.query --smooth true --res_dir temp_resThe result will be saved at temp_res folder."
+    "text": "\n################################################################################\n#Uncoment GeneMANIA parts to compare it with Mashup using #same queries\n################################################################################\n\nrm(list=ls())\n\n\n# Change this to a local directory where you have write permission\noutDir <- sprintf(\"%s/TCGA_BRCA\",getwd())\ncat(sprintf(\"All intermediate files are stored in:\\n%s\\n\",outDir))\n\nnumCores 	<- 2L  	# num cores available for parallel processing\nGMmemory 	<- 4L  	# java memory in Gb\ncutoff		<- 9L  	# score cutoff for feature-selected networks\nTRAIN_PROP <- 0.67 	# fraction of samples to use for training\n\nif (file.exists(outDir)) unlink(outDir,recursive=TRUE)\ndir.create(outDir)"
+},
+
+{
+    "location": "dev/End-to-End_example.html#Load-the-netDx-software-and-data-packages.-Finally,-load-the-breast-cancer-dataset.-1",
+    "page": "End-to-End Example",
+    "title": "Load the netDx software and data packages. Finally, load the breast cancer dataset.",
+    "category": "section",
+    "text": "# import the required packages\nrequire(netDx)\nrequire(netDx.examples)\ndata(TCGA_BRCA)"
+},
+
+{
+    "location": "dev/End-to-End_example.html#Split-the-train-and-test-1",
+    "page": "End-to-End Example",
+    "title": "Split the train and test",
+    "category": "section",
+    "text": "subtypes<- c(\"LumA\")\npheno$STATUS[which(!pheno$STATUS %in% subtypes)] <- \"other\"\nsubtypes <- c(subtypes,\"other\") # add residual\n\npheno$TT_STATUS <- splitTestTrain(pheno,\n                                  pctT = TRAIN_PROP,setSeed = 42)"
+},
+
+{
+    "location": "dev/End-to-End_example.html#Create-similairty-network-1",
+    "page": "End-to-End Example",
+    "title": "Create similairty network",
+    "category": "section",
+    "text": "pheno_FULL	<- pheno\nxpr_FULL 	<- xpr\npheno		<- subset(pheno,TT_STATUS %in% \"TRAIN\")\nxpr			<- xpr[,which(colnames(xpr)%in% pheno$ID)]\n\n## Pathway\npathFile <- sprintf(\"%s/extdata/Human_160124_AllPathways.gmt\", \n                    path.package(\"netDx.examples\"))\npathwayList <- readPathways(pathFile)\nhead(pathwayList)"
+},
+
+{
+    "location": "dev/End-to-End_example.html#Gene-data-networks-1",
+    "page": "End-to-End Example",
+    "title": "Gene data networks",
+    "category": "section",
+    "text": "From gene expression data, we create one network per cellular pathway. Similarity between two patients is defined as the Pearson correlation of the expression vector; each network is limited to genes for the corresponding pathway. profDir <- sprintf(\"%s/profiles\",outDir)\nnetDir <- sprintf(\"%s/networks\",outDir)\n\n\nnetList <- makePSN_NamedMatrix(xpr, rownames(xpr), \n                               pathwayList,profDir,verbose=FALSE,\n                               numCores=numCores,writeProfiles=FALSE)\n\nnetList <- unlist(netList)\nhead(netList)\n\n##################################################################\n## Create GM database and also interaction 'txt' file\n#dbDir	<- GM_createDB(profDir, pheno$ID, outDir,numCores=numCores)\n##################################################################"
+},
+
+{
+    "location": "dev/End-to-End_example.html#Feature-selection-for-each-class-1",
+    "page": "End-to-End Example",
+    "title": "Feature selection for each class",
+    "category": "section",
+    "text": "The goal of this step is to extract the networks that are most predictive of a given class. For each subtype, here \"LumA\" and \"other\", feature selection is performed once.mashup_runCV_featureSet(), which runs the cross-validation with successive ModMashup queries and returns top ranked network.Remember to set mashup_runCV_featureSet's keyword write_query to FALSE if you want to uncomment GeneMANIA's code so that mashup will use query files generated by GeneMANIA for comparing the result.top_net_file <- list()\nmashup_tally <- list()\nfor (g in subtypes) {\n  pDir <- sprintf(\"%s/%s\",outDir,g)\n  if (file.exists(pDir)) unlink(pDir,recursive=TRUE)\n  dir.create(pDir)\n  \n  cat(sprintf(\"\\n******\\nSubtype %s\\n\",g))\n  pheno_subtype <- pheno\n  \n  ## label patients not in the current class as a residual\n  pheno_subtype$STATUS[which(!pheno_subtype$STATUS %in% g)] <- \"nonpred\"\n  ## sanity check\n  print(table(pheno_subtype$STATUS,useNA=\"always\"))\n  \n  GM_resDir    <- sprintf(\"%s/GM_results\",pDir)\n  Mashup_resDir <- sprintf(\"%s/Mashup_results\",pDir)\n  ## query for feature selection comprises of training \n  ## samples from the class of interest\n  trainPred <- pheno$ID[which(pheno$STATUS %in% g)]\n  \n  \n  ######$$Here we call GeneMANIA feature network selection################\n  # Cross validation for genemania\n  #GM_runCV_featureSet(trainPred, GM_resDir, dbDir$dbDir, \n  #                  nrow(pheno_subtype),verbose=T, numCores=numCores,\n  #                    GMmemory=GMmemory)\n  #\n  # patient similarity ranks\n  #prank <- dir(path=GM_resDir,pattern=\"PRANK$\")\n  ## network ranks\n  #nrank <- dir(path=GM_resDir,pattern=\"NRANK$\")\n  #cat(sprintf(\"Got %i prank files\\n\",length(prank)))\n\n  # Compute network score\n  #pTally	<- GM_networkTally(paste(GM_resDir,nrank,sep=\"/\"))\n  #head(pTally)\n  # write to file\n  #tallyFile	<- sprintf(\"%s/%s_pathway_CV_score_genemania.txt\",GM_resDir,g)\n  #write.table(pTally,file=tallyFile,sep=\"\\t\",col=T,row=F,quote=F)\n  #####################################################################\n  \n  # Cross validation for mashup\n  # remember to set keyword write_query = FALSE if you want to uncomment GeneMANIA algorithm,\n  # which indicates mashup will use query file from genemania instead of \n  # generating query files by itself, so the query files are shared between genemania and \n  # mashup for further comparation.\n  mashup_res <- mashup_runCV_featureSet(profDir, GM_resDir, pheno_subtype, trainID_pred = trainPred,\n                                        write_query = TRUE, smooth = TRUE, verbose=T, \n                                        numCores = numCores, cut_off = cutoff)\n  # List of selected top networks name\n  mashup_tally[[g]] <- mashup_res$tally\n  # Selected top networks txt file name\n  top_net_file[[g]] <- mashup_res$top_net\n  cat(sprintf(\"Mashup-%s: %i networks\\n\",g,length(mashup_tally[[g]])))\n}"
+},
+
+{
+    "location": "dev/End-to-End_example.html#Rank-test-patients-using-trained-model-1",
+    "page": "End-to-End Example",
+    "title": "Rank test patients using trained model",
+    "category": "section",
+    "text": "runMashup(), which runs ModMashup patients ranking and return the name of NRANK file.pheno <- pheno_FULL\npredRes_GM <- list()\npredRes_mashup <- list()\nfor (g in subtypes) {\n  pDir <- sprintf(\"%s/%s\",outDir,g)\n  #####################################################################\n  # get GeneMANIA's feature selected net names\n  #pTally <- read.delim(\n  #sprintf(\"%s/GM_results/%s_pathway_CV_score_genemania.txt\",pDir,g),\n  #sep=\"\\t\",h=T,as.is=T)\n  #pTally <- pTally[which(pTally[,2]>=cutoff),1]\n  #pTally <- sub(\".profile\",\"\",pTally)\n  #pTally <- sub(\"_cont\",\"\",pTally)\n#  \n  #cat(sprintf(\"%s: %i pathways\\n\",g,length(pTally)))\n  #profDir_GM <- sprintf(\"%s/profiles_GM\",pDir)\n  #####################################################################\n  profDir_mashup <- sprintf(\"%s/profiles_mashup\",pDir)\n  if(!file.exists(profDir_mashup)) \n    dir.create(profDir_mashup)\n  \n  # prepare nets for net mashup db\n  tmp <- makePSN_NamedMatrix(xpr_FULL,rownames(xpr),\n                             pathwayList[which(names(pathwayList)%in% mashup_tally[[g]])],\n                             profDir_mashup,verbose=F,numCores=numCores)\n  #####################################################################\n  # prepare nets for new genemania db\n  #tmp <- makePSN_NamedMatrix(xpr_FULL,rownames(xpr),\n  #                           pathwayList[which(names(pathwayList)%in% pTally)],\n  #                           profDir_GM,verbose=F,numCores=numCores)\n  #\n  # create db\n  #dbDir <- GM_createDB(profDir_GM,pheno$ID,pDir,numCores=numCores)\n  #####################################################################\n  \n  # Delete existed result file in case conflicts.\n  redundant_result_file <- list.files(path = sprintf(\"%s\", pDir), pattern = \"query\")\n  unlink(paste0(pDir, \"/\",redundant_result_file))\n  \n  # query of all training samples for this class\n  qSamps <- pheno$ID[which(pheno$STATUS %in% g & pheno$TT_STATUS%in%\"TRAIN\")]\n  qFile <- sprintf(\"%s/%s_query\",pDir,g)\n  GM_writeQueryFile(qSamps,\"all\",nrow(pheno),qFile)\n  \n  # Running patient ranking for mashup\n  mashup_resFile <- runMashup(profDir_mashup, qFile, pheno, top_net = top_net_file[[g]], ranking = TRUE, \n                              smooth = TRUE)\n  # Save the reresult.\n  predRes_mashup[[g]] <- GM_getQueryROC(mashup_resFile, pheno, g, plotIt=TRUE)\n\n  #####################################################################\n  ## Running patient ranking for genemania\n  #Genemania_resFile <- runGeneMANIA(dbDir$dbDir,qFile,resDir=pDir)\n  # Analysis the ROC\n  #predRes_GM[[g]] <- GM_getQueryROC(sprintf(\"%s.PRANK\",Genemania_resFile),pheno, g, plotIt=TRUE)\n  #####################################################################\n}"
+},
+
+{
+    "location": "dev/End-to-End_example.html#Assign-labels-to-test-patients-1",
+    "page": "End-to-End Example",
+    "title": "Assign labels to test patients",
+    "category": "section",
+    "text": "Here we use GM_OneVAll_getClass() to label patients by max rank and finally evaluate the performance of the classifier.## Stats for Mashup result\npredClass_mashup <- GM_OneVAll_getClass(predRes_mashup)\ncat(\"Start Print result of mashup..\")\nboth <- merge(x=pheno,y=predClass_mashup,by=\"ID\")\nprint(table(both[,c(\"STATUS\",\"PRED_CLASS\")]))\npos <- (both$STATUS %in% \"LumA\")\ntp <- sum(both$PRED_CLASS[pos]==\"LumA\")\nfp <- sum(both$PRED_CLASS[!pos]==\"LumA\")\ntn <- sum(both$PRED_CLASS[!pos]==\"other\")\nfn <- sum(both$PRED_CLASS[pos]==\"other\")\ncat(sprintf(\"Accuracy = %i of %i (%i %%)\\n\",tp+tn,nrow(both),\n            round(((tp+tn)/nrow(both))*100)))\ncat(sprintf(\"PPV = %i %%\\n\", round((tp/(tp+fp))*100)))\ncat(sprintf(\"Recall = %i %%\\n\", round((tp/(tp+fn))*100)))\n\n######################################################################\n## Stats for GeneMANIA result\n#predClass_GM <- GM_OneVAll_getClass(predRes_GM)\n#cat(\"Start Print result of genemania\")\n#both <- merge(x=pheno,y=predClass_GM,by=\"ID\")\n#print(table(both[,c(\"STATUS\",\"PRED_CLASS\")]))\n#pos <- (both$STATUS %in% \"LumA\")\n#tp <- sum(both$PRED_CLASS[pos]==\"LumA\")\n#fp <- sum(both$PRED_CLASS[!pos]==\"LumA\")\n#tn <- sum(both$PRED_CLASS[!pos]==\"other\")\n#fn <- sum(both$PRED_CLASS[pos]==\"other\")\n#cat(sprintf(\"Accuracy = %i of %i (%i %%)\\n\",tp+tn,nrow(both),\n#            round(((tp+tn)/nrow(both))*100)))\n#cat(sprintf(\"PPV = %i %%\\n\", round((tp/(tp+fp))*100)))\n#cat(sprintf(\"Recall = %i %%\\n\", round((tp/(tp+fn))*100)))\n#####################################################################"
+},
+
+{
+    "location": "dev/End-to-End_example.html#Credits-1",
+    "page": "End-to-End Example",
+    "title": "Credits",
+    "category": "section",
+    "text": "netDX BreastCancer example"
 },
 
 {
@@ -189,7 +253,55 @@ var documenterSearchIndex = {"docs": [
     "page": "GSoC summary - End-to-end example",
     "title": "How?",
     "category": "section",
-    "text": "We design a novel method to replace linear regression part of GeneMANIA with a network embedding algorithm called Mashup, check Algorithm details here.The main contribution of ModMashup.Utilize network embedding to infer network weights.\nRun cross validation in single query with a list of queries file, no more time is needed for re-initialization.\nOnly need similarity networks file and utilize julia's internal functionality to index patients' name to their id while GeneMANIA cost many time to construct Java database.Input of this experiments: Mashup and GeneMANIA example shared same input.TCGA Breast cancer dataset. Information used was patient ID and whether tumour is of subtype ‘Luminal A’ (LumA) or other.\nN=348 patients with 232 as traning samples. Classes={LumA, other} annotation. \nSimilarity nets defined at the level of pathways, using Pearson correlation (ProfileToNetworkDriver) as similarity. Generates 1801 networks."
+    "text": "We design a novel method to replace linear regression part of GeneMANIA with a network embedding algorithm called Mashup, check Algorithm details here.The main contribution of ModMashup.Utilize network embedding to infer network weights.\nRun cross validation in single query with a list of queries file, no more time is needed for re-initialization.\nOnly need similarity networks file and utilize julia's internal functionality to index patients' name to their id while GeneMANIA cost many time to construct Java database."
+},
+
+{
+    "location": "dev/GSoC.html#Mashup-command-tool-1",
+    "page": "GSoC summary - End-to-end example",
+    "title": "Mashup command tool",
+    "category": "section",
+    "text": "This project provide a Command Line Tool located in mashup.jl, which has two usage.Modified Mashup feature selection.\nLabel propagation for patients ranking.Arguments:\"command\"\n  help = \"what function do you want to use? ie. selection, ranking\"\n  arg_type = String\n  required = true\n\"--net\"\n  help = \"Folder name where the similarity network is stored\"\n  arg_type = String\n  required = true\n\"--id\"\n  help = \"Patients name in the database\"\n  arg_type = String\n  required = true\n\"--labels\"\n  help = \"If for selection, it should be labels file name. If for ranking, it should be query file name and we use it to label patients.\"\n  arg_type = String\n  default = \"nothing\"\n\"--CV_query\"\n  help = \"If for selection, folder name where Query files stored. If for ranking, single query file name for use to label patients\"\n  arg_type = String\n\"--top_net\"\n  help = \"This keyword is used for ranking, it should be file containing selected networks name.\"\n  arg_type = String\n  default = \"nothing\"\n\"--smooth\"\n  help = \"smooth the net or not\"\n  arg_type = Bool\n  default = true\n\"--res_dir\"\n  help = \"where to put the result\"\n  arg_type = String\n\"--cut_off\"\n  help = \"cut_off to select top ranked network in network integration\"\n  arg_type = Int\n  default = 9Outputs:For selectionnetworks_weights_with_name.txt: Txt file mapping networks name to its weights.\nmashup_tally.txt: Txt file mapping networks name to its tally.\ntop_networks.txt: Txt file containing selected networks after cross validation.\nnetworks_index.txt: Txt file mapping networks name to its internal id.\ncv_query.txt: Txt file containing query internal id of each cross validation.\nbeta.txt: Txt file containing beta vector.\nnetworks_weights_each_cv.txt: Txt file containing network weights of each cross validation.\nsingular_value_sqrt.txt: Txt file containing sqrt of singular value.For rankingxxx_mashup_PRANK.txt: Txt file mapping patients name to their weights.\nxxx_mashup_NRANK.txt: Txt file mapping networks name to its weights."
+},
+
+{
+    "location": "dev/GSoC.html#Example-1",
+    "page": "GSoC summary - End-to-end example",
+    "title": "Example",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "dev/GSoC.html#Usage-1:-Mashup-Feature-Selection-1",
+    "page": "GSoC summary - End-to-end example",
+    "title": "Usage 1: Mashup Feature Selection",
+    "category": "section",
+    "text": "First ensure that you have ModMashup.jl correctly installed in your computer.$ var=$(julia -e \"println(Pkg.dir())\")\n$ var=\"$var/ModMashup/test/data\"\n$ cd $var\n$ mkdir temp_res\n$ julia ../../tools/mashup.jl selection --net networks --id ids.txt --labels target.txt --CV_query . --smooth true --res_dir temp_resThe result will be saved at temp_res folder."
+},
+
+{
+    "location": "dev/GSoC.html#Usage-2:-Mashup-query-runner-for-patients-ranking-using-selected-networks-1",
+    "page": "GSoC summary - End-to-end example",
+    "title": "Usage 2: Mashup query runner for patients ranking using selected networks",
+    "category": "section",
+    "text": "After feature selection, you can run the command below to get patients ranking.$ julia ../../tools/mashup.jl ranking --top_net temp_res/smooth_result/top_networks.txt --net networks --id ids.txt --CV_query CV_1.query --smooth true --res_dir temp_resThe result will be saved at temp_res folder."
+},
+
+{
+    "location": "dev/GSoC.html#Experiment-1",
+    "page": "GSoC summary - End-to-end example",
+    "title": "Experiment",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "dev/GSoC.html#Input-1",
+    "page": "GSoC summary - End-to-end example",
+    "title": "Input",
+    "category": "section",
+    "text": "Mashup and GeneMANIA example shared same input.TCGA Breast cancer dataset. Information used was patient ID and whether tumour is of subtype ‘Luminal A’ (LumA) or other.\nN=348 patients with 232 as traning samples. Classes={LumA, other} annotation. \nSimilarity nets defined at the level of pathways, using Pearson correlation (ProfileToNetworkDriver) as similarity. Generates 1801 networks."
 },
 
 {
@@ -214,102 +326,6 @@ var documenterSearchIndex = {"docs": [
     "title": "Relation between networks weight obtained from GeneMANIA and ModMashup",
     "category": "section",
     "text": "I have made two experiments to acquire network weight.Correlation between H_cur and beta.\nDot product between H_cur and beta.see GSoC report for more details about the experimental result."
-},
-
-{
-    "location": "dev/GSoC.html#End-to-End-example-in-R-1",
-    "page": "GSoC summary - End-to-end example",
-    "title": "End-to-End example in R",
-    "category": "section",
-    "text": "For those who want to use ModMashup in R and reproduce the experiment above.I have developed a ModMashup command line tool for R's calling. \nTo wrap Julia's command line tool in R, I created two function to facilitate the procedure.One is runMashup.R, which is the main function to call mashup command line tool. Another one is mashup_runCV_featureSet.R, a wrapper function around runMashup.R to facilitate selection of interested networks."
-},
-
-{
-    "location": "dev/GSoC.html#Required-Dependencies-1",
-    "page": "GSoC summary - End-to-end example",
-    "title": "Required Dependencies",
-    "category": "section",
-    "text": "R\njulia 0.5 +Make sure you have julia which is above the version 0.5+ and also R. You can download latest julia from the official website.Enter where latest netDX_mashup packages located, you can find it in github.$ git clone https://github.com/memoiry/netDx_mashup\n$ cd netDx_mashupFirst install netDX R pakcage$ R\ninstall.packages(c(\"bigmemory\",\"foreach\",\"combinat\",\"doParallel\",\"ROCR\",\"pracma\",\"RColorBrewer\",\"reshape2\"))\ninstall.packages(\"netDx\",type=\"source\",repos=NULL)\ninstall.packages(\"netDx.examples\",type=\"source\",repos=NULL)\ninstall.packages(\"knitr\")Then install ModMashup dependency.$ cd netDx/inst/julia\n$ bash install.shTest ModMashup package to ensure you have correctly installed it.$ julia -e 'Pkg.test(\"ModMashup\")'If the test has passed, everything should be working now."
-},
-
-{
-    "location": "dev/GSoC.html#Tutorial-1",
-    "page": "GSoC summary - End-to-end example",
-    "title": "Tutorial",
-    "category": "section",
-    "text": "This tutorial shows the steps to build a breast tumour classifier using ModMashup and GeneMANIA(To enable GeneMANIA parts, you need to uncomment GeneMANIA's code below) by integrating gene expression. To keep things simple, in this tutorial we build a binary classifier that discriminates between the Luminal A and other subtypes. You can find the source code of the tutorial at gist and generated pdf report.Through this Tutorial, we will use the following capabilities of ModMashup:Perform feature selection on the training set\nAssess performance on the test setThe algorithm proceeds in two steps:Feature selection\nPredicting classes of test samples"
-},
-
-{
-    "location": "dev/GSoC.html#Set-up-environment-1",
-    "page": "GSoC summary - End-to-end example",
-    "title": "Set up environment",
-    "category": "section",
-    "text": "\n################################################################################\n#Uncoment GeneMANIA parts to compare it with Mashup using #same queries\n################################################################################\n\nrm(list=ls())\n\n\n# Change this to a local directory where you have write permission\noutDir <- sprintf(\"%s/TCGA_BRCA\",getwd())\ncat(sprintf(\"All intermediate files are stored in:\\n%s\\n\",outDir))\n\nnumCores 	<- 2L  	# num cores available for parallel processing\nGMmemory 	<- 4L  	# java memory in Gb\ncutoff		<- 9L  	# score cutoff for feature-selected networks\nTRAIN_PROP <- 0.67 	# fraction of samples to use for training\n\nif (file.exists(outDir)) unlink(outDir,recursive=TRUE)\ndir.create(outDir)"
-},
-
-{
-    "location": "dev/GSoC.html#Load-the-netDx-software-and-data-packages.-Finally,-load-the-breast-cancer-dataset.-1",
-    "page": "GSoC summary - End-to-end example",
-    "title": "Load the netDx software and data packages. Finally, load the breast cancer dataset.",
-    "category": "section",
-    "text": "# import the required packages\nrequire(netDx)\nrequire(netDx.examples)\ndata(TCGA_BRCA)"
-},
-
-{
-    "location": "dev/GSoC.html#Split-the-train-and-test-1",
-    "page": "GSoC summary - End-to-end example",
-    "title": "Split the train and test",
-    "category": "section",
-    "text": "subtypes<- c(\"LumA\")\npheno$STATUS[which(!pheno$STATUS %in% subtypes)] <- \"other\"\nsubtypes <- c(subtypes,\"other\") # add residual\n\npheno$TT_STATUS <- splitTestTrain(pheno,\n                                  pctT = TRAIN_PROP,setSeed = 42)"
-},
-
-{
-    "location": "dev/GSoC.html#Create-similairty-network-1",
-    "page": "GSoC summary - End-to-end example",
-    "title": "Create similairty network",
-    "category": "section",
-    "text": "pheno_FULL	<- pheno\nxpr_FULL 	<- xpr\npheno		<- subset(pheno,TT_STATUS %in% \"TRAIN\")\nxpr			<- xpr[,which(colnames(xpr)%in% pheno$ID)]\n\n## Pathway\npathFile <- sprintf(\"%s/extdata/Human_160124_AllPathways.gmt\", \n                    path.package(\"netDx.examples\"))\npathwayList <- readPathways(pathFile)\nhead(pathwayList)"
-},
-
-{
-    "location": "dev/GSoC.html#Gene-data-networks-1",
-    "page": "GSoC summary - End-to-end example",
-    "title": "Gene data networks",
-    "category": "section",
-    "text": "From gene expression data, we create one network per cellular pathway. Similarity between two patients is defined as the Pearson correlation of the expression vector; each network is limited to genes for the corresponding pathway. profDir <- sprintf(\"%s/profiles\",outDir)\nnetDir <- sprintf(\"%s/networks\",outDir)\n\n\nnetList <- makePSN_NamedMatrix(xpr, rownames(xpr), \n                               pathwayList,profDir,verbose=FALSE,\n                               numCores=numCores,writeProfiles=FALSE)\n\nnetList <- unlist(netList)\nhead(netList)\n\n##################################################################\n## Create GM database and also interaction 'txt' file\n#dbDir	<- GM_createDB(profDir, pheno$ID, outDir,numCores=numCores)\n##################################################################"
-},
-
-{
-    "location": "dev/GSoC.html#Feature-selection-for-each-class-1",
-    "page": "GSoC summary - End-to-end example",
-    "title": "Feature selection for each class",
-    "category": "section",
-    "text": "The goal of this step is to extract the networks that are most predictive of a given class. For each subtype, here \"LumA\" and \"other\", feature selection is performed once.mashup_runCV_featureSet(), which runs the cross-validation with successive ModMashup queries and returns top ranked network.Remember to set mashup_runCV_featureSet's keyword write_query to FALSE if you want to uncomment GeneMANIA's code so that mashup will use query files generated by GeneMANIA for comparing the result.top_net_file <- list()\nmashup_tally <- list()\nfor (g in subtypes) {\n  pDir <- sprintf(\"%s/%s\",outDir,g)\n  if (file.exists(pDir)) unlink(pDir,recursive=TRUE)\n  dir.create(pDir)\n  \n  cat(sprintf(\"\\n******\\nSubtype %s\\n\",g))\n  pheno_subtype <- pheno\n  \n  ## label patients not in the current class as a residual\n  pheno_subtype$STATUS[which(!pheno_subtype$STATUS %in% g)] <- \"nonpred\"\n  ## sanity check\n  print(table(pheno_subtype$STATUS,useNA=\"always\"))\n  \n  GM_resDir    <- sprintf(\"%s/GM_results\",pDir)\n  Mashup_resDir <- sprintf(\"%s/Mashup_results\",pDir)\n  ## query for feature selection comprises of training \n  ## samples from the class of interest\n  trainPred <- pheno$ID[which(pheno$STATUS %in% g)]\n  \n  \n  ######$$Here we call GeneMANIA feature network selection################\n  # Cross validation for genemania\n  #GM_runCV_featureSet(trainPred, GM_resDir, dbDir$dbDir, \n  #                  nrow(pheno_subtype),verbose=T, numCores=numCores,\n  #                    GMmemory=GMmemory)\n  #\n  # patient similarity ranks\n  #prank <- dir(path=GM_resDir,pattern=\"PRANK$\")\n  ## network ranks\n  #nrank <- dir(path=GM_resDir,pattern=\"NRANK$\")\n  #cat(sprintf(\"Got %i prank files\\n\",length(prank)))\n\n  # Compute network score\n  #pTally	<- GM_networkTally(paste(GM_resDir,nrank,sep=\"/\"))\n  #head(pTally)\n  # write to file\n  #tallyFile	<- sprintf(\"%s/%s_pathway_CV_score_genemania.txt\",GM_resDir,g)\n  #write.table(pTally,file=tallyFile,sep=\"\\t\",col=T,row=F,quote=F)\n  #####################################################################\n  \n  # Cross validation for mashup\n  # remember to set keyword write_query = FALSE if you want to uncomment GeneMANIA algorithm,\n  # which indicates mashup will use query file from genemania instead of \n  # generating query files by itself, so the query files are shared between genemania and \n  # mashup for further comparation.\n  mashup_res <- mashup_runCV_featureSet(profDir, GM_resDir, pheno_subtype, trainID_pred = trainPred,\n                                        write_query = TRUE, smooth = TRUE, verbose=T, \n                                        numCores = numCores, cut_off = cutoff)\n  # List of selected top networks name\n  mashup_tally[[g]] <- mashup_res$tally\n  # Selected top networks txt file name\n  top_net_file[[g]] <- mashup_res$top_net\n  cat(sprintf(\"Mashup-%s: %i networks\\n\",g,length(mashup_tally[[g]])))\n}"
-},
-
-{
-    "location": "dev/GSoC.html#Rank-test-patients-using-trained-model-1",
-    "page": "GSoC summary - End-to-end example",
-    "title": "Rank test patients using trained model",
-    "category": "section",
-    "text": "runMashup(), which runs ModMashup patients ranking and return the name of NRANK file.pheno <- pheno_FULL\npredRes_GM <- list()\npredRes_mashup <- list()\nfor (g in subtypes) {\n  pDir <- sprintf(\"%s/%s\",outDir,g)\n  #####################################################################\n  # get GeneMANIA's feature selected net names\n  #pTally <- read.delim(\n  #sprintf(\"%s/GM_results/%s_pathway_CV_score_genemania.txt\",pDir,g),\n  #sep=\"\\t\",h=T,as.is=T)\n  #pTally <- pTally[which(pTally[,2]>=cutoff),1]\n  #pTally <- sub(\".profile\",\"\",pTally)\n  #pTally <- sub(\"_cont\",\"\",pTally)\n#  \n  #cat(sprintf(\"%s: %i pathways\\n\",g,length(pTally)))\n  #profDir_GM <- sprintf(\"%s/profiles_GM\",pDir)\n  #####################################################################\n  profDir_mashup <- sprintf(\"%s/profiles_mashup\",pDir)\n  if(!file.exists(profDir_mashup)) \n    dir.create(profDir_mashup)\n  \n  # prepare nets for net mashup db\n  tmp <- makePSN_NamedMatrix(xpr_FULL,rownames(xpr),\n                             pathwayList[which(names(pathwayList)%in% mashup_tally[[g]])],\n                             profDir_mashup,verbose=F,numCores=numCores)\n  #####################################################################\n  # prepare nets for new genemania db\n  #tmp <- makePSN_NamedMatrix(xpr_FULL,rownames(xpr),\n  #                           pathwayList[which(names(pathwayList)%in% pTally)],\n  #                           profDir_GM,verbose=F,numCores=numCores)\n  #\n  # create db\n  #dbDir <- GM_createDB(profDir_GM,pheno$ID,pDir,numCores=numCores)\n  #####################################################################\n  \n  # Delete existed result file in case conflicts.\n  redundant_result_file <- list.files(path = sprintf(\"%s\", pDir), pattern = \"query\")\n  unlink(paste0(pDir, \"/\",redundant_result_file))\n  \n  # query of all training samples for this class\n  qSamps <- pheno$ID[which(pheno$STATUS %in% g & pheno$TT_STATUS%in%\"TRAIN\")]\n  qFile <- sprintf(\"%s/%s_query\",pDir,g)\n  GM_writeQueryFile(qSamps,\"all\",nrow(pheno),qFile)\n  \n  # Running patient ranking for mashup\n  mashup_resFile <- runMashup(profDir_mashup, qFile, pheno, top_net = top_net_file[[g]], ranking = TRUE, \n                              smooth = TRUE)\n  # Save the reresult.\n  predRes_mashup[[g]] <- GM_getQueryROC(mashup_resFile, pheno, g, plotIt=TRUE)\n\n  #####################################################################\n  ## Running patient ranking for genemania\n  #Genemania_resFile <- runGeneMANIA(dbDir$dbDir,qFile,resDir=pDir)\n  # Analysis the ROC\n  #predRes_GM[[g]] <- GM_getQueryROC(sprintf(\"%s.PRANK\",Genemania_resFile),pheno, g, plotIt=TRUE)\n  #####################################################################\n}"
-},
-
-{
-    "location": "dev/GSoC.html#Assign-labels-to-test-patients-1",
-    "page": "GSoC summary - End-to-end example",
-    "title": "Assign labels to test patients",
-    "category": "section",
-    "text": "Here we use GM_OneVAll_getClass() to label patients by max rank and finally evaluate the performance of the classifier.## Stats for Mashup result\npredClass_mashup <- GM_OneVAll_getClass(predRes_mashup)\ncat(\"Start Print result of mashup..\")\nboth <- merge(x=pheno,y=predClass_mashup,by=\"ID\")\nprint(table(both[,c(\"STATUS\",\"PRED_CLASS\")]))\npos <- (both$STATUS %in% \"LumA\")\ntp <- sum(both$PRED_CLASS[pos]==\"LumA\")\nfp <- sum(both$PRED_CLASS[!pos]==\"LumA\")\ntn <- sum(both$PRED_CLASS[!pos]==\"other\")\nfn <- sum(both$PRED_CLASS[pos]==\"other\")\ncat(sprintf(\"Accuracy = %i of %i (%i %%)\\n\",tp+tn,nrow(both),\n            round(((tp+tn)/nrow(both))*100)))\ncat(sprintf(\"PPV = %i %%\\n\", round((tp/(tp+fp))*100)))\ncat(sprintf(\"Recall = %i %%\\n\", round((tp/(tp+fn))*100)))\n\n######################################################################\n## Stats for GeneMANIA result\n#predClass_GM <- GM_OneVAll_getClass(predRes_GM)\n#cat(\"Start Print result of genemania\")\n#both <- merge(x=pheno,y=predClass_GM,by=\"ID\")\n#print(table(both[,c(\"STATUS\",\"PRED_CLASS\")]))\n#pos <- (both$STATUS %in% \"LumA\")\n#tp <- sum(both$PRED_CLASS[pos]==\"LumA\")\n#fp <- sum(both$PRED_CLASS[!pos]==\"LumA\")\n#tn <- sum(both$PRED_CLASS[!pos]==\"other\")\n#fn <- sum(both$PRED_CLASS[pos]==\"other\")\n#cat(sprintf(\"Accuracy = %i of %i (%i %%)\\n\",tp+tn,nrow(both),\n#            round(((tp+tn)/nrow(both))*100)))\n#cat(sprintf(\"PPV = %i %%\\n\", round((tp/(tp+fp))*100)))\n#cat(sprintf(\"Recall = %i %%\\n\", round((tp/(tp+fn))*100)))\n#####################################################################"
-},
-
-{
-    "location": "dev/GSoC.html#Credits-1",
-    "page": "GSoC summary - End-to-end example",
-    "title": "Credits",
-    "category": "section",
-    "text": "netDX BreastCancer example"
 },
 
 {

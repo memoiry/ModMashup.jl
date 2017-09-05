@@ -337,6 +337,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "dev/GSoC.html#End-to-End-example-in-R-1",
+    "page": "GSoC summary - End-to-end example",
+    "title": "End-to-End example in R",
+    "category": "section",
+    "text": "For those who want to use ModMashup in R and reproduce the experiment above.You can use ModMashup command line tool for R's calling. \nTo wrap Julia's command line tool in R, I created two function to facilitate the procedure.One is runMashup.R, which is the main function to call mashup command line tool. Another one is mashup_runCV_featureSet.R, a wrapper function around runMashup.R to facilitate selection of interested networks."
+},
+
+{
     "location": "dev/GSoC.html#Experiment-1",
     "page": "GSoC summary - End-to-end example",
     "title": "Experiment",

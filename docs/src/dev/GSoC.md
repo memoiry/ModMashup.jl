@@ -206,9 +206,16 @@ $ julia ../../tools/mashup.jl ranking --top_net temp_res/smooth_result/top_netwo
 The result will be saved at `temp_res` folder.
 
 
-## Experiment
+### End-to-End example in R
 
-### Input
+For those who want to use [ModMashup](https://github.com/memoiry/ModMashup.jl) in R and reproduce the experiment above.
+
+1. You can use [ModMashup command line tool](https://github.com/memoiry/ModMashup.jl/blob/master/tools/mashup.jl) for R's calling. 
+2. To wrap Julia's command line tool in R, I created two function to facilitate the procedure.One is [`runMashup.R`](https://gist.github.com/memoiry/30715257430b3896507996c53532fe5c#file-runmashup-r), which is the main function to call mashup command line tool. Another one is [`mashup_runCV_featureSet.R`](https://gist.github.com/memoiry/30715257430b3896507996c53532fe5c#file-mashup_runcv_featureset-r), a wrapper function around `runMashup.R` to facilitate selection of interested networks.
+
+### Experiment
+
+#### Input
 
 Mashup and GeneMANIA example shared same input.
 
@@ -216,7 +223,7 @@ Mashup and GeneMANIA example shared same input.
 - N=348 patients with 232 as traning samples. Classes={LumA, other} annotation. 
 - Similarity nets defined at the level of pathways, using Pearson correlation (ProfileToNetworkDriver) as similarity. Generates 1801 networks.
 
-### Result 
+#### Result 
 
 **Attention: Test needs to be repeated and the conclusion needs to be confirmed after changing the call to makePSN_NamedMatrix(), with writeProfiles=TRUE, I only test `_con.txt` file as currently ModMashup.jl only support that kind of format and so I have not make a experiment with `.profile`**
  
@@ -239,7 +246,7 @@ Mashup and GeneMANIA example shared same input.
 
 **Table 2**: netDX with **GeneMANIA** as kernel on BreastCancer dataset.
 
-#### Relation between networks tally obtained from GeneMANIA and ModMashup
+##### Relation between networks tally obtained from GeneMANIA and ModMashup
 
 ![](https://i.loli.net/2017/08/25/599fb1f8203dc.png)
 
@@ -250,7 +257,7 @@ Mashup and GeneMANIA example shared same input.
 **Figure 2**: networks tally from GeneMANIA versus those from ModMashup for other type.
 
 
-#### Relation between networks weight obtained from GeneMANIA and ModMashup
+##### Relation between networks weight obtained from GeneMANIA and ModMashup
 
 I have made two experiments to acquire network weight.
 

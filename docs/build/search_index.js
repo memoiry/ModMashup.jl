@@ -257,6 +257,54 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "dev/GSoC.html#Quick-Start-1",
+    "page": "GSoC summary - End-to-end example",
+    "title": "Quick Start",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "dev/GSoC.html#Required-Dependencies-1",
+    "page": "GSoC summary - End-to-end example",
+    "title": "Required Dependencies",
+    "category": "section",
+    "text": "julia v0.5 +You can download latest Julia from the official website. Version 0.5 or higher is highly recommended."
+},
+
+{
+    "location": "dev/GSoC.html#Installation-1",
+    "page": "GSoC summary - End-to-end example",
+    "title": "Installation",
+    "category": "section",
+    "text": "Enter Julia REPL.$ juliaThen run the command below in Julia REPL.Pkg.rm(\"ModMashup\")\nPkg.clone(\"https://github.com/memoiry/ModMashup.jl\")"
+},
+
+{
+    "location": "dev/GSoC.html#Example-usage-in-Julia-1",
+    "page": "GSoC summary - End-to-end example",
+    "title": "Example usage in Julia",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "dev/GSoC.html#Usage-1:-Mashup-Feature-Selection-1",
+    "page": "GSoC summary - End-to-end example",
+    "title": "Usage 1: Mashup Feature Selection",
+    "category": "section",
+    "text": "import ModMashup\ncd(joinpath(Pkg.dir(\"ModMashup\"), \"test/data\"))\n\n#Set up database information\ndir = \"networks\"\nlabels = \"target.txt\"\nquerys = \".\"\nid = \"ids.txt\"\nsmooth = true\ntop_net = \"nothing\"\n\n# Construct the dabase, which contains the preliminary file.\ndatabase = ModMashup.Database(dir, id,\n                           querys, labels_file = labels,\n                           smooth = smooth,\n                           int_type = :selection,\n                           top_net = top_net)\n\n# Define the algorithm you want to use to integrate the networks\nmodel = ModMashup.MashupIntegration()\n\n# Running network integration\nModMashup.network_integration!(model, database)\n\nnet_weights = ModMashup.get_weights(model)\ntally = ModMashup.get_tally(model)"
+},
+
+{
+    "location": "dev/GSoC.html#Usage-2:-Mashup-query-runner-for-patients-ranking-using-selected-networks-1",
+    "page": "GSoC summary - End-to-end example",
+    "title": "Usage 2: Mashup query runner for patients ranking using selected networks",
+    "category": "section",
+    "text": "import ModMashup\ncd(joinpath(Pkg.dir(\"ModMashup\"), \"test/data\"))\n\n#Set up database information\ndir = \"networks\"\nquerys = \"CV_1.query\"\nid = \"ids.txt\"\nsmooth = true\n# Top_networks contains selected top ranked networks.\ntop_net = \"top_networks.txt\"\n\n# Construct the dabase, which contains the preliminary file.\ndatabase = ModMashup.Database(dir, id, \n   querys, smooth = smooth,\n   int_type = :ranking,\n   top_net = top_net)\n\n# Define the algorithm you want to use to integrate the networks\nint_model = ModMashup.MashupIntegration()\nlp_model = ModMashup.LabelPropagation(verbose = true)\n\n# Running network integration\nModMashup.fit!(int_model, lp_model, database)\n\n# Pick up the result\n#combined_network = ModMashup.get_combined_network(int_model)\nnet_weights = ModMashup.get_weights(int_model)\nscore = ModMashup.get_score(lp_model)\n    "
+},
+
+{
     "location": "dev/GSoC.html#Mashup-command-tool-1",
     "page": "GSoC summary - End-to-end example",
     "title": "Mashup command tool",
@@ -273,7 +321,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "dev/GSoC.html#Usage-1:-Mashup-Feature-Selection-1",
+    "location": "dev/GSoC.html#Usage-1:-Mashup-Feature-Selection-2",
     "page": "GSoC summary - End-to-end example",
     "title": "Usage 1: Mashup Feature Selection",
     "category": "section",
@@ -281,7 +329,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "dev/GSoC.html#Usage-2:-Mashup-query-runner-for-patients-ranking-using-selected-networks-1",
+    "location": "dev/GSoC.html#Usage-2:-Mashup-query-runner-for-patients-ranking-using-selected-networks-2",
     "page": "GSoC summary - End-to-end example",
     "title": "Usage 2: Mashup query runner for patients ranking using selected networks",
     "category": "section",
